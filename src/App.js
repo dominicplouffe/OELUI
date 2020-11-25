@@ -1,26 +1,93 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { Redirect, Route, Switch } from "react-router-dom";
+import "./styles/admin.css";
+import "./styles/custom.css";
+
+import Login from "./dashboard/pages/Login";
+import Logout from "./dashboard/pages/Logout";
+import Registration from "./dashboard/pages/Registration";
+import AcceptInvite from "./dashboard/pages/AcceptInvite";
+import AuthProvider from "./auth/AuthProvider";
+import { DashboardRoute } from "./auth/AuthRoute";
+import Ping from "./dashboard/pages/Pings";
+import PingScreen from "./dashboard/pages/PingScreen";
+import PingSummary from "./dashboard/pages/PingSummary";
+import Team from "./dashboard/pages/Team";
+import Schedule from "./dashboard/pages/Schedule";
+
+import NewPing from "./dashboard/pages/NewPing";
+import Profile from "./dashboard/pages/Profile";
+
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { fas } from "@fortawesome/pro-solid-svg-icons";
+import { fad } from "@fortawesome/pro-duotone-svg-icons";
+import { far } from "@fortawesome/pro-regular-svg-icons";
+import { fab } from "@fortawesome/free-brands-svg-icons";
+
+library.add(fas);
+library.add(fad);
+library.add(far);
+library.add(fab);
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AuthProvider>
+      <AppRoutes />
+    </AuthProvider>
   );
 }
+
+const AppRoutes = () => {
+  return (
+    <Switch>
+      <Route path="/auth">
+        <AuthRoutes />
+      </Route>
+      <DashboardRoute path="/profile" component={Profile} exact={true} />
+      <DashboardRoute path="/pings" component={Ping} />
+
+      <DashboardRoute path="/team" component={Team} exact={true} admin />
+      <DashboardRoute
+        path="/schedule"
+        component={Schedule}
+        exact={true}
+        admin
+      />
+      <DashboardRoute path="/ping" component={PingScreen} exact={true} admin />
+      <DashboardRoute
+        path="/ping/:id"
+        component={PingScreen}
+        exact={true}
+        admin
+      />
+      <DashboardRoute path="/newping" component={NewPing} exact={true} admin />
+      <DashboardRoute
+        path="/ping/summary/:id"
+        component={PingSummary}
+        exact={true}
+      />
+      {/* <DashboardRoute path="/pong" component={PongScreen} exact={true} />
+      <DashboardRoute path="/pong/:id" component={PongScreen} exact={true} /> */}
+      <DashboardRoute exact path="/">
+        <Redirect to="/pings" />
+      </DashboardRoute>
+    </Switch>
+  );
+};
+
+const AuthRoute = ({ component: Component, ...props }) => {
+  return <Component {...props} />;
+};
+
+const AuthRoutes = () => {
+  return (
+    <Switch>
+      <AuthRoute path={`/auth/login`} component={Login} />
+      <AuthRoute path={"/auth/logout"} component={Logout} />
+      <AuthRoute path={"/auth/register"} component={Registration} />
+      <AuthRoute path={`/auth/accept-invite`} component={AcceptInvite} />
+    </Switch>
+  );
+};
 
 export default App;

@@ -191,6 +191,28 @@ const Body = ({
                   </li>
                 )}
 
+                {/* {currentUser.role.role === "admin" && (
+                  <li
+                    className={`sidebar-item ${getSelectedMenuClass(
+                      "preferences"
+                    )}`}
+                  >
+                    <Link
+                      className={`sidebar-link sidebar-link ${getActiveMenuClass(
+                        "preferences"
+                      )}`}
+                      to="/preferences"
+                    >
+                      <img
+                        src="/icons/preferences.png"
+                        alt="preferences"
+                        className="icon"
+                      />
+                      <span className="hide-menu">Preferences</span>
+                    </Link>
+                  </li>
+                )} */}
+
                 <li
                   className={`sidebar-item ${getSelectedMenuClass("profile")}`}
                 >
@@ -217,6 +239,7 @@ const Body = ({
                     )}
                   </Link>
                 </li>
+                <li className="list-divider"></li>
                 <li
                   className={`sidebar-item ${getSelectedMenuClass("signout")}`}
                 >

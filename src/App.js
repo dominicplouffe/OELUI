@@ -18,6 +18,7 @@ import Schedule from "./dashboard/pages/Schedule";
 
 import NewPing from "./dashboard/pages/NewPing";
 import Profile from "./dashboard/pages/Profile";
+import Preferences from "./dashboard/pages/Preferences";
 
 function App() {
   return (
@@ -34,6 +35,11 @@ const AppRoutes = () => {
         <AuthRoutes />
       </Route>
       <DashboardRoute path="/profile" component={Profile} exact={true} />
+      <DashboardRoute
+        path="/preferences"
+        component={Preferences}
+        exact={true}
+      />
       <DashboardRoute path="/pings" component={Ping} />
 
       <DashboardRoute path="/team" component={Team} exact={true} admin />

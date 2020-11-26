@@ -19,14 +19,6 @@ import Schedule from "./dashboard/pages/Schedule";
 import NewPing from "./dashboard/pages/NewPing";
 import Profile from "./dashboard/pages/Profile";
 
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { fab } from "@fortawesome/free-brands-svg-icons";
-
-library.add(fas);
-library.add(fad);
-library.add(far);
-library.add(fab);
-
 function App() {
   return (
     <AuthProvider>

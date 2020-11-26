@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 import { Row, Col, Button, Alert } from "react-bootstrap";
 
@@ -133,10 +132,6 @@ const Body = ({
                     )}`}
                     to="/pings"
                   >
-                    <FontAwesomeIcon
-                      icon="user-edit"
-                      className="mb-1"
-                    ></FontAwesomeIcon>
                     &nbsp;
                     <span className="hide-menu">Pings</span>
                   </Link>
@@ -168,10 +163,6 @@ const Body = ({
                       )}`}
                       to="/team"
                     >
-                      <FontAwesomeIcon
-                        icon="users"
-                        className="mb-1"
-                      ></FontAwesomeIcon>
                       &nbsp;
                       <span className="hide-menu">Team</span>
                     </Link>
@@ -190,10 +181,6 @@ const Body = ({
                       )}`}
                       to="/schedule"
                     >
-                      <FontAwesomeIcon
-                        icon="users"
-                        className="mb-1"
-                      ></FontAwesomeIcon>
                       &nbsp;
                       <span className="hide-menu">Schedule</span>
                     </Link>
@@ -209,10 +196,6 @@ const Body = ({
                     )}`}
                     to="/profile"
                   >
-                    <FontAwesomeIcon
-                      icon="user"
-                      className="mb-1"
-                    ></FontAwesomeIcon>
                     &nbsp;
                     <span className="hide-menu">Profile</span>
                     {currentUser && currentUser.role.phone_number === null && (
@@ -235,10 +218,6 @@ const Body = ({
                     )}`}
                     to="/auth/logout"
                   >
-                    <FontAwesomeIcon
-                      icon="sign-out-alt"
-                      className="mb-1"
-                    ></FontAwesomeIcon>
                     &nbsp;
                     <span className="hide-menu">Logout</span>
                   </Link>

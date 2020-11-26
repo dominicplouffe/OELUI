@@ -110,28 +110,31 @@ const Team = (props) => {
             </Alert>
           )}
           <Row className="mt-4">
-            <Col>
+            <Col className="hide">
               <Row>
-                <Col xs={2}>
+                <Col lg={2} xs={6}>
                   <strong>First Name</strong>
                 </Col>
-                <Col xs={2}>
+                <Col lg={2} xs={6}>
                   <strong>Last Name</strong>
                 </Col>
-                <Col xs={3}>
+                <Col lg={3} xs={12}>
                   <strong>Email Address</strong>
                 </Col>
-                <Col xs={2}>
+                <Col lg={2} xs={6}>
                   <strong>Phone Number</strong>
                 </Col>
-                <Col className="text-center">
+                <Col className="text-center" lg={3} xs={12}>
                   <strong>Info</strong>
                 </Col>
               </Row>
-
+            </Col>
+          </Row>
+          <Row>
+            <Col>
               {users.map((u, i) => (
                 <Row key={i} className="pt-3">
-                  <Col className="pt-2" xs={2}>
+                  <Col className="pt-2" lg={2} xs={6}>
                     <div
                       className="color-box"
                       style={{ backgroundColor: u.color }}
@@ -140,16 +143,16 @@ const Team = (props) => {
                     </div>
                     {u.first_name}
                   </Col>
-                  <Col className="pt-2" xs={2}>
+                  <Col className="pt-2" lg={2} xs={6}>
                     {u.last_name}
                   </Col>
-                  <Col className="pt-2" xs={3}>
+                  <Col className="pt-2" lg={3} xs={12}>
                     {u.email_address}
                   </Col>
-                  <Col className="pt-2" xs={2}>
+                  <Col className="pt-2" lg={2} xs={12}>
                     {u.phone_number}
                   </Col>
-                  <Col className="text-center">
+                  <Col className="text-center" lg={3} xs={12}>
                     <Row>
                       {u.email_verified_on && (
                         <>

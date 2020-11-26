@@ -22,6 +22,7 @@ const PingScreen = (props) => {
   // Fields
   const [pingId, setPingId] = useState(null);
   const [pingName, setPingName] = useState("");
+  const [docLink, setDocLink] = useState("");
   const [endpoint, setEndpoint] = useState("");
   const [endpointUsername, setEndpointUsername] = useState("");
   const [endpointPassword, setEndpointPassword] = useState("");
@@ -157,6 +158,7 @@ const PingScreen = (props) => {
         incident_interval: incidentInterval,
         active: pingActive,
         notification_type: incidentMethod,
+        doc_link: docLink,
       };
 
       if (jsonKey) {
@@ -215,6 +217,7 @@ const PingScreen = (props) => {
       setIncidentEndpointUser(data.callback_userame || "");
       setIncidentEndpointPass(data.callback_password || "");
       setIncidentMethod(data.notification_type);
+      setDocLink(data.doc_link || "");
       setShowTestPing(true);
       setActive(data.active);
 
@@ -328,13 +331,31 @@ const PingScreen = (props) => {
             that the data the web server sends back is correct.
           </Card.Subtitle>
           <Row className="mt-3">
-            <Col>
+            <Col xs={12} sm={12} lg={6}>
               <InputText
                 id="name"
                 label="Ping Name"
                 value={pingName}
                 isInvalid={formErrors.indexOf("name") > -1}
                 onChange={(e) => setValue(setPingName, e.target.value)}
+              />
+            </Col>
+            <Col xs={12} sm={12} lg={6}>
+              <InputText
+                id="doc_link"
+                label="Documentation URL"
+                value={docLink}
+                onChange={(e) => setValue(setDocLink, e.target.value)}
+                helperText={
+                  <>
+                    <span>
+                      If you want to send a URL to your on-call team with some
+                      documenation on the procedures to confirm and resolve a
+                      failure, you enter it here. The URL will be sent along
+                      with all failure notifications.
+                    </span>
+                  </>
+                }
               />
             </Col>
           </Row>

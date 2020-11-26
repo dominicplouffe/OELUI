@@ -241,7 +241,7 @@ const Body = ({
         <div className="page-wrapper" style={{ display: "block" }}>
           <div className="container-fluid">
             <Row>
-              <Col xl={{ offset: 2, span: 8 }}>
+              <Col xl={{ span: 10 }}>
                 {currentUser &&
                   currentUser.role.phone_number_verified_on === null && (
                     <Alert variant="info" dismissible>

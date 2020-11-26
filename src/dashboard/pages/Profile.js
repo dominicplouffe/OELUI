@@ -84,7 +84,7 @@ const Profile = (props) => {
             your experience with onErrorLog is good.
           </Card.Subtitle>
           <Row>
-            <Col>
+            <Col xs={12} lg={6} className="mt-4">
               <InputText
                 id="firstName"
                 label="First Name"
@@ -93,7 +93,7 @@ const Profile = (props) => {
                 onChange={(e) => setFirstName(e.target.value)}
               />
             </Col>
-            <Col>
+            <Col xs={12} lg={6} className="mt-4">
               <InputText
                 id="lastName"
                 label="Last Name"
@@ -103,8 +103,8 @@ const Profile = (props) => {
               />
             </Col>
           </Row>
-          <Row className="mt-4">
-            <Col>
+          <Row>
+            <Col xs={12} lg={6} className="mt-4">
               <InputText
                 id="emailAddress"
                 label={
@@ -118,7 +118,7 @@ const Profile = (props) => {
                 disabled={true}
               />
             </Col>
-            <Col>
+            <Col xs={12} lg={6} className="mt-4">
               <label className="form-label">
                 {currentUser.role.phone_number_verified_on
                   ? `Phone Number 🟢`
@@ -137,8 +137,8 @@ const Profile = (props) => {
             </Col>
           </Row>
           {phoneNumber && (
-            <Row className="mt-4">
-              <Col>
+            <Row>
+              <Col xs={12} lg={6} className="mt-4">
                 <InputSelect
                   id="notPref"
                   label="Notification Preference"
@@ -151,16 +151,16 @@ const Profile = (props) => {
                   onChange={(e) => setNotificationType(e.target.value)}
                 />
               </Col>
-              <Col></Col>
+              <Col xs={12} lg={6} className="mt-4"></Col>
             </Row>
           )}
         </Card.Body>
       </Card>
       <Row className="mt-4">
-        <Col className="pl-4 mb-5 text-success">
+        <Col className="pl-4 mb-5 text-success" xs={12} lg={6}>
           {updated && <strong>Your profile has been updated.</strong>}
         </Col>
-        <Col className="text-right">
+        <Col className="text-right" xs={12} lg={6}>
           <span className="pr-2">
             <PasswordModal />
           </span>

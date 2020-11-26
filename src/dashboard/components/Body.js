@@ -132,7 +132,7 @@ const Body = ({
                     )}`}
                     to="/pings"
                   >
-                    &nbsp;
+                    <img src="/icons/ping.png" alt="pings" className="icon" />
                     <span className="hide-menu">Pings</span>
                   </Link>
                 </li>
@@ -163,7 +163,7 @@ const Body = ({
                       )}`}
                       to="/team"
                     >
-                      &nbsp;
+                      <img src="/icons/teams.png" alt="team" className="icon" />
                       <span className="hide-menu">Team</span>
                     </Link>
                   </li>
@@ -181,7 +181,11 @@ const Body = ({
                       )}`}
                       to="/schedule"
                     >
-                      &nbsp;
+                      <img
+                        src="/icons/schedule.png"
+                        alt="schedule"
+                        className="icon"
+                      />
                       <span className="hide-menu">Schedule</span>
                     </Link>
                   </li>
@@ -196,7 +200,11 @@ const Body = ({
                     )}`}
                     to="/profile"
                   >
-                    &nbsp;
+                    <img
+                      src="/icons/profile.png"
+                      alt="profile"
+                      className="icon"
+                    />
                     <span className="hide-menu">Profile</span>
                     {currentUser && currentUser.role.phone_number === null && (
                       <span
@@ -218,7 +226,11 @@ const Body = ({
                     )}`}
                     to="/auth/logout"
                   >
-                    &nbsp;
+                    <img
+                      src="/icons/logout.png"
+                      alt="logout"
+                      className="icon"
+                    />
                     <span className="hide-menu">Logout</span>
                   </Link>
                 </li>

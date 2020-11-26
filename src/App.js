@@ -1,7 +1,8 @@
 import React from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
-import "./styles/admin.css";
-import "./styles/custom.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./styles/oel.css";
+// import "./styles/custom.css";
 
 import Login from "./dashboard/pages/Login";
 import Logout from "./dashboard/pages/Logout";

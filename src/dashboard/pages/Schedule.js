@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Body from "../components/Body";
-import { Card, Row, Col, Badge } from "react-bootstrap";
+import { Card, Row, Col, Badge, Button } from "react-bootstrap";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import api from "../../utils/api";
 import FullCalendar from "@fullcalendar/react";
@@ -10,7 +10,9 @@ const Schedule = (props) => {
   const [loading, setLoading] = useState(true);
   const [users, setUsers] = useState([]);
   const [events, setEvents] = useState([]);
+  const [showSave, setShowSave] = useState(false);
   const [refresh, setRefresh] = useState(0);
+  const [onCallUser, setOnCallUser] = useState(null);
 
   const { currentUser } = props;
 
@@ -33,6 +35,8 @@ const Schedule = (props) => {
           ? -1
           : 0
       );
+
+      setOnCallUser(users[currentUser.role.org.week - 1]);
 
       setUsers(users);
       generateCalendarEvents(users);
@@ -115,16 +119,31 @@ const Schedule = (props) => {
     }
 
     setUsers(result);
-
-    updateOrder(removed, startIndex, endIndex);
+    setShowSave(true);
   };
 
-  const updateOrder = async (user, startIndex, endIndex) => {
-    await api("/api/org_user/reorder_user", "POST", {
-      start_index: startIndex,
-      end_index: endIndex,
-    });
-    setRefresh(refresh + 1);
+  const handleSaveSchedule = async () => {
+    const newOnCallUser = users[currentUser.role.org.week - 1];
+
+    let doUpdate = true;
+    if (newOnCallUser.id !== onCallUser.id) {
+      doUpdate = window.confirm(
+        `Your new schedule will result in having a different on-call user this week.\n\nPrevious User: ${onCallUser.first_name} ${onCallUser.last_name}\n\nNew User:  ${newOnCallUser.first_name} ${newOnCallUser.last_name}\n\nDo you wish to continue?`
+      );
+    }
+
+    if (doUpdate) {
+      for (let i = 0; i < users.length; i++) {
+        const usr = users[i];
+        await api("/api/org_user/update_user_order", "POST", {
+          user_id: usr.id,
+          new_index: usr.order,
+        });
+      }
+
+      setRefresh(refresh + 1);
+      setShowSave(false);
+    }
   };
 
   const onDragEnd = (result) => {
@@ -213,6 +232,20 @@ const Schedule = (props) => {
                   )}
                 </Droppable>
               </DragDropContext>
+              {showSave && (
+                <Row className="mt-3 mb-3">
+                  <Col>
+                    <Button
+                      type="custom"
+                      className="btn btn-block btn-primary"
+                      onClick={() => handleSaveSchedule()}
+                    >
+                      Save Schedule
+                    </Button>
+                  </Col>
+                </Row>
+              )}
+
               <Card.Subtitle className="mt-4">
                 This view displays your on-call schedule. You may drag and drop
                 your team members up and down to change the order of the

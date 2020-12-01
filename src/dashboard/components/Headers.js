@@ -111,11 +111,12 @@ const Headers = ({ pingId, headerType, setShowModal, showModal }) => {
                   setNewHeaderId(i);
                 }}
               >
-                <small className={`text-success`}>
-                  <span role="img" aria-label={`update`}>
-                    🍩
-                  </span>
-                </small>
+                <img
+                  src="/icons/update.png"
+                  alt="update"
+                  className="icon"
+                  style={{ height: "15px" }}
+                />
               </Button>
             </Col>
             <Col>

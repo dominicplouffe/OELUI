@@ -89,7 +89,7 @@ const Schedule = (props) => {
       });
       calDate = new Date(calDate.setDate(calDate.getDate() + 1));
 
-      if (calDate.getDay() === 0) {
+      if (calDate.getDay() === 1) {
         week++;
         if (week > users.length) {
           week = 1;

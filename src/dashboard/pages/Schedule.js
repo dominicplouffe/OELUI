@@ -126,10 +126,12 @@ const Schedule = (props) => {
     const newOnCallUser = users[currentUser.role.org.week - 1];
 
     let doUpdate = true;
+    let sendNotifications = false;
     if (newOnCallUser.id !== onCallUser.id) {
       doUpdate = window.confirm(
         `Your new schedule will result in having a different on-call user this week.\n\nPrevious User: ${onCallUser.first_name} ${onCallUser.last_name}\n\nNew User:  ${newOnCallUser.first_name} ${newOnCallUser.last_name}\n\nDo you wish to continue?`
       );
+      sendNotifications = true;
     }
 
     if (doUpdate) {
@@ -140,9 +142,15 @@ const Schedule = (props) => {
           new_index: usr.order,
         });
       }
-
       setRefresh(refresh + 1);
       setShowSave(false);
+
+      if (sendNotifications) {
+        await api("/api/org_user/send_notification_update", "POST", {
+          offcall_id: onCallUser.id,
+          oncall_id: newOnCallUser.id,
+        });
+      }
     }
   };
 

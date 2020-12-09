@@ -15,18 +15,33 @@ import DisableButton from "../components/Ping/DisableButton";
 import EnableButton from "../components/Ping/EnableButton";
 import DeleteButton from "../components/Ping/DeleteButton";
 
+const generatePongKey = () => {
+  let keyParts = [];
+
+  for (let i = 0; i < 4; i++) {
+    let part = "";
+    for (let j = 0; j < 6; j++) {
+      part = `${part}${Math.floor(Math.random() * 10)}`;
+    }
+    keyParts.push(part);
+  }
+
+  const key = keyParts.join("-");
+
+  return key;
+};
+
 const PongScreen = (props) => {
   const [loading, setLoading] = useState(true);
   const [saved, setSaved] = useState(false);
   const [exampleTab, setExampleTab] = useState("python");
-  const [showExamples, setShowExamples] = useState(false);
 
-  const [showBasic, setShowBasic] = useState(false);
   const [showCallbackBasic, setShowCallbackBasic] = useState(false);
 
   const [pongId, setPongId] = useState(null);
-  const [pongKey, setPongKey] = useState("");
+  const [pongKey, setPongKey] = useState();
   const [pongName, setPongName] = useState("");
+  const [docLink, setDocLink] = useState("");
   const [incidentInterval, setIncidentInterval] = useState("");
   const [incidentMethod, setIncidentMethod] = useState("");
   const [incidentEmail, setIncidentEmail] = useState("");
@@ -47,29 +62,25 @@ const PongScreen = (props) => {
       fetchPong(parseInt(id));
       setPongId(parseInt(id));
     } else {
+      setPongKey(generatePongKey());
       setLoading(false);
     }
     // eslint-disable-next-line
   }, [props.match.params]);
 
   const fetchPong = async (id) => {
-    const { data = null, error = null } = await api(`pingpong/${id}/`);
+    const { data = null, error = null } = await api(`pong/${id}/`);
 
     if (data) {
       setPongName(data.name);
-
-      setIncidentInterval(data.incident_interval || "");
-      setIncidentEmail(data.callback_email || "");
+      setDocLink(data.doc_link);
+      setIncidentMethod(data.notification_type);
       setIncidentEndpoint(data.callback_url || "");
       setIncidentEndpointUser(data.callback_userame || "");
       setIncidentEndpointPass(data.callback_password || "");
+      setIncidentInterval(data.incident_interval || "");
       setActive(data.active);
-
-      if (data.callback_email) {
-        setIncidentMethod("email");
-      } else {
-        setIncidentMethod(`callback`);
-      }
+      setPongKey(data.push_key);
     }
 
     if (error) {
@@ -81,12 +92,10 @@ const PongScreen = (props) => {
 
   const setValue = (method, value) => {
     if (method === setIncidentMethod) {
-      if (value === "email") {
+      if (value === "team") {
         setIncidentEndpoint(null);
         setIncidentEndpointPass("");
         setIncidentEndpointUser("");
-      } else {
-        setIncidentEmail(null);
       }
     }
     method(value);
@@ -95,32 +104,32 @@ const PongScreen = (props) => {
   const deletePong = () => {};
 
   const savePong = async (pingActive) => {
-    const errors = valdidateForm();
+    const errors = validateForm();
 
     if (pingActive === null) {
       pingActive = active;
     }
-
     if (errors.length === 0) {
       const payload = {
         name: pongName,
+        doc_link: docLink,
+        direction: "pull",
+        notification_type: incidentMethod,
         callback_url: incidentEndpoint,
         callback_userame: incidentEndpointUser,
         callback_password: incidentEndpointPass,
-        callback_email: incidentEmail,
         incident_interval: incidentInterval,
         active: pingActive,
-        pingpong_type: "pong",
-        pong_key: pongKey,
+        push_key: pongKey,
       };
 
       let data = null;
       if (pongId) {
         payload["id"] = pongId;
-        const res = await api(`pingpong/${pongId}/`, "PUT", payload);
+        const res = await api(`pong/${pongId}/`, "PUT", payload);
         data = res.data;
       } else {
-        const res = await api(`pingpong/`, "POST", payload);
+        const res = await api(`pong/`, "POST", payload);
         data = res.data;
       }
 
@@ -131,7 +140,7 @@ const PongScreen = (props) => {
     }
   };
 
-  const valdidateForm = () => {
+  const validateForm = () => {
     const errors = [];
 
     if (pongName.trim().length === 0) {
@@ -140,12 +149,9 @@ const PongScreen = (props) => {
     if (incidentInterval.toString().trim().length === 0) {
       errors.push("incidentinterval");
     }
+
     if (incidentMethod.trim().length === 0) {
       errors.push("incidentmethod");
-    } else if (incidentMethod === "email") {
-      if (incidentEmail.length === 0) {
-        errors.push("incidentemail");
-      }
     } else if (incidentMethod === "callback") {
       if (incidentEndpoint.trim().length === 0) {
         errors.push("incidentendpoint");
@@ -171,26 +177,6 @@ const PongScreen = (props) => {
     return errors;
   };
 
-  const generatePongKey = () => {
-    if (pongKey.length !== 0) {
-      return pongKey;
-    }
-    let keyParts = [];
-
-    for (let i = 0; i < 4; i++) {
-      let part = "";
-      for (let j = 0; j < 6; j++) {
-        part = `${part}${Math.floor(Math.random() * 10)}`;
-      }
-      keyParts.push(part);
-    }
-
-    const key = keyParts.join("-");
-    setPongKey(key);
-
-    return key;
-  };
-
   return (
     <Body
       title="Pong Management"
@@ -200,95 +186,41 @@ const PongScreen = (props) => {
     >
       <Card>
         <Card.Body>
-          <Card.Title>Pong Details</Card.Title>
-          <Card.Subtitle>
-            Below is the information that you'll need to send onErrorLog a pong
-          </Card.Subtitle>
-          <Row>
-            <Col xs={12} lg={6}>
-              <InputText
-                label={`Your Pong URL`}
-                value={`${API_URL}pongme`}
-                helperText={`Use this Pong URL to send data to onErrorLog`}
-                disabled={true}
-                copy={true}
-                id="api-url"
-              />
-            </Col>
-            <Col xs={12} lg={6}>
-              <InputText
-                label={`Your Pong Key`}
-                value={generatePongKey()}
-                helperText={`Use your Pong key in your HTTP Headers.  Header Name: X-Auth`}
-                disabled={true}
-                copy={true}
-                id="pong-key"
-              />
-            </Col>
-          </Row>
-          <Row className="mt-3">
-            <Col>
-              <Button
-                variant="link"
-                className="m-0 p-0"
-                onClick={() => setShowExamples(!showExamples)}
-              >
-                {!showExamples && (
-                  <div className="card-title h5">[+] Show Examples</div>
-                )}
-                {showExamples && (
-                  <div className="card-title h5">[-] Hide Examples</div>
-                )}
-              </Button>
-              {!showExamples && (
-                <div className="pl-1">
-                  <small>
-                    Show examples of how to use a Pong with your programming
-                    language.
-                  </small>
-                </div>
-              )}
-              {showExamples && (
-                <Tabs
-                  id="example-code-tabs"
-                  activeKey={exampleTab}
-                  onSelect={(k) => setExampleTab(k)}
-                  className="pl-3 pr-3"
-                >
-                  <Tab eventKey="python" title="Python">
-                    <Python />
-                  </Tab>
-                  <Tab eventKey="node" title="Node.js">
-                    <Node />
-                  </Tab>
-                  <Tab eventKey="java" title="Java">
-                    <Java />
-                  </Tab>
-                  <Tab eventKey="csharp" title="C#">
-                    <CSharp />
-                  </Tab>
-                </Tabs>
-              )}
-            </Col>
-          </Row>
-        </Card.Body>
-      </Card>
-
-      <Card>
-        <Card.Body>
           <Card.Title>Notification Settings</Card.Title>
           <Card.Subtitle>
             Tell us what to do when we get a request from your pong
           </Card.Subtitle>
           <Row className="mt-3">
             <Col>
-              <InputText
-                id="name"
-                label="Ping Name"
-                value={pongName}
-                isInvalid={formErrors.indexOf("name") > -1}
-                onChange={(e) => setValue(setPongName, e.target.value)}
-              />
+              <Row className="mt-3">
+                <Col xs={12} sm={12} lg={6}>
+                  <InputText
+                    id="name"
+                    label="Pong Name"
+                    value={pongName}
+                    isInvalid={formErrors.indexOf("name") > -1}
+                    onChange={(e) => setValue(setPongName, e.target.value)}
+                  />
+                </Col>
+                <Col xs={12} sm={12} lg={6}>
+                  <InputText
+                    id="doc_link"
+                    label="Documentation URL"
+                    value={docLink}
+                    onChange={(e) => setValue(setDocLink, e.target.value)}
+                    helperText={
+                      <>
+                        <span>
+                          If you want to send a URL to your on-call team with
+                          some documenation on the procedures to confirm and
+                          resolve a failure, you enter it here. The URL will be
+                          sent along with all failure notifications.
+                        </span>
+                      </>
+                    }
+                  />
+                </Col>
+              </Row>
             </Col>
           </Row>
           <Row className="pt-3">
@@ -301,7 +233,10 @@ const PongScreen = (props) => {
                 helperText="The method that onErrorLog will contact you if we get a request from your pong"
                 showDefault={true}
                 values={[
-                  { value: "email", text: "Email" },
+                  {
+                    value: "team",
+                    text: "Notify your team (email or text message)",
+                  },
                   { value: "callback", text: "HTTP Callback" },
                 ]}
                 onChange={(e) => setValue(setIncidentMethod, e.target.value)}
@@ -369,7 +304,7 @@ const PongScreen = (props) => {
                             }
                           >
                             <small>
-                              {showBasic
+                              {showCallbackBasic
                                 ? ` [-] basic authentication`
                                 : ` [+] show basic authentication`}
                             </small>
@@ -455,6 +390,59 @@ const PongScreen = (props) => {
               </Col>
             </Row>
           )}
+        </Card.Body>
+      </Card>
+
+      <Card>
+        <Card.Body>
+          <Card.Title>How To Send a Pong</Card.Title>
+          <Card.Subtitle>
+            Below is the information that you'll need to send onErrorLog a pong
+          </Card.Subtitle>
+          <Row className="mt-3">
+            <Col xs={12} lg={6}>
+              <InputText
+                label={`Your Pong URL`}
+                value={`${API_URL}pongme/${pongKey}`}
+                helperText={`Use this Pong URL to send data to onErrorLog`}
+                disabled={true}
+                copy={true}
+                id="api-url"
+              />
+            </Col>
+            <Col xs={12} lg={6}></Col>
+          </Row>
+          <Row className="mt-3">
+            <Col>
+              <div className="card-title h5 pb-0 mb-0">Examples</div>
+              <div className="pl-1 pb-3">
+                <small>
+                  Show examples of how to use a Pong with your programming
+                  language.
+                </small>
+              </div>
+
+              <Tabs
+                id="example-code-tabs"
+                activeKey={exampleTab}
+                onSelect={(k) => setExampleTab(k)}
+                className="pl-3 pr-3"
+              >
+                <Tab eventKey="python" title="Python">
+                  <Python pongKey={pongKey} />
+                </Tab>
+                <Tab eventKey="node" title="Node.js">
+                  <Node pongKey={pongKey} />
+                </Tab>
+                <Tab eventKey="java" title="Java">
+                  <Java pongKey={pongKey} />
+                </Tab>
+                <Tab eventKey="csharp" title="C#">
+                  <CSharp pongKey={pongKey} />
+                </Tab>
+              </Tabs>
+            </Col>
+          </Row>
         </Card.Body>
       </Card>
 

@@ -10,6 +10,7 @@
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
     "bootstrap": "^4.5.3",
+    "eslint": "^6.6.0",
     "moment": "^2.29.1",
     "react": "^16.14.0",
     "react-beautiful-dnd": "^13.0.0",
@@ -24,10 +25,21 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "eslint --ext js src --max-warnings=0"
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": "react-app",
+    "parser": "babel-eslint",
+    "rules": {
+      "semi": "error",
+      "no-console": "warn",
+      "no-debugger": "warn"
+    },
+    "env": {
+      "jest": true,
+      "browser": true
+    }
   },
   "browserslist": {
     "production": [

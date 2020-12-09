@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Row, Col, Button, Form, Alert } from "react-bootstrap";
+import { Row, Col, Form } from "react-bootstrap";
 import Exact from "./Conditions/Exact";
 import Group from "./Conditions/Group";
 

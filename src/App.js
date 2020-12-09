@@ -13,12 +13,13 @@ import { DashboardRoute } from "./auth/AuthRoute";
 import Ping from "./dashboard/pages/Pings";
 import PingScreen from "./dashboard/pages/PingScreen";
 import PingSummary from "./dashboard/pages/PingSummary";
+import PongScreen from "./dashboard/pages/PongScreen";
 import Team from "./dashboard/pages/Team";
 import Schedule from "./dashboard/pages/Schedule";
 
 import NewPing from "./dashboard/pages/NewPing";
 import Profile from "./dashboard/pages/Profile";
-import Preferences from "./dashboard/pages/Preferences";
+// import Preferences from "./dashboard/pages/Preferences";
 
 function App() {
   return (
@@ -35,11 +36,11 @@ const AppRoutes = () => {
         <AuthRoutes />
       </Route>
       <DashboardRoute path="/profile" component={Profile} exact={true} />
-      <DashboardRoute
+      {/* <DashboardRoute
         path="/preferences"
         component={Preferences}
         exact={true}
-      />
+      /> */}
       <DashboardRoute path="/pings" component={Ping} />
 
       <DashboardRoute path="/team" component={Team} exact={true} admin />
@@ -62,8 +63,13 @@ const AppRoutes = () => {
         component={PingSummary}
         exact={true}
       />
-      {/* <DashboardRoute path="/pong" component={PongScreen} exact={true} />
-      <DashboardRoute path="/pong/:id" component={PongScreen} exact={true} /> */}
+      <DashboardRoute path="/pong" component={PongScreen} exact={true} admin />
+      <DashboardRoute
+        path="/pong/:id"
+        component={PongScreen}
+        exact={true}
+        admin
+      />
       <DashboardRoute exact path="/">
         <Redirect to="/pings" />
       </DashboardRoute>

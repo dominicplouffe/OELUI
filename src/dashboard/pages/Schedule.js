@@ -59,7 +59,6 @@ const Schedule = (props) => {
       if (start.getDay() === 1) {
         week = week - 1;
         if (week === 0) {
-          console.log(users);
           week = users.length;
         }
       }

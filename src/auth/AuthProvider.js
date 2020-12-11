@@ -6,6 +6,7 @@ import AuthContext from "./AuthContext";
 
 const AuthProvider = ({ children, ...props }) => {
   const isCancelled = useRef(false);
+  const [refresh, setRefresh] = React.useState(0);
   const [loading, setLoading] = useState(true);
 
   const [user, setUser] = useState(null);
@@ -45,6 +46,10 @@ const AuthProvider = ({ children, ...props }) => {
     logout();
   };
 
+  const forceRefresh = () => {
+    setRefresh(refresh + 1);
+  };
+
   useEffect(() => {
     loginUser();
 
@@ -65,6 +70,8 @@ const AuthProvider = ({ children, ...props }) => {
         api,
         loginUser,
         logoutUser,
+        forceRefresh,
+        refresh,
       }}
     >
       {children}

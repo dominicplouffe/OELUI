@@ -13,7 +13,10 @@ import { DashboardRoute } from "./auth/AuthRoute";
 import Ping from "./dashboard/pages/Pings";
 import PingScreen from "./dashboard/pages/PingScreen";
 import PingSummary from "./dashboard/pages/PingSummary";
+
+import Pong from "./dashboard/pages/Pongs";
 import PongScreen from "./dashboard/pages/PongScreen";
+
 import Team from "./dashboard/pages/Team";
 import Schedule from "./dashboard/pages/Schedule";
 
@@ -42,6 +45,7 @@ const AppRoutes = () => {
         exact={true}
       /> */}
       <DashboardRoute path="/pings" component={Ping} />
+      <DashboardRoute path="/pongs" component={Pong} />
 
       <DashboardRoute path="/team" component={Team} exact={true} admin />
       <DashboardRoute

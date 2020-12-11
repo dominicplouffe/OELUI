@@ -136,21 +136,17 @@ const Body = ({
                     <span className="hide-menu">Pings</span>
                   </Link>
                 </li>
-                {/* <li className={`sidebar-item ${getSelectedMenuClass("pong")}`}>
+                <li className={`sidebar-item ${getSelectedMenuClass("pong")}`}>
                   <Link
                     className={`sidebar-link sidebar-link ${getActiveMenuClass(
                       "pong"
                     )}`}
                     to="/pongs"
                   >
-                    <FontAwesomeIcon
-                      icon="user-edit"
-                      className="mb-1"
-                    ></FontAwesomeIcon>
-                    &nbsp;
+                    <img src="/icons/pong.png" alt="pings" className="icon" />
                     <span className="hide-menu">Pongs</span>
                   </Link>
-                </li> */}
+                </li>
 
                 <li className="list-divider"></li>
                 {currentUser.role.role === "admin" && (

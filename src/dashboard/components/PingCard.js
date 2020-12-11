@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Card, Row, Col } from "react-bootstrap";
+import Actions from "../components/Actions";
 import { Link } from "react-router-dom";
 import useAuth from "../../auth/useAuth";
 
@@ -91,17 +92,25 @@ const PingCard = ({ m, showSummary, showEdit }) => {
               <small>Availability</small>
               <h1>{m.availability.toFixed(2)}%</h1>
             </Col>
-            <Col className="text-center" xs={12} sm={12} xl={3}>
-              <small>Downtime</small>
-              <h1>{m.downtime_s}</h1>
-            </Col>
-            <Col className="text-center" xs={12} sm={12} xl={3}>
-              <small>Avg. Response Time</small>
-              <h1>
-                {(m.avg_resp * 1000).toFixed(2)}
-                <small>ms</small>
-              </h1>
-            </Col>
+            {m.ping.failure_count === 0 ? (
+              <>
+                <Col className="text-center" xs={12} sm={12} xl={3}>
+                  <small>Downtime</small>
+                  <h1>{m.downtime_s}</h1>
+                </Col>
+                <Col className="text-center" xs={12} sm={12} xl={3}>
+                  <small>Avg. Response Time</small>
+                  <h1>
+                    {(m.avg_resp * 1000).toFixed(2)}
+                    <small>ms</small>
+                  </h1>
+                </Col>
+              </>
+            ) : (
+              <Col className="text-center pt-4" xs={12} sm={12} xl={6}>
+                <Actions fail={m.fail} />
+              </Col>
+            )}
             <Col xs={12} sm={12} xl={12}>
               <Row>
                 <Col>

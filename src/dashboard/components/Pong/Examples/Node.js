@@ -7,7 +7,7 @@ const Node = ({ pongKey }) => {
       <Col xs={12}>
         <pre className="code p-4" style={{ lineHeight: "25px" }}>
           <span className="text-success">
-            {"// "}Example to post a Pong to onErrorLog
+            {"// "}Example to send a Pong incident to onErrorLog
           </span>
           <br />
           <span className="text-danger">const</span> request ={" "}

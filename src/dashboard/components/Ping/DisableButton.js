@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 
-const DisableButton = ({ pingId, active, disableAction }) => {
+const DisableButton = ({ pingId, active, disableAction, isPong }) => {
   const [showModal, setShowModal] = useState(false);
 
   if (pingId === null) {
@@ -18,18 +18,22 @@ const DisableButton = ({ pingId, active, disableAction }) => {
         onClick={() => setShowModal(true)}
         className="btn-rounded"
       >
-        Pause Ping
+        Pause {isPong ? `Pong` : `Ping`}
       </Button>
       <Modal show={showModal} onHide={setShowModal}>
         <Modal.Header closeButton>
-          <Modal.Title>Disable Ping</Modal.Title>
+          <Modal.Title>Disable {isPong ? `Pong` : `Ping`}</Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
-          <p>
-            If you disable a Ping, the associated URL will no longer be
-            monitored.
-          </p>
+          {isPong ? (
+            <p>If you disable your Pong, all requests to it will be disabled</p>
+          ) : (
+            <p>
+              If you disable a Ping, the associated URL will no longer be
+              monitored.
+            </p>
+          )}
           <p>Are you certain you want to continue?</p>
         </Modal.Body>
 

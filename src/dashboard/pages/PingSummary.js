@@ -6,6 +6,7 @@ import api from "../../utils/api";
 import PingCard from "../components/PingCard";
 import { ResponsiveLine } from "@nivo/line";
 import ResultModal from "../components/ResultModal";
+import useAuth from "../../auth/useAuth";
 
 const PingSummary = (props) => {
   const [calendarData, setCalendarData] = useState([]);
@@ -23,6 +24,8 @@ const PingSummary = (props) => {
 
   const [loading, setLoading] = useState(true);
 
+  const { refresh } = useAuth();
+
   const REASONS = {
     invalid_value: "Invalid Value",
     key_error: "Key Error",
@@ -34,77 +37,69 @@ const PingSummary = (props) => {
   };
 
   const fetchSummary = async (id) => {
-    if (loading) {
-      const { data = null, error = null } = await api(`ping/summary/${id}/`);
+    const { data = null, error = null } = await api(`ping/summary/${id}/`);
 
-      if (data) {
-        setSummary(data.pings[0]);
+    if (data) {
+      setSummary(data.pings[0]);
 
-        const resData = [
-          {
-            id: "Response (ms)",
-            data: [],
-          },
-        ];
-        for (let i = 0; i < data.pings[0].snapshot.length; i++) {
-          const ss = data.pings[0].snapshot[i];
-          const row = {
-            x: moment(ss.date).format("H"),
-            y: null,
-          };
-          if (ss.status) {
-            row.y = parseInt(ss.avg_res * 1000);
-          }
-
-          resData[0].data.push(row);
+      const resData = [
+        {
+          id: "Response (ms)",
+          data: [],
+        },
+      ];
+      for (let i = 0; i < data.pings[0].snapshot.length; i++) {
+        const ss = data.pings[0].snapshot[i];
+        const row = {
+          x: moment(ss.date).format("H"),
+          y: null,
+        };
+        if (ss.status) {
+          row.y = parseInt(ss.avg_res * 1000);
         }
 
-        setResponseTimeData(resData);
+        resData[0].data.push(row);
       }
-      if (error) {
-        alert("Something went wrong, we cannot find your ping");
-      }
+
+      setResponseTimeData(resData);
+    }
+    if (error) {
+      alert("Something went wrong, we cannot find your ping");
     }
   };
 
   const fetchDetails = async (id) => {
-    if (loading) {
-      const { data = null, error = null } = await api(`ping/details/${id}/`);
+    const { data = null, error = null } = await api(`ping/details/${id}/`);
 
-      if (data) {
-        setCalendarData(data.calendar.data);
-        setCalendarStart(data.calendar.start);
-        setCalendarEnd(data.calendar.end);
-      }
-      if (error) {
-        alert("Something went wrong, we cannot find your ping");
-      }
+    if (data) {
+      setCalendarData(data.calendar.data);
+      setCalendarStart(data.calendar.start);
+      setCalendarEnd(data.calendar.end);
+    }
+    if (error) {
+      alert("Something went wrong, we cannot find your ping");
     }
   };
 
   const fetchFailreCounts = async (id) => {
-    if (loading) {
-      const { data = null, error = null } = await api(`failure/counts/${id}/`);
+    const { data = null, error = null } = await api(`failure/counts/${id}/`);
 
-      setFailureCounts(data);
+    setFailureCounts(data);
 
-      if (error) {
-        alert("Something went wrong, we cannot find your ping");
-      }
+    if (error) {
+      alert("Something went wrong, we cannot find your ping");
     }
   };
 
   const fetchFailures = async (id) => {
-    if (loading) {
-      const { data = null, error = null } = await api(
-        `failure/?ping=${id}&ordering=-created_on&offset=0&limit=20`
-      );
+    const { data = null, error = null } = await api(
+      `failure/?ping=${id}&ordering=-created_on&offset=0&limit=20`
+    );
 
-      setFailures(data.results);
+    setFailures(data.results);
 
-      if (error) {
-        alert("Something went wrong, we cannot find your ping");
-      }
+    if (error) {
+      alert("Something went wrong, we cannot find your ping");
     }
   };
 
@@ -118,7 +113,7 @@ const PingSummary = (props) => {
 
     setLoading(false);
     // eslint-disable-next-line
-  }, [setLoading, props]);
+  }, [refresh]);
 
   const getCalendarCellColor = (c) => {
     if (c.status === "warning") {

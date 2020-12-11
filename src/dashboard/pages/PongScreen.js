@@ -14,6 +14,8 @@ import Headers from "../components/Headers";
 import DisableButton from "../components/Ping/DisableButton";
 import EnableButton from "../components/Ping/EnableButton";
 import DeleteButton from "../components/Ping/DeleteButton";
+import PongCard from "../components/PongCard";
+import useAuth from "../../auth/useAuth";
 
 const generatePongKey = () => {
   let keyParts = [];
@@ -54,6 +56,10 @@ const PongScreen = (props) => {
 
   const [formErrors, setFormErrors] = useState([""]);
 
+  const [summary, setSummary] = useState(null);
+
+  const { refresh } = useAuth();
+
   let history = useHistory();
   useEffect(() => {
     const id = props.match.params.id;
@@ -66,7 +72,7 @@ const PongScreen = (props) => {
       setLoading(false);
     }
     // eslint-disable-next-line
-  }, [props.match.params]);
+  }, [props.match.params, refresh]);
 
   const fetchPong = async (id) => {
     const { data = null, error = null } = await api(`pong/${id}/`);
@@ -81,6 +87,8 @@ const PongScreen = (props) => {
       setIncidentInterval(data.incident_interval || "");
       setActive(data.active);
       setPongKey(data.push_key);
+
+      fetchSummary(id);
     }
 
     if (error) {
@@ -177,6 +185,19 @@ const PongScreen = (props) => {
     return errors;
   };
 
+  const fetchSummary = async (id) => {
+    const { data = null, error = null } = await api(
+      `ping/summary/${id}/?direction=push`
+    );
+
+    if (data) {
+      setSummary(data.pings[0]);
+    }
+    if (error) {
+      alert("Something went wrong, we cannot find your ping");
+    }
+  };
+
   return (
     <Body
       title="Pong Management"
@@ -184,6 +205,7 @@ const PongScreen = (props) => {
       {...props}
       loading={loading}
     >
+      {summary && <PongCard m={summary} showSummary={false} showEdit={false} />}
       <Card>
         <Card.Body>
           <Card.Title>Notification Settings</Card.Title>
@@ -461,6 +483,7 @@ const PongScreen = (props) => {
           <EnableButton
             pingId={pongId}
             active={active}
+            isPong={true}
             enableAction={() => {
               setActive(true);
               savePong(true);
@@ -469,6 +492,7 @@ const PongScreen = (props) => {
           <DisableButton
             pingId={pongId}
             active={active}
+            isPong={true}
             disableAction={() => {
               setActive(false);
               savePong(false);

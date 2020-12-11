@@ -2,17 +2,18 @@ import React, { useState, useEffect } from "react";
 import Body from "../components/Body";
 import { Card, Row, Col } from "react-bootstrap";
 import api from "../../utils/api";
-import PingCard from "../components/PingCard";
+import PongCard from "../components/PongCard";
 import moment from "moment";
 import { Link } from "react-router-dom";
 import useAuth from "../../auth/useAuth";
 
-const Ping = (props) => {
+const Pong = (props) => {
   const [loading, setLoading] = useState(true);
   const [totals, setTotals] = useState({});
   const [pings, setPings] = useState([]);
   const [fetchDate, setFetchDate] = useState(null);
-  const direction = "pull";
+  const direction = "push";
+
   const { refresh } = useAuth();
 
   const useFetchInterval = (delay) => {
@@ -44,13 +45,12 @@ const Ping = (props) => {
       }
 
       if (error) {
-        alert("Something went wrong, we cannot find your ping");
+        alert("Something went wrong, we cannot find your pong");
       }
     }
   };
   useEffect(() => {
     fetchSummary();
-
     // eslint-disable-next-line
   }, [refresh]);
 
@@ -58,7 +58,7 @@ const Ping = (props) => {
   useFetchInterval(1000 * 60 * 5);
 
   return (
-    <Body title="Pings" selectedMenu="ping" {...props} loading={loading}>
+    <Body title="Pongs" selectedMenu="pong" {...props} loading={loading}>
       <Row>
         <Col className="text-right">
           <small>
@@ -71,7 +71,7 @@ const Ping = (props) => {
           <Card.Title>
             <Row>
               <Col xs={12} lg={3} className="text-center">
-                <h3>Ping Summary</h3>
+                <h3>Pong Summary</h3>
               </Col>
               <Col>&nbsp;</Col>
             </Row>
@@ -108,10 +108,10 @@ const Ping = (props) => {
           </Row>
         </Card.Body>
       </Card>
-      {pings.map((m, i) => (
-        <PingCard m={m} key={i} showSummary={true} showEdit={true} />
-      ))}
 
+      {pings.map((m, i) => (
+        <PongCard m={m} key={i} showSummary={true} showEdit={true} />
+      ))}
       {pings.length === 0 && !loading && (
         <Card>
           <Card.Body className="p-5">
@@ -124,15 +124,15 @@ const Ping = (props) => {
                   style={{ maxWidth: "300px" }}
                 />
                 <h2 className="pt-3">
-                  You have not added any Pings to your account yet.
+                  You have not added any Pongs to your account yet.
                 </h2>
                 <div className="pt-5">
                   <Link
-                    to="/ping/0"
+                    to="/pong/0"
                     className="btn btn-warning btn-rounded mb-2 mr-2"
                     style={{ fontSize: "20px" }}
                   >
-                    Add Your First Ping
+                    Add Your First Pong
                   </Link>
                 </div>
               </Col>
@@ -144,4 +144,4 @@ const Ping = (props) => {
   );
 };
 
-export default Ping;
+export default Pong;

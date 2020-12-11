@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 
-const EnableButton = ({ pingId, active, enableAction }) => {
+const EnableButton = ({ pingId, active, enableAction, isPong }) => {
   const [showModal, setShowModal] = useState(false);
 
   if (pingId === null) {
@@ -18,18 +18,25 @@ const EnableButton = ({ pingId, active, enableAction }) => {
         onClick={() => setShowModal(true)}
         className="btn-rounded"
       >
-        Enable Ping
+        Enable {isPong ? `Pong` : `Ping`}
       </Button>
       <Modal show={showModal} onHide={setShowModal}>
         <Modal.Header closeButton>
-          <Modal.Title>Disable Ping</Modal.Title>
+          <Modal.Title>Disable {isPong ? `Pong` : `Ping`}</Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
-          <p>
-            If you enabled a Ping, onErrorLog will restart monitoring the URL
-            you provided.
-          </p>
+          {isPong ? (
+            <p>
+              By enabling your Pong, you will be able to start sending requests
+              again
+            </p>
+          ) : (
+            <p>
+              If you enabled a {isPong ? `Pong` : `Ping`}, onErrorLog will
+              restart monitoring the URL you provided.
+            </p>
+          )}
           <p>Are you certain you want to continue?</p>
         </Modal.Body>
 

@@ -11,6 +11,7 @@ import Headers from "../components/Headers";
 import DisableButton from "../components/Ping/DisableButton";
 import EnableButton from "../components/Ping/EnableButton";
 import DeleteButton from "../components/Ping/DeleteButton";
+import useAuth from "../../auth/useAuth";
 
 const PingScreen = (props) => {
   const [loading, setLoading] = useState(true);
@@ -50,6 +51,7 @@ const PingScreen = (props) => {
   const [testResults, setTestResults] = useState(null);
   const [formErrors, setFormErrors] = useState([""]);
   const [summary, setSummary] = useState(null);
+  const { refresh } = useAuth();
 
   let history = useHistory();
 
@@ -268,7 +270,7 @@ const PingScreen = (props) => {
       setLoading(false);
     }
     // eslint-disable-next-line
-  }, [props.match.params]);
+  }, [props.match.params, refresh]);
 
   const renderTestingLabel = () => {
     if (isTesting) {

@@ -8,7 +8,7 @@ const Python = ({ pongKey }) => {
         <Col xs={12}>
           <pre className="code p-4" style={{ lineHeight: "20px" }}>
             <span className="text-success">
-              # Example to post a Pong to onErrorLog
+              # Example to send a Pong incident to onErrorLog
             </span>
             <br />
             <span className="text-danger">import</span> requests

@@ -53,32 +53,40 @@ const PongCard = ({ m, showSummary, showEdit }) => {
               <>
                 <Col className="text-center" xs={12} sm={12} xl={3}>
                   <small>Downtime</small>
-                  <h1>{m.stats.total_time_s}</h1>
+                  <h1>{m.stats ? m.stats.total_time_s : `0h 0m`}</h1>
                 </Col>
                 <Col className="text-center" xs={12} sm={12} xl={3}>
                   <Row>
                     <Col>
                       <small>Acknowledged</small>
                       <h2>
-                        <Badge variant="success">{m.stats.acknowledged}</Badge>
+                        <Badge variant="success">
+                          {m.stats ? m.stats.acknowledged : `0`}
+                        </Badge>
                       </h2>
                     </Col>
                     <Col>
                       <small>Fixed</small>
                       <h2>
-                        <Badge variant="primary">{m.stats.fixed}</Badge>
+                        <Badge variant="primary">
+                          {m.stats ? m.stats.fixed : `0`}
+                        </Badge>
                       </h2>
                     </Col>
                     <Col>
                       <small>Auto-Resolved</small>
                       <h2>
-                        <Badge variant="warning">{m.stats.resolved}</Badge>
+                        <Badge variant="warning">
+                          {m.stats ? m.stats.resolved : `0`}
+                        </Badge>
                       </h2>
                     </Col>
                     <Col>
                       <small>Ignored</small>
                       <h2>
-                        <Badge variant="danger">{m.stats.ignored}</Badge>
+                        <Badge variant="danger">
+                          {m.stats ? m.stats.ignored : `0`}
+                        </Badge>
                       </h2>
                     </Col>
                   </Row>

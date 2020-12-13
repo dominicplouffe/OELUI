@@ -89,7 +89,7 @@ const Pong = (props) => {
             <Col xs={12} lg={9}>
               <Row>
                 <Col className="text-center">
-                  <small>Total Checks</small>
+                  <small>Total</small>
                   <h1>{totals.total}</h1>
                 </Col>
                 <Col className="text-center">

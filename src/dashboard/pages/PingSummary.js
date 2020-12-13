@@ -201,38 +201,42 @@ const PingSummary = (props) => {
               </small>
             </Col>
           </Row>
-          {calendarData.map((c, i) => (
-            <div
-              key={i}
-              className={`calender-cell`}
-              style={{ backgroundColor: getCalendarCellColor(c) }}
-              onMouseOver={() => {
-                if (c.text) {
-                  setCalendarHelp(
-                    <div className="mt-2">
-                      <strong>{moment(c.date).format("LL")}</strong> -
-                      <em>
-                        {c.text} (success: {c.success} - failure: {c.failure} -{" "}
-                        {(c.success_rate * 100).toFixed(0)}%)
-                      </em>
-                    </div>
-                  );
-                } else {
-                  setCalendarHelp(
-                    <div className="mt-2">
-                      <strong>{moment(c.date).format("LL")}</strong> -
-                      <em>No pings tracked on this day</em>
-                    </div>
-                  );
-                }
-              }}
-              onMouseOut={() =>
-                setCalendarHelp(<div className="mt-2">&nbsp;</div>)
-              }
-            >
-              &nbsp;
-            </div>
-          ))}
+          <Row>
+            <Col>
+              {calendarData.map((c, i) => (
+                <div
+                  key={i}
+                  className={`calender-cell`}
+                  style={{ backgroundColor: getCalendarCellColor(c) }}
+                  onMouseOver={() => {
+                    if (c.text) {
+                      setCalendarHelp(
+                        <div className="mt-2">
+                          <strong>{moment(c.date).format("LL")}</strong> -
+                          <em>
+                            {c.text} (success: {c.success} - failure:{" "}
+                            {c.failure} - {(c.success_rate * 100).toFixed(0)}%)
+                          </em>
+                        </div>
+                      );
+                    } else {
+                      setCalendarHelp(
+                        <div className="mt-2">
+                          <strong>{moment(c.date).format("LL")}</strong> -
+                          <em>No pings tracked on this day</em>
+                        </div>
+                      );
+                    }
+                  }}
+                  onMouseOut={() =>
+                    setCalendarHelp(<div className="mt-2">&nbsp;</div>)
+                  }
+                >
+                  &nbsp;
+                </div>
+              ))}
+            </Col>
+          </Row>
           <Row>
             <Col className="text-center">
               <small>{calendarHelp}</small>

@@ -70,6 +70,15 @@ a, a:hover {
 .text-primary {
     color: #184b99!important;
 }
+
+.text-warning {
+    color: #ef8e45!important;
+}
+
+.text-success {
+    color: #47aa1b!important;
+}
+
 a {
     color: #184b99;
     background-color: transparent;
@@ -200,7 +209,6 @@ a.text-primary:focus, a.text-primary:hover {
     background-color: #47aa1b;
     color: #fff;
 }
-
 .btn-danger {
     background-color: #991840;
     border: 1px solid #bb1d4e;
@@ -215,6 +223,26 @@ a.text-primary:focus, a.text-primary:hover {
 
 .btn-rounded {
     border-radius: 2em;
+}
+
+.badge-success {
+    color: #fff;
+    background-color: #47aa1b;
+}
+
+.badge-danger {
+    color: #fff;
+    background-color: #bb1d4e;
+}
+
+.badge-primary {
+    color: #fff;
+    background-color: #184b99;
+}
+
+.badge-warning {
+    color: #fff;
+    background-color: #ef8e45;
 }
 
 .form-label {

@@ -13,6 +13,7 @@ const Pong = (props) => {
   const [pings, setPings] = useState([]);
   const [fetchDate, setFetchDate] = useState(null);
   const direction = "push";
+  const hours = 168;
 
   const { refresh } = useAuth();
 
@@ -35,7 +36,7 @@ const Pong = (props) => {
     setLoading(false);
     if (!skip) {
       const { data = null, error = null } = await api(
-        `ping/summary/?direction=${direction}`
+        `ping/summary/?direction=${direction}&hours=${hours}`
       );
 
       if (data) {

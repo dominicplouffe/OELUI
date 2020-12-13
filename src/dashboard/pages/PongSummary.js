@@ -3,12 +3,11 @@ import Body from "../components/Body";
 import { Card, Row, Col, ProgressBar, Table, Button } from "react-bootstrap";
 import moment from "moment";
 import api from "../../utils/api";
-import PingCard from "../components/PingCard";
-import { ResponsiveLine } from "@nivo/line";
+import PongCard from "../components/PongCard";
 import ResultModal from "../components/ResultModal";
 import useAuth from "../../auth/useAuth";
 
-const PingSummary = (props) => {
+const PongSummary = (props) => {
   const [calendarData, setCalendarData] = useState([]);
   const [calendarStart, setCalendarStart] = useState("2019-06-02");
   const [calendarEnd, setCalendarEnd] = useState("2020-06-02");
@@ -16,7 +15,6 @@ const PingSummary = (props) => {
   const [calendarHelp, setCalendarHelp] = useState(
     <div className="mt-2">&nbsp;</div>
   );
-  const [responseTimeData, setResponseTimeData] = useState(null);
   const [failureCounts, setFailureCounts] = useState([]);
   const [failures, setFailures] = useState([]);
   const [showFailureModal, setShowFailureModal] = useState(false);
@@ -37,31 +35,12 @@ const PingSummary = (props) => {
   };
 
   const fetchSummary = async (id) => {
-    const { data = null, error = null } = await api(`ping/summary/${id}/`);
+    const { data = null, error = null } = await api(
+      `ping/summary/${id}/?direction=push&hours=168`
+    );
 
     if (data) {
       setSummary(data.pings[0]);
-
-      const resData = [
-        {
-          id: "Response (ms)",
-          data: [],
-        },
-      ];
-      for (let i = 0; i < data.pings[0].snapshot.length; i++) {
-        const ss = data.pings[0].snapshot[i];
-        const row = {
-          x: moment(ss.date).format("H"),
-          y: null,
-        };
-        if (ss.status) {
-          row.y = parseInt(ss.avg_res * 1000);
-        }
-
-        resData[0].data.push(row);
-      }
-
-      setResponseTimeData(resData);
     }
     if (error) {
       alert("Something went wrong, we cannot find your ping");
@@ -118,11 +97,20 @@ const PingSummary = (props) => {
   const getCalendarCellColor = (c) => {
     if (c.status === "warning") {
       return "#dba222";
-    } else if (c.status === "success") {
-      return "#409918";
     } else if (c.status === "danger") {
       return "#991840";
     }
+    if (!summary || !c) {
+      return "#efefef";
+    }
+
+    const thisDate = moment(c.date);
+    const createdOn = moment(summary.ping.created_on);
+
+    if (thisDate >= createdOn) {
+      return "#409918";
+    }
+
     return "#efefef";
   };
 
@@ -132,9 +120,9 @@ const PingSummary = (props) => {
   };
 
   return (
-    <Body title="Ping Summary" selectedMenu="ping" {...props} loading={loading}>
-      {summary && <PingCard m={summary} showEdit={true} showSummary={false} />}
-      <Card>
+    <Body title="Pong Summary" selectedMenu="pong" {...props} loading={loading}>
+      {summary && <PongCard m={summary} showEdit={true} showSummary={false} />}
+      {/* <Card>
         <Card.Body>
           <Card.Title>
             <Row>
@@ -182,7 +170,7 @@ const PingSummary = (props) => {
             </Col>
           </Row>
         </Card.Body>
-      </Card>
+      </Card> */}
       <Card>
         <Card.Body>
           <Card.Title>
@@ -209,8 +197,7 @@ const PingSummary = (props) => {
                         <div className="mt-2">
                           <strong>{moment(c.date).format("LL")}</strong> -
                           <em>
-                            {c.text} (success: {c.success} - failure:{" "}
-                            {c.failure} - {(c.success_rate * 100).toFixed(0)}%)
+                            {c.text} (failures: {c.failure})
                           </em>
                         </div>
                       );
@@ -218,7 +205,7 @@ const PingSummary = (props) => {
                       setCalendarHelp(
                         <div className="mt-2">
                           <strong>{moment(c.date).format("LL")}</strong> -
-                          <em>No pings tracked on this day</em>
+                          <em>No pongs were triggered on this day</em>
                         </div>
                       );
                     }
@@ -267,19 +254,13 @@ const PingSummary = (props) => {
                 <Table striped borderless hover>
                   <thead>
                     <tr>
-                      <th>Reason</th>
-                      <th className="text-center hide-small">Status Code</th>
-                      <th>When</th>
+                      <th>Received On</th>
                       <th className="hide-small">Who</th>
                     </tr>
                   </thead>
                   <tbody>
                     {failures.map((f, i) => (
                       <tr key={i}>
-                        <td>{REASONS[f.reason]}</td>
-                        <td className="text-center hide-small">
-                          {f.status_code}
-                        </td>
                         <td className="hide-small">
                           {moment(f.created_on).format("LLLL")}
                         </td>
@@ -334,4 +315,4 @@ const PingSummary = (props) => {
   );
 };
 
-export default PingSummary;
+export default PongSummary;

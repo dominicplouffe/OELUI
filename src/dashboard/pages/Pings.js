@@ -88,7 +88,7 @@ const Ping = (props) => {
             <Col xs={12} lg={9}>
               <Row>
                 <Col className="text-center">
-                  <small>Total Checks</small>
+                  <small>Total</small>
                   <h1>{totals.total}</h1>
                 </Col>
                 <Col className="text-center">
@@ -120,8 +120,7 @@ const Ping = (props) => {
                 <img
                   src="https://dplouffe.ca/static/img/domlogo.png"
                   alt="Oops"
-                  className="mb-3"
-                  style={{ maxWidth: "300px" }}
+                  className="mb-3 list-logo"
                 />
                 <h2 className="pt-3">
                   You have not added any Pings to your account yet.

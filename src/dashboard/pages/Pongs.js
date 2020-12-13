@@ -122,7 +122,7 @@ const Pong = (props) => {
                   src="https://dplouffe.ca/static/img/domlogo.png"
                   alt="Oops"
                   className="mb-3"
-                  style={{ maxWidth: "300px" }}
+                  className="mb-3 list-logo"
                 />
                 <h2 className="pt-3">
                   You have not added any Pongs to your account yet.

@@ -755,7 +755,7 @@ const PingScreen = (props) => {
         </Card.Body>
       </Card>
       <Row>
-        <Col className="text-left pl-3">
+        <Col className="text-left pl-3" xs={12} lg={6}>
           <DeleteButton
             pingId={pingId}
             active={active}
@@ -765,7 +765,7 @@ const PingScreen = (props) => {
             <strong className="text-success">Your ping has been saved.</strong>
           )}
         </Col>
-        <Col className="text-right">
+        <Col className="text-right" xs={12} lg={6}>
           <EnableButton
             pingId={pingId}
             active={active}

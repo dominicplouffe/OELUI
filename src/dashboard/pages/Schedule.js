@@ -259,7 +259,7 @@ const Schedule = (props) => {
                 schedule.
               </Card.Subtitle>
             </Col>
-            <Col>
+            <Col className="hide-small">
               <FullCalendar
                 plugins={[dayGridPlugin]}
                 initialView="dayGridMonth"

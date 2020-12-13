@@ -415,7 +415,7 @@ const PongScreen = (props) => {
         </Card.Body>
       </Card>
 
-      <Card>
+      <Card className="hide-small">
         <Card.Body>
           <Card.Title>How To Send a Pong</Card.Title>
           <Card.Subtitle>
@@ -469,7 +469,7 @@ const PongScreen = (props) => {
       </Card>
 
       <Row>
-        <Col className="text-left">
+        <Col className="text-left" xs={12} lg={6}>
           <DeleteButton
             pingId={pongId}
             active={active}
@@ -479,7 +479,7 @@ const PongScreen = (props) => {
             <strong className="text-success">Your pong has been saved.</strong>
           )}
         </Col>
-        <Col className="text-right">
+        <Col className="text-right" xs={12} lg={6}>
           <EnableButton
             pingId={pongId}
             active={active}

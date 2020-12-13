@@ -10,6 +10,10 @@ body {
   height:100%;
 }
 
+.list-logo {
+    max-width: 300px
+}
+
 
 #main-wrapper[data-layout=vertical][data-header-position=fixed] .page-wrapper {
     padding-top: 80px;
@@ -426,6 +430,19 @@ pre.code  {
 #main-wrapper[data-layout=vertical][data-header-position=fixed] .topbar {
     position: fixed;
     width: 100%;
+}
+
+@media(max-width: 400px) { 
+    .show-small {
+        display: block;
+    }
+    .hide-small {
+        display: none;
+    }
+
+    .list-logo {
+        width: 100%;
+    }
 }
 
 

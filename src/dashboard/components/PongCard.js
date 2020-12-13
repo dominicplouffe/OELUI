@@ -45,19 +45,19 @@ const PongCard = ({ m, showSummary, showEdit }) => {
                 <h1 className="text-danger">✖</h1>
               )}
             </Col>
-            <Col className="text-center" xs={12} sm={12} xl={3}>
+            <Col className="text-center" xs={6} sm={12} xl={3}>
               <small>Failures</small>
               <h1>{m.failure}</h1>
             </Col>
             {m.ping.failure_count === 0 ? (
               <>
-                <Col className="text-center" xs={12} sm={12} xl={3}>
+                <Col className="text-center pt-2" xs={6} sm={12} xl={3}>
                   <small>Downtime</small>
-                  <h1>{m.stats ? m.stats.total_time_s : `0h 0m`}</h1>
+                  <h2>{m.stats ? m.stats.total_time_s : `0h 0m`}</h2>
                 </Col>
                 <Col className="text-center" xs={12} sm={12} xl={3}>
                   <Row>
-                    <Col>
+                    <Col xs={6} lg={3}>
                       <small>Acknowledged</small>
                       <h2>
                         <Badge variant="success">
@@ -65,7 +65,7 @@ const PongCard = ({ m, showSummary, showEdit }) => {
                         </Badge>
                       </h2>
                     </Col>
-                    <Col>
+                    <Col xs={6} lg={3}>
                       <small>Fixed</small>
                       <h2>
                         <Badge variant="primary">
@@ -73,7 +73,7 @@ const PongCard = ({ m, showSummary, showEdit }) => {
                         </Badge>
                       </h2>
                     </Col>
-                    <Col>
+                    <Col xs={6} lg={3}>
                       <small>Auto-Resolved</small>
                       <h2>
                         <Badge variant="warning">
@@ -81,7 +81,7 @@ const PongCard = ({ m, showSummary, showEdit }) => {
                         </Badge>
                       </h2>
                     </Col>
-                    <Col>
+                    <Col xs={6} lg={3}>
                       <small>Ignored</small>
                       <h2>
                         <Badge variant="danger">

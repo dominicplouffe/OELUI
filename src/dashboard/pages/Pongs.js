@@ -121,7 +121,6 @@ const Pong = (props) => {
                 <img
                   src="https://dplouffe.ca/static/img/domlogo.png"
                   alt="Oops"
-                  className="mb-3"
                   className="mb-3 list-logo"
                 />
                 <h2 className="pt-3">

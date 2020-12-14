@@ -17,7 +17,7 @@ const Action = ({ fail }) => {
 
   return (
     <Row>
-      <Col>
+      <Col xs={12} lg={4} className="pt-2">
         <Button
           variant="success"
           onClick={() => {
@@ -30,7 +30,7 @@ const Action = ({ fail }) => {
           Acknowledge
         </Button>
       </Col>
-      <Col>
+      <Col xs={12} lg={4} className="pt-2">
         <Button
           variant="primary"
           onClick={() => {
@@ -42,7 +42,7 @@ const Action = ({ fail }) => {
           Fixed
         </Button>
       </Col>
-      <Col>
+      <Col xs={12} lg={4} className="pt-2">
         <Button
           variant="danger"
           onClick={() => {

@@ -24,16 +24,6 @@ const PongSummary = (props) => {
 
   const { refresh } = useAuth();
 
-  const REASONS = {
-    invalid_value: "Invalid Value",
-    key_error: "Key Error",
-    value_error: "Value Error",
-    status_code: "Status Code",
-    connection_error: "Connection Error",
-    timeout_error: "Timeout Error",
-    http_error: "HTTP Error",
-  };
-
   const fetchSummary = async (id) => {
     const { data = null, error = null } = await api(
       `ping/summary/${id}/?direction=push&hours=168`

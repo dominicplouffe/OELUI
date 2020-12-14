@@ -133,7 +133,14 @@ const PingSummary = (props) => {
 
   return (
     <Body title="Ping Summary" selectedMenu="ping" {...props} loading={loading}>
-      {summary && <PingCard m={summary} showEdit={true} showSummary={false} />}
+      {summary && (
+        <PingCard
+          m={summary}
+          showEdit={true}
+          showSummary={false}
+          showOther={true}
+        />
+      )}
       <Card>
         <Card.Body>
           <Card.Title>

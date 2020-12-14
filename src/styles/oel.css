@@ -414,6 +414,11 @@ pre.code  {
     font-size: 1.3125rem;
 }
 
+.btn-custom {
+    font-size: 1.3125rem;
+    color: #d46512;
+}
+
 #main-wrapper[data-layout=vertical][data-sidebar-position=fixed] .topbar .top-navbar .navbar-header {
     position: fixed;
     z-index: 10;

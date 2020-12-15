@@ -1,11 +1,29 @@
-import React from "react";
-import { Card, Row, Col, Badge } from "react-bootstrap";
+import React, { useState, useEffect } from "react";
+import { Card, Row, Col, Badge, Dropdown, SplitButton } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import useAuth from "../../auth/useAuth";
 import Actions from "../components/Actions";
+import api from "../../utils/api";
 
-const PongCard = ({ m, showSummary, showEdit }) => {
+const PongCard = ({ m, showSummary, showEdit, showOther }) => {
+  const [otherPongs, setOtherPongs] = useState([]);
   const { user } = useAuth();
+
+  const getOtherPongs = async () => {
+    const { data = null, error = null } = await api(`ping/?direction=push`);
+
+    if (data) {
+      setOtherPongs(data.results);
+    }
+    if (error) {
+      alert("Someting went wrong");
+    }
+  };
+
+  useEffect(() => {
+    getOtherPongs();
+    // eslint-disable-next-line
+  }, [showOther]);
 
   return (
     <Card>
@@ -13,7 +31,24 @@ const PongCard = ({ m, showSummary, showEdit }) => {
         <Card.Title>
           <Row>
             <Col className="text-center" xl={3} md={12}>
-              <h3>{m.ping.name}</h3>
+              {(!showOther || otherPongs.length <= 1) && <h3>{m.ping.name}</h3>}
+              {showOther && otherPongs.length > 1 && (
+                <SplitButton
+                  title={m.ping.name}
+                  id="dropdown-menu-align-responsive-2"
+                  variant="custom"
+                >
+                  {otherPongs.map((e, i) => (
+                    <Dropdown.Item
+                      eventKey={i}
+                      key={i}
+                      href={`/pong/summary/${e.id}/`}
+                    >
+                      {e.name}
+                    </Dropdown.Item>
+                  ))}
+                </SplitButton>
+              )}
             </Col>
             <Col className="text-center" xl={6} md={12}>
               <small>{m.ping.endpoint}</small>

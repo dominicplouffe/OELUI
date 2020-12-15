@@ -111,7 +111,14 @@ const PongSummary = (props) => {
 
   return (
     <Body title="Pong Summary" selectedMenu="pong" {...props} loading={loading}>
-      {summary && <PongCard m={summary} showEdit={true} showSummary={false} />}
+      {summary && (
+        <PongCard
+          m={summary}
+          showEdit={true}
+          showSummary={false}
+          showOther={true}
+        />
+      )}
       {/* <Card>
         <Card.Body>
           <Card.Title>

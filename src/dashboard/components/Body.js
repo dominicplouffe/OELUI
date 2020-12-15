@@ -116,14 +116,6 @@ const Body = ({
               className="sidebar-nav"
               style={{ overflowY: "auto", height: "100%" }}
             >
-              <div className="text-center mb-4">
-                <Link
-                  to="/newping"
-                  className="btn btn-warning btn-rounded mb-2 mr-2"
-                >
-                  {sideBarType === "full" || sideBarLeft ? `New Ping` : `+`}
-                </Link>
-              </div>
               <ul id="sidebarnav">
                 <li className={`sidebar-item ${getSelectedMenuClass("ping")}`}>
                   <Link

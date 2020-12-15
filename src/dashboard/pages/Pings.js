@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Body from "../components/Body";
-import { Card, Row, Col } from "react-bootstrap";
+import { Card, Row, Col, Badge } from "react-bootstrap";
 import api from "../../utils/api";
 import PingCard from "../components/PingCard";
 import moment from "moment";
@@ -60,9 +60,10 @@ const Ping = (props) => {
   return (
     <Body title="Pings" selectedMenu="ping" {...props} loading={loading}>
       <Row>
-        <Col className="text-right">
+        <Col className="right-align-small-center">
           <small>
-            Fetch timestamp: {fetchDate && moment(fetchDate).format("LLLL")}
+            <span className="hide-small">Fetch timestamp: </span>
+            {fetchDate && moment(fetchDate).format("LLLL")}
           </small>
         </Col>
       </Row>
@@ -73,7 +74,11 @@ const Ping = (props) => {
               <Col xs={12} lg={3} className="text-center">
                 <h3>Ping Summary</h3>
               </Col>
-              <Col>&nbsp;</Col>
+              <Col className="right-align-small-center">
+                <Link to="/newping" className="btn btn-warning btn-rounded">
+                  New Ping
+                </Link>
+              </Col>
             </Row>
           </Card.Title>
           <Row>
@@ -87,21 +92,29 @@ const Ping = (props) => {
             </Col>
             <Col xs={12} lg={9}>
               <Row>
-                <Col className="text-center">
+                <Col className="text-center" xs={6} lg={3}>
                   <small>Total</small>
-                  <h1>{totals.total}</h1>
+                  <h2>
+                    <Badge variant="primary">{totals.total}</Badge>
+                  </h2>
                 </Col>
-                <Col className="text-center">
+                <Col className="text-center" xs={6} lg={3}>
                   <small>Up</small>
-                  <h1 className="text-success">{totals.up}</h1>
+                  <h2>
+                    <Badge variant="success">{totals.up}</Badge>
+                  </h2>
                 </Col>
-                <Col className="text-center">
+                <Col className="text-center" xs={6} lg={3}>
                   <small>Down</small>
-                  <h1 className="text-danger">{totals.down}</h1>
+                  <h2>
+                    <Badge variant="danger">{totals.down}</Badge>
+                  </h2>
                 </Col>
-                <Col className="text-center">
+                <Col className="text-center" xs={6} lg={3}>
                   <small>Paused</small>
-                  <h1 className="text-warning">{totals.paused}</h1>
+                  <h2>
+                    <Badge variant="warning">{totals.paused}</Badge>
+                  </h2>
                 </Col>
               </Row>
             </Col>

@@ -10,6 +10,10 @@ body {
   height:100%;
 }
 
+.footer {
+    margin-left: 50px;
+}
+
 .list-logo {
     max-width: 300px
 }
@@ -26,9 +30,7 @@ body {
     position: relative;
     transition: .2s ease-in;
     display: none;
-    box-shadow: 0 3px 9px 0 rgba(162,176,190,.15);
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
+
 }
 
 
@@ -419,6 +421,10 @@ pre.code  {
     color: #d46512;
 }
 
+.right-align-small-center {
+    text-align: right !important;
+}
+
 #main-wrapper[data-layout=vertical][data-sidebar-position=fixed] .topbar .top-navbar .navbar-header {
     position: fixed;
     z-index: 10;
@@ -448,6 +454,10 @@ pre.code  {
     .list-logo {
         width: 100%;
     }
+
+    .right-align-small-center {
+        text-align: center !important;
+    }
 }
 
 
@@ -460,6 +470,10 @@ pre.code  {
     }
     .hide-small {
         display: none;
+    }
+
+    .right-align-small-center {
+        text-align: center !important;
     }
 }
 

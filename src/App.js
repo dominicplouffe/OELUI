@@ -21,7 +21,7 @@ import PongSummary from "./dashboard/pages/PongSummary";
 import Team from "./dashboard/pages/Team";
 import Schedule from "./dashboard/pages/Schedule";
 
-import NewPing from "./dashboard/pages/NewPing";
+import { NewPing, NewPong } from "./dashboard/pages/NewPing";
 import Profile from "./dashboard/pages/Profile";
 // import Preferences from "./dashboard/pages/Preferences";
 
@@ -40,11 +40,6 @@ const AppRoutes = () => {
         <AuthRoutes />
       </Route>
       <DashboardRoute path="/profile" component={Profile} exact={true} />
-      {/* <DashboardRoute
-        path="/preferences"
-        component={Preferences}
-        exact={true}
-      /> */}
       <DashboardRoute path="/pings" component={Ping} />
       <DashboardRoute path="/pongs" component={Pong} />
 
@@ -68,6 +63,8 @@ const AppRoutes = () => {
         component={PingSummary}
         exact={true}
       />
+
+      <DashboardRoute path="/newpong" component={NewPong} exact={true} admin />
       <DashboardRoute path="/pong" component={PongScreen} exact={true} admin />
       <DashboardRoute
         path="/pong/:id"

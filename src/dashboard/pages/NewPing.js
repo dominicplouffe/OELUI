@@ -8,4 +8,12 @@ const NewPing = () => {
   return null;
 };
 
-export default NewPing;
+const NewPong = () => {
+  const history = useHistory();
+
+  history.push("/pong/0");
+
+  return null;
+};
+
+export { NewPing, NewPong };

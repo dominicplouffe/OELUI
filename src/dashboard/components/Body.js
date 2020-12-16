@@ -139,7 +139,17 @@ const Body = ({
                     <span className="hide-menu">Pongs</span>
                   </Link>
                 </li>
-
+                <li className={`sidebar-item ${getSelectedMenuClass("heartbeat")}`}>
+                  <Link
+                    className={`sidebar-link sidebar-link ${getActiveMenuClass(
+                      "heartbeat"
+                    )}`}
+                    to="/heartbeats"
+                  >
+                    <img src="/icons/heart.png" alt="heartbeats" className="icon" />
+                    <span className="hide-menu">Heartbeats</span>
+                  </Link>
+                </li>
                 <li className="list-divider"></li>
                 {currentUser.role.role === "admin" && (
                   <li

@@ -1,7 +1,7 @@
 import React from "react";
 import { Row, Col } from "react-bootstrap";
 
-const Node = ({ pongKey }) => {
+const Node = ({ api_url, endpoint, pongKey }) => {
   return (
     <Row>
       <Col xs={12}>
@@ -17,7 +17,7 @@ const Node = ({ pongKey }) => {
           <span className="text-success">requests</span>
           ('
           <span className="text-warning">
-            http://api.onerrorlog.com.com/api/pongme/{pongKey}
+            {api_url}{endpoint}/{pongKey}
           </span>
           ', {`{`} json: true {`}`}, , (err, res, body) ={`>`} {`{`}
           <br />

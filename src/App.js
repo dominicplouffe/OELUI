@@ -18,10 +18,14 @@ import Pong from "./dashboard/pages/Pongs";
 import PongScreen from "./dashboard/pages/PongScreen";
 import PongSummary from "./dashboard/pages/PongSummary";
 
+import Heartbeat from "./dashboard/pages/Heartbeats";
+import HeartbeatScreen from "./dashboard/pages/HeartbeatScreen";
+import HeartbeatSummary from "./dashboard/pages/HeartbeatSummary";
+
 import Team from "./dashboard/pages/Team";
 import Schedule from "./dashboard/pages/Schedule";
 
-import { NewPing, NewPong } from "./dashboard/pages/NewPing";
+import { NewPing, NewPong, NewHeartbeat } from "./dashboard/pages/NewPing";
 import Profile from "./dashboard/pages/Profile";
 // import Preferences from "./dashboard/pages/Preferences";
 
@@ -40,8 +44,10 @@ const AppRoutes = () => {
         <AuthRoutes />
       </Route>
       <DashboardRoute path="/profile" component={Profile} exact={true} />
+
       <DashboardRoute path="/pings" component={Ping} />
       <DashboardRoute path="/pongs" component={Pong} />
+      <DashboardRoute path="/heartbeats" component={Heartbeat} />
 
       <DashboardRoute path="/team" component={Team} exact={true} admin />
       <DashboardRoute
@@ -50,6 +56,7 @@ const AppRoutes = () => {
         exact={true}
         admin
       />
+
       <DashboardRoute path="/ping" component={PingScreen} exact={true} admin />
       <DashboardRoute
         path="/ping/:id"
@@ -77,6 +84,21 @@ const AppRoutes = () => {
         component={PongSummary}
         exact={true}
       />
+
+      <DashboardRoute path="/heartbeat" component={HeartbeatScreen} exact={true} admin />
+      <DashboardRoute path="/newheartbeat" component={NewHeartbeat} exact={true} admin />
+      <DashboardRoute
+        path="/heartbeat/:id"
+        component={HeartbeatScreen}
+        exact={true}
+        admin
+      />
+      <DashboardRoute
+        path="/heartbeat/summary/:id"
+        component={HeartbeatSummary}
+        exact={true}
+      />
+
       <DashboardRoute exact path="/">
         <Redirect to="/pings" />
       </DashboardRoute>

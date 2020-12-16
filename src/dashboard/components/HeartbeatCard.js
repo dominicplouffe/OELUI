@@ -5,7 +5,7 @@ import useAuth from "../../auth/useAuth";
 import Actions from "./Actions";
 import api from "../../utils/api";
 
-const PongCard = ({ m, showSummary, showEdit, showOther }) => {
+const HeartbeatCard = ({ m, showSummary, showEdit, showOther }) => {
   const [otherPongs, setOtherPongs] = useState([]);
   const { user } = useAuth();
 
@@ -42,7 +42,7 @@ const PongCard = ({ m, showSummary, showEdit, showOther }) => {
                     <Dropdown.Item
                       eventKey={i}
                       key={i}
-                      href={`/pong/summary/${e.id}/`}
+                      href={`/heartbeat/summary/${e.id}/`}
                     >
                       {e.name}
                     </Dropdown.Item>
@@ -56,7 +56,7 @@ const PongCard = ({ m, showSummary, showEdit, showOther }) => {
             <Col className="text-center" xl={3} md={12}>
               <small>
                 {showSummary && (
-                  <Link to={`/pong/summary/${m.ping.id}`}>summary</Link>
+                  <Link to={`/heartbeat/summary/${m.ping.id}`}>summary</Link>
                 )}
                 {user.role.role === "admin" && showEdit && showSummary ? (
                   <span> | </span>
@@ -64,7 +64,7 @@ const PongCard = ({ m, showSummary, showEdit, showOther }) => {
                   ``
                 )}
                 {user.role.role === "admin" && showEdit && (
-                  <Link to={`/pong/${m.ping.id}`}>edit</Link>
+                  <Link to={`/heartbeat/${m.ping.id}`}>edit</Link>
                 )}
               </small>
             </Col>
@@ -147,4 +147,4 @@ const PongCard = ({ m, showSummary, showEdit, showOther }) => {
   );
 };
 
-export default PongCard;
+export default HeartbeatCard;

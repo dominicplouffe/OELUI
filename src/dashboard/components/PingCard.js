@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Card, Row, Col, Dropdown, SplitButton } from "react-bootstrap";
-import Actions from "../components/Actions";
+import Actions from "./Actions";
 import { Link } from "react-router-dom";
 import useAuth from "../../auth/useAuth";
 import api from "../../utils/api";

@@ -1,7 +1,7 @@
 import React from "react";
 import { Row, Col } from "react-bootstrap";
 
-const Python = ({ pongKey }) => {
+const Python = ({ api_url, endpoint, pongKey }) => {
   return (
     <>
       <Row>
@@ -16,7 +16,7 @@ const Python = ({ pongKey }) => {
             res = <span className="text-success">requests</span>
             .get('
             <span className="text-warning">
-              http://api.onerrorlog.com.com/api/pongme/{pongKey}
+              {api_url}{endpoint}/{pongKey}
             </span>
             ')
             <br />

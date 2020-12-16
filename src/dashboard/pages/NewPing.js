@@ -16,4 +16,12 @@ const NewPong = () => {
   return null;
 };
 
-export { NewPing, NewPong };
+const NewHeartbeat = () => {
+  const history = useHistory();
+
+  history.push("/heartbeat/0");
+
+  return null;
+};
+
+export { NewPing, NewPong, NewHeartbeat };

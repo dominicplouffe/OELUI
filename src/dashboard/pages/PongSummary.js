@@ -222,7 +222,7 @@ const PongSummary = (props) => {
                         <td className="text-right hide-small">
                           <Link to={`/failure/${f.id}`}>
                             <img
-                              src="/icons/details.png"
+                              src="https://onerrorlog.s3.amazonaws.com/images/details.png"
                               alt={`Failure Details for ${f.id}`}
                               className="icon"
                             />

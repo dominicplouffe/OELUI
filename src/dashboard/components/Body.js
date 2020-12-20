@@ -124,7 +124,11 @@ const Body = ({
                     )}`}
                     to="/pings"
                   >
-                    <img src="/icons/ping.png" alt="pings" className="icon" />
+                    <img
+                      src="https://onerrorlog.s3.amazonaws.com/images/ping.png"
+                      alt="pings"
+                      className="icon"
+                    />
                     <span className="hide-menu">Pings</span>
                   </Link>
                 </li>
@@ -135,7 +139,11 @@ const Body = ({
                     )}`}
                     to="/pongs"
                   >
-                    <img src="/icons/pong.png" alt="pings" className="icon" />
+                    <img
+                      src="https://onerrorlog.s3.amazonaws.com/images/pong.png"
+                      alt="pings"
+                      className="icon"
+                    />
                     <span className="hide-menu">Pongs</span>
                   </Link>
                 </li>
@@ -151,7 +159,11 @@ const Body = ({
                       )}`}
                       to="/team"
                     >
-                      <img src="/icons/teams.png" alt="team" className="icon" />
+                      <img
+                        src="https://onerrorlog.s3.amazonaws.com/images/teams.png"
+                        alt="team"
+                        className="icon"
+                      />
                       <span className="hide-menu">Team</span>
                     </Link>
                   </li>
@@ -170,7 +182,7 @@ const Body = ({
                       to="/schedule"
                     >
                       <img
-                        src="/icons/schedule.png"
+                        src="https://onerrorlog.s3.amazonaws.com/images/schedule.png"
                         alt="schedule"
                         className="icon"
                       />
@@ -192,7 +204,7 @@ const Body = ({
                       to="/preferences"
                     >
                       <img
-                        src="/icons/preferences.png"
+                        src="https://onerrorlog.s3.amazonaws.com/images/preferences.png"
                         alt="preferences"
                         className="icon"
                       />
@@ -211,7 +223,7 @@ const Body = ({
                     to="/profile"
                   >
                     <img
-                      src="/icons/profile.png"
+                      src="https://onerrorlog.s3.amazonaws.com/images/profile.png"
                       alt="profile"
                       className="icon"
                     />
@@ -238,7 +250,7 @@ const Body = ({
                     to="/auth/logout"
                   >
                     <img
-                      src="/icons/logout.png"
+                      src="https://onerrorlog.s3.amazonaws.com/images/logout.png"
                       alt="logout"
                       className="icon"
                     />

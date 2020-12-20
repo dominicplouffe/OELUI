@@ -112,7 +112,7 @@ const Headers = ({ pingId, headerType, setShowModal, showModal }) => {
                 }}
               >
                 <img
-                  src="/icons/update.png"
+                  src="https://onerrorlog.s3.amazonaws.com/images/update.png"
                   alt="update"
                   className="icon"
                   style={{ height: "15px" }}

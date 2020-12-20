@@ -66,6 +66,9 @@ body {
     font-weight: 400;
 }
 
+.smaller {
+    font-size: 85%;
+}
 
 a:hover {
     color: #1f3fdb;
@@ -411,6 +414,11 @@ pre.code  {
     height: 20px;
     margin-right: 10px;
 }
+
+.icon {
+    height: 20px;
+}
+
 
 .h3, h3 {
     font-size: 1.3125rem;

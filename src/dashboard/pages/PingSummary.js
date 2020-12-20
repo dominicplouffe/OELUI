@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import Body from "../components/Body";
-import { Card, Row, Col, ProgressBar, Table, Button } from "react-bootstrap";
+import { Card, Row, Col, ProgressBar, Table } from "react-bootstrap";
 import moment from "moment";
 import api from "../../utils/api";
 import PingCard from "../components/PingCard";
 import { ResponsiveLine } from "@nivo/line";
-import ResultModal from "../components/ResultModal";
 import useAuth from "../../auth/useAuth";
+import { REASONS } from "../../utils/globals";
+import { Link } from "react-router-dom";
 
 const PingSummary = (props) => {
   const [calendarData, setCalendarData] = useState([]);
@@ -19,22 +20,10 @@ const PingSummary = (props) => {
   const [responseTimeData, setResponseTimeData] = useState(null);
   const [failureCounts, setFailureCounts] = useState([]);
   const [failures, setFailures] = useState([]);
-  const [showFailureModal, setShowFailureModal] = useState(false);
-  const [failureToShow, setFailureToShow] = useState(null);
 
   const [loading, setLoading] = useState(true);
 
   const { refresh } = useAuth();
-
-  const REASONS = {
-    invalid_value: "Invalid Value",
-    key_error: "Key Error",
-    value_error: "Value Error",
-    status_code: "Status Code",
-    connection_error: "Connection Error",
-    timeout_error: "Timeout Error",
-    http_error: "HTTP Error",
-  };
 
   const fetchSummary = async (id) => {
     const { data = null, error = null } = await api(`ping/summary/${id}/`);
@@ -124,11 +113,6 @@ const PingSummary = (props) => {
       return "#991840";
     }
     return "#efefef";
-  };
-
-  const showFailure = (f) => {
-    setFailureToShow(f);
-    setShowFailureModal(true);
   };
 
   return (
@@ -304,15 +288,13 @@ const PingSummary = (props) => {
                           )}
                         </td>
                         <td className="text-right hide-small">
-                          <Button
-                            variant="custom"
-                            className="p-0 m-0"
-                            onClick={() => showFailure(f)}
-                          >
-                            <span role="img" aria-label="Incident Details">
-                              ⚙️
-                            </span>
-                          </Button>
+                          <Link to={`/failure/${f.id}`}>
+                            <img
+                              src="/icons/details.png"
+                              alt={`Failure Details for ${f.id}`}
+                              className="icon"
+                            />
+                          </Link>
                         </td>
                       </tr>
                     ))}
@@ -330,13 +312,6 @@ const PingSummary = (props) => {
           )}
         </Card.Body>
       </Card>
-
-      <ResultModal
-        showModal={showFailureModal}
-        setShowModal={setShowFailureModal}
-        title="Failure Details"
-        result={failureToShow}
-      />
     </Body>
   );
 };

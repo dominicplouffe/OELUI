@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import Body from "../components/Body";
-import { Card, Row, Col, ProgressBar, Table, Button } from "react-bootstrap";
+import { Card, Row, Col, ProgressBar, Table } from "react-bootstrap";
 import moment from "moment";
 import api from "../../utils/api";
 import PongCard from "../components/PongCard";
-import ResultModal from "../components/ResultModal";
 import useAuth from "../../auth/useAuth";
+import { Link } from "react-router-dom";
 
 const PongSummary = (props) => {
   const [calendarData, setCalendarData] = useState([]);
@@ -17,8 +17,6 @@ const PongSummary = (props) => {
   );
   const [failureCounts, setFailureCounts] = useState([]);
   const [failures, setFailures] = useState([]);
-  const [showFailureModal, setShowFailureModal] = useState(false);
-  const [failureToShow, setFailureToShow] = useState(null);
 
   const [loading, setLoading] = useState(true);
 
@@ -104,11 +102,6 @@ const PongSummary = (props) => {
     return "#efefef";
   };
 
-  const showFailure = (f) => {
-    setFailureToShow(f);
-    setShowFailureModal(true);
-  };
-
   return (
     <Body title="Pong Summary" selectedMenu="pong" {...props} loading={loading}>
       {summary && (
@@ -119,55 +112,7 @@ const PongSummary = (props) => {
           showOther={true}
         />
       )}
-      {/* <Card>
-        <Card.Body>
-          <Card.Title>
-            <Row>
-              <Col>
-                <h3>Average Response Time (ms)</h3>
-              </Col>
-            </Row>
-          </Card.Title>
-          <Row>
-            <Col>
-              {responseTimeData && (
-                <div style={{ width: "100%", height: "200px" }}>
-                  <ResponsiveLine
-                    data={responseTimeData}
-                    margin={{ top: 15, right: 10, bottom: 50, left: 10 }}
-                    xScale={{ type: "point" }}
-                    axisTop={null}
-                    axisRight={null}
-                    curve="monotoneX"
-                    axisBottom={{
-                      orient: "bottom",
-                      tickSize: 5,
-                      tickPadding: 5,
-                      tickRotation: 0,
-                      legend: "Last 24 hours",
-                      legendOffset: 36,
-                      legendPosition: "middle",
-                    }}
-                    axisLeft={null}
-                    colors={["#188199"]}
-                    lineWidth={5}
-                    enableGridX={false}
-                    enableGridY={false}
-                    enableArea={true}
-                    pointSize={1}
-                    pointColor={{ theme: "background" }}
-                    pointBorderWidth={0}
-                    pointBorderColor={{ from: "serieColor" }}
-                    pointLabel="y"
-                    pointLabelYOffset={-12}
-                    useMesh={true}
-                  />
-                </div>
-              )}
-            </Col>
-          </Row>
-        </Card.Body>
-      </Card> */}
+
       <Card>
         <Card.Body>
           <Card.Title>
@@ -275,15 +220,13 @@ const PongSummary = (props) => {
                           )}
                         </td>
                         <td className="text-right hide-small">
-                          <Button
-                            variant="custom"
-                            className="p-0 m-0"
-                            onClick={() => showFailure(f)}
-                          >
-                            <span role="img" aria-label="Incident Details">
-                              ⚙️
-                            </span>
-                          </Button>
+                          <Link to={`/failure/${f.id}`}>
+                            <img
+                              src="/icons/details.png"
+                              alt={`Failure Details for ${f.id}`}
+                              className="icon"
+                            />
+                          </Link>
                         </td>
                       </tr>
                     ))}
@@ -301,13 +244,6 @@ const PongSummary = (props) => {
           )}
         </Card.Body>
       </Card>
-
-      <ResultModal
-        showModal={showFailureModal}
-        setShowModal={setShowFailureModal}
-        title="Failure Details"
-        result={failureToShow}
-      />
     </Body>
   );
 };

@@ -2,7 +2,6 @@ import React from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./styles/oel.css";
-// import "./styles/custom.css";
 
 import Login from "./dashboard/pages/Login";
 import Logout from "./dashboard/pages/Logout";
@@ -23,7 +22,7 @@ import Schedule from "./dashboard/pages/Schedule";
 
 import { NewPing, NewPong } from "./dashboard/pages/NewPing";
 import Profile from "./dashboard/pages/Profile";
-// import Preferences from "./dashboard/pages/Preferences";
+import Failure from "./dashboard/pages/Failure";
 
 function App() {
   return (
@@ -80,6 +79,8 @@ const AppRoutes = () => {
       <DashboardRoute exact path="/">
         <Redirect to="/pings" />
       </DashboardRoute>
+
+      <DashboardRoute exact path="/failure/:id" component={Failure} />
     </Switch>
   );
 };

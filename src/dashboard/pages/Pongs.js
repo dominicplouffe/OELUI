@@ -21,7 +21,7 @@ const Pong = (props) => {
     const [doFetch, setDoFetch] = useState(true);
     useEffect(() => {
       const handler = setInterval(() => {
-        fetchSummary(true);
+        fetchSummary(false);
         setDoFetch(false);
       }, delay);
 
@@ -63,7 +63,7 @@ const Pong = (props) => {
       <Row>
         <Col className="right-align-small-center">
           <small>
-            <span className="hide-small">Fetch timestamp: </span>
+            <span className="hide-small">Last refreshed on: </span>
             {fetchDate && moment(fetchDate).format("LLLL")}
           </small>
         </Col>

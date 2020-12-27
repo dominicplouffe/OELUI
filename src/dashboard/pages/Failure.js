@@ -14,6 +14,20 @@ const Failure = (props) => {
   const [failure, setFailure] = useState(null);
   const [summary, setSummary] = useState(null);
 
+  const useFetchInterval = (delay) => {
+    const [doFetch, setDoFetch] = useState(true);
+    useEffect(() => {
+      const handler = setInterval(() => {
+        fetchFailure(props.match.params.id);
+      }, delay);
+
+      return () => {
+        clearTimeout(handler);
+      };
+    }, [delay, setDoFetch]);
+    return doFetch;
+  };
+
   const fetchFailure = async (failureId) => {
     const { error = null, data = null } = await api(`failure/${failureId}/`);
 
@@ -39,6 +53,9 @@ const Failure = (props) => {
       alert("Something went wrong fetching summary");
     }
   };
+
+  // Fetch content every 5 mins
+  useFetchInterval(1000 * 60 * 5);
 
   useEffect(() => {
     fetchFailure(props.match.params.id);

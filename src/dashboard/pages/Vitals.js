@@ -8,6 +8,20 @@ const Vitals = (props) => {
   const [loading, setLoading] = useState(true);
   const [instances, setInstances] = useState([]);
 
+  const useFetchInterval = (delay) => {
+    const [doFetch, setDoFetch] = useState(true);
+    useEffect(() => {
+      const handler = setInterval(() => {
+        fetchInstances();
+      }, delay);
+
+      return () => {
+        clearTimeout(handler);
+      };
+    }, [delay, setDoFetch]);
+    return doFetch;
+  };
+
   const fetchInstances = async () => {
     const { data = null, error = null } = await api(`vital_instance/`);
 
@@ -20,6 +34,9 @@ const Vitals = (props) => {
 
     setLoading(false);
   };
+
+  // Fetch content every 5 mins
+  useFetchInterval(1000 * 60);
 
   useEffect(() => {
     fetchInstances();

@@ -26,6 +26,20 @@ const PingSummary = (props) => {
 
   const { refresh } = useAuth();
 
+  const useFetchInterval = (delay) => {
+    const [doFetch, setDoFetch] = useState(true);
+    useEffect(() => {
+      const handler = setInterval(() => {
+        fetchAll();
+      }, delay);
+
+      return () => {
+        clearTimeout(handler);
+      };
+    }, [delay, setDoFetch]);
+    return doFetch;
+  };
+
   const fetchSummary = async (id) => {
     const { data = null, error = null } = await api(`ping/summary/${id}/`);
 
@@ -93,15 +107,22 @@ const PingSummary = (props) => {
     }
   };
 
-  useEffect(() => {
+  const fetchAll = async () => {
     const id = props.match.params.id;
-
     fetchSummary(id);
     fetchDetails(id);
     fetchFailreCounts(id);
     fetchFailures(id);
 
     setLoading(false);
+  };
+
+  // Fetch content every 5 mins
+  useFetchInterval(1000 * 60 * 5);
+
+  useEffect(() => {
+    fetchAll();
+
     // eslint-disable-next-line
   }, [refresh]);
 

@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import Body from "../components/Body";
-import { Card, Row, Col, Badge } from "react-bootstrap";
+import { Card, Row, Col } from "react-bootstrap";
 import "react-phone-number-input/style.css";
 import { REASONS } from "../../utils/globals";
 import api from "../../utils/api";
 import PingCard from "../components/PingCard";
 import PongCard from "../components/PongCard";
+import FailureStatus from "../components/FailureStatus";
 import moment from "moment";
 
 const Failure = (props) => {
@@ -39,30 +40,6 @@ const Failure = (props) => {
     }
   };
 
-  const getStatus = () => {
-    if (!failure) {
-      return null;
-    }
-
-    if (failure.recovered_on) {
-      return <Badge variant="success">Recovered</Badge>;
-    }
-
-    if (failure.acknowledged_on && !failure.ignored_on && !failure.fixed_on) {
-      return <Badge variant="primary">Acknowledged</Badge>;
-    }
-
-    if (failure.ignored_on && !failure.fixed_on) {
-      return <Badge variant="danger">Ignored</Badge>;
-    }
-
-    if (failure.fixed_on) {
-      return <Badge variant="warning">Fixed</Badge>;
-    }
-
-    return <Badge variant="danger">Unknown Status</Badge>;
-  };
-
   useEffect(() => {
     fetchFailure(props.match.params.id);
 
@@ -94,7 +71,9 @@ const Failure = (props) => {
               <Card.Title>
                 <Row>
                   <Col>Failure Details</Col>
-                  <Col className="right-align-small-center">{getStatus()}</Col>
+                  <Col className="right-align-small-center">
+                    <FailureStatus failure={failure} />
+                  </Col>
                 </Row>
               </Card.Title>
               <Card.Subtitle>

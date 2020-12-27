@@ -148,6 +148,24 @@ const Body = ({
                   </Link>
                 </li>
 
+                <li
+                  className={`sidebar-item ${getSelectedMenuClass("vitals")}`}
+                >
+                  <Link
+                    className={`sidebar-link sidebar-link ${getActiveMenuClass(
+                      "vitals"
+                    )}`}
+                    to="/vitals"
+                  >
+                    <img
+                      src="https://onerrorlog.s3.amazonaws.com/images/vitals.png"
+                      alt="vitals"
+                      className="icon"
+                    />
+                    <span className="hide-menu">Vitals</span>
+                  </Link>
+                </li>
+
                 <li className="list-divider"></li>
                 {currentUser.role.role === "admin" && (
                   <li

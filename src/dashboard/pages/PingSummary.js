@@ -8,6 +8,7 @@ import { ResponsiveLine } from "@nivo/line";
 import useAuth from "../../auth/useAuth";
 import { REASONS } from "../../utils/globals";
 import { Link } from "react-router-dom";
+import FailureStatus from "../components/FailureStatus";
 
 const PingSummary = (props) => {
   const [calendarData, setCalendarData] = useState([]);
@@ -259,18 +260,16 @@ const PingSummary = (props) => {
                   <thead>
                     <tr>
                       <th>Reason</th>
-                      <th className="text-center hide-small">Status Code</th>
                       <th>When</th>
                       <th className="hide-small">Who</th>
+                      <th>Status</th>
                     </tr>
                   </thead>
                   <tbody>
                     {failures.map((f, i) => (
                       <tr key={i}>
                         <td>{REASONS[f.reason]}</td>
-                        <td className="text-center hide-small">
-                          {f.status_code}
-                        </td>
+
                         <td className="hide-small">
                           {moment(f.created_on).format("LLLL")}
                         </td>
@@ -286,6 +285,9 @@ const PingSummary = (props) => {
                               </div>
                             </>
                           )}
+                        </td>
+                        <td>
+                          <FailureStatus failure={f} />
                         </td>
                         <td className="text-right hide-small">
                           <Link to={`/failure/${f.id}`}>

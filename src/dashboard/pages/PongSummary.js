@@ -6,6 +6,7 @@ import api from "../../utils/api";
 import PongCard from "../components/PongCard";
 import useAuth from "../../auth/useAuth";
 import { Link } from "react-router-dom";
+import FailureStatus from "../components/FailureStatus";
 
 const PongSummary = (props) => {
   const [calendarData, setCalendarData] = useState([]);
@@ -60,7 +61,7 @@ const PongSummary = (props) => {
 
   const fetchFailures = async (id) => {
     const { data = null, error = null } = await api(
-      `failure/?ping=${id}&ordering=-created_on&offset=0&limit=20`
+      `failure/?ping=${id}&ordering=-created_on&offset=0&limit=100`
     );
 
     setFailures(data.results);
@@ -198,6 +199,7 @@ const PongSummary = (props) => {
                     <tr>
                       <th>Received On</th>
                       <th className="hide-small">Who</th>
+                      <th>Status</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -218,6 +220,9 @@ const PongSummary = (props) => {
                               </div>
                             </>
                           )}
+                        </td>
+                        <td>
+                          <FailureStatus failure={f} />
                         </td>
                         <td className="text-right hide-small">
                           <Link to={`/failure/${f.id}`}>

@@ -17,6 +17,8 @@ import Pong from "./dashboard/pages/Pongs";
 import PongScreen from "./dashboard/pages/PongScreen";
 import PongSummary from "./dashboard/pages/PongSummary";
 
+import Vitals from "./dashboard/pages/Vitals";
+
 import Team from "./dashboard/pages/Team";
 import Schedule from "./dashboard/pages/Schedule";
 
@@ -76,6 +78,9 @@ const AppRoutes = () => {
         component={PongSummary}
         exact={true}
       />
+
+      <DashboardRoute path="/vitals" component={Vitals} exact={true} />
+
       <DashboardRoute exact path="/">
         <Redirect to="/pings" />
       </DashboardRoute>

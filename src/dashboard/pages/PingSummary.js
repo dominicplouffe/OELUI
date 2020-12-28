@@ -4,11 +4,18 @@ import { Card, Row, Col, ProgressBar, Table } from "react-bootstrap";
 import moment from "moment";
 import api from "../../utils/api";
 import PingCard from "../components/PingCard";
-import { ResponsiveLine } from "@nivo/line";
 import useAuth from "../../auth/useAuth";
 import { REASONS } from "../../utils/globals";
 import { Link } from "react-router-dom";
 import FailureStatus from "../components/FailureStatus";
+import {
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 
 const PingSummary = (props) => {
   const [calendarData, setCalendarData] = useState([]);
@@ -46,23 +53,19 @@ const PingSummary = (props) => {
     if (data) {
       setSummary(data.pings[0]);
 
-      const resData = [
-        {
-          id: "Response (ms)",
-          data: [],
-        },
-      ];
+      const resData = [];
+
       for (let i = 0; i < data.pings[0].snapshot.length; i++) {
         const ss = data.pings[0].snapshot[i];
         const row = {
-          x: moment(ss.date).format("H"),
-          y: null,
+          name: `${moment(ss.date).format("H")}:00`,
+          response_ms: null,
         };
         if (ss.status) {
-          row.y = parseInt(ss.avg_res * 1000);
+          row.response_ms = parseInt(ss.avg_res * 1000);
         }
 
-        resData[0].data.push(row);
+        resData.push(row);
       }
 
       setResponseTimeData(resData);
@@ -137,6 +140,22 @@ const PingSummary = (props) => {
     return "#efefef";
   };
 
+  const CustomTooltip = ({ active, payload, label }) => {
+    if (active) {
+      return (
+        <div className="custom-tooltip">
+          <p className="label">{`Hour of day (UTC)${label} : ${payload[0].value} ms`}</p>
+          {/* <p className="intro">{getIntroOfPage(label)}</p> */}
+          <p className="desc">
+            {`The average response time was ${payload[0].value} ms`}
+          </p>
+        </div>
+      );
+    }
+
+    return null;
+  };
+
   return (
     <Body title="Ping Summary" selectedMenu="ping" {...props} loading={loading}>
       {summary && (
@@ -159,39 +178,31 @@ const PingSummary = (props) => {
           <Row>
             <Col>
               {responseTimeData && (
-                <div style={{ width: "100%", height: "200px" }}>
-                  <ResponsiveLine
+                <ResponsiveContainer width="100%" height={200}>
+                  <AreaChart
                     data={responseTimeData}
-                    margin={{ top: 15, right: 10, bottom: 50, left: 10 }}
-                    xScale={{ type: "point" }}
-                    axisTop={null}
-                    axisRight={null}
-                    curve="monotoneX"
-                    axisBottom={{
-                      orient: "bottom",
-                      tickSize: 5,
-                      tickPadding: 5,
-                      tickRotation: 0,
-                      legend: "Last 24 hours",
-                      legendOffset: 36,
-                      legendPosition: "middle",
+                    margin={{
+                      top: 10,
+                      right: 30,
+                      left: 0,
+                      bottom: 0,
                     }}
-                    axisLeft={null}
-                    colors={["#188199"]}
-                    lineWidth={5}
-                    enableGridX={false}
-                    enableGridY={false}
-                    enableArea={true}
-                    pointSize={1}
-                    pointColor={{ theme: "background" }}
-                    pointBorderWidth={0}
-                    pointBorderColor={{ from: "serieColor" }}
-                    pointLabel="y"
-                    pointLabelYOffset={-12}
-                    useMesh={true}
-                  />
-                </div>
+                  >
+                    <XAxis dataKey="name" tick={true} />
+                    <YAxis />
+                    <Tooltip content={<CustomTooltip />} />
+                    <Area
+                      type="monotone"
+                      dataKey="response_ms"
+                      stroke="#184b99"
+                      fill="#184b99"
+                    />
+                  </AreaChart>
+                </ResponsiveContainer>
               )}
+              <div className="pt-1 text-center">
+                <small>Hour of day (UTC)</small>
+              </div>
             </Col>
           </Row>
         </Card.Body>

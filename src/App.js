@@ -27,6 +27,7 @@ import Schedule from "./dashboard/pages/Schedule";
 import { NewPing, NewPong } from "./dashboard/pages/NewPing";
 import Profile from "./dashboard/pages/Profile";
 import Failure from "./dashboard/pages/Failure";
+import Subscription from "./dashboard/pages/Subscription";
 
 function App() {
   return (
@@ -85,6 +86,12 @@ const AppRoutes = () => {
       <DashboardRoute
         path="/vitals/:id"
         component={VitalSummary}
+        exact={true}
+      />
+      <DashboardRoute
+        exact
+        path="/subscription"
+        component={Subscription}
         exact={true}
       />
 

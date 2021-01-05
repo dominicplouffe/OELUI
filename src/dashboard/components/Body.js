@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Row, Col, Navbar, Alert } from "react-bootstrap";
+import { Row, Col, Alert } from "react-bootstrap";
 
 const Body = ({
   currentUser,
@@ -9,8 +9,8 @@ const Body = ({
   children,
   loading = false,
 }) => {
-  const [sideBarType, setSideBarType] = useState("full");
-  const [sideBarLeft, setSideBarLeft] = useState(null);
+  // const [sideBarType, setSideBarType] = useState("full");
+  // const [sideBarLeft, setSideBarLeft] = useState(null);
 
   const getSelectedMenuClass = (menuName) => {
     if (selectedMenu === menuName) {
@@ -27,24 +27,24 @@ const Body = ({
   };
 
   const windowSize = () => {
-    if (window.innerWidth <= 1024) {
-      setSideBarType("mini-sidebar");
-    } else {
-      setSideBarType("full");
-    }
+    // if (window.innerWidth <= 1024) {
+    //   setSideBarType("mini-sidebar");
+    // } else {
+    //   setSideBarType("full");
+    // }
   };
 
   window.onresize = (e) => {
     windowSize();
   };
 
-  const hamburgerClick = () => {
-    if (sideBarLeft === "0") {
-      setSideBarLeft(null);
-    } else {
-      setSideBarLeft("0");
-    }
-  };
+  // const hamburgerClick = () => {
+  //   if (sideBarLeft === "0") {
+  //     setSideBarLeft(null);
+  //   } else {
+  //     setSideBarLeft("0");
+  //   }
+  // };
 
   useEffect(() => {
     windowSize();
@@ -54,7 +54,7 @@ const Body = ({
   return (
     <>
       <header className="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-        <a className="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">
+        <a className="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="/">
           <img
             src="https://dplouffe.ca/static/img/domlogo.png"
             alt="wrapkit"

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Body from "../components/Body";
 import api from "../../utils/api";
 import moment from "moment";
-import { Card, Row, Col } from "react-bootstrap";
+import { Card, Row, Col, Button } from "react-bootstrap";
 import InstanceCard from "../components/InstanceCard";
 import {
   AreaChart,
@@ -12,6 +12,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import MetricCondition from "../components/MetricCondition";
 
 const VitalSummary = (props) => {
   const [loading, setLoading] = useState(true);
@@ -19,6 +20,7 @@ const VitalSummary = (props) => {
   const [cpuData, setCPUData] = useState([]);
   const [memData, setMemData] = useState([]);
   const [diskData, setDiskData] = useState([]);
+  const [showCondition, setShowCondition] = useState(true);
 
   const fetchInstance = async () => {
     const { data = null, error = null } = await api(
@@ -68,130 +70,156 @@ const VitalSummary = (props) => {
         </Col>
       </Row>
       {instance && (
-        <Row>
-          <Col>
-            <Card>
-              <Card.Body>
-                <Card.Title>CPU Percentage Used</Card.Title>
-                <Card.Subtitle>
-                  Below is the graph of the CPU usage for the past 24 hours in 1
-                  hour intervals
-                </Card.Subtitle>
-                <Row>
-                  <Col className="pt-3">
-                    <ResponsiveContainer width="100%" height={200}>
-                      <AreaChart
-                        data={cpuData}
-                        margin={{
-                          top: 10,
-                          right: 30,
-                          left: 0,
-                          bottom: 0,
-                        }}
-                      >
-                        <XAxis dataKey="name" tick={true} />
-                        <YAxis />
-                        <Tooltip />
-                        {/* content={<CustomTooltip />} */}
-                        <Area
-                          type="monotone"
-                          dataKey="value"
-                          stroke={instance.cpu_status}
-                          fill={instance.cpu_status}
-                        />
-                      </AreaChart>
-                    </ResponsiveContainer>
-                  </Col>
-                </Row>
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
+        <>
+          <Row>
+            <Col md={12} lg={12} xl={4}>
+              <Card>
+                <Card.Body>
+                  <Card.Title>CPU Percentage Used</Card.Title>
+                  <Card.Subtitle>
+                    Below is the graph of the CPU usage for the past 24 hours in
+                    1 hour intervals
+                  </Card.Subtitle>
+                  <Row>
+                    <Col className="pt-3">
+                      <ResponsiveContainer width="100%" height={200}>
+                        <AreaChart
+                          data={cpuData}
+                          margin={{
+                            top: 10,
+                            right: 30,
+                            left: 0,
+                            bottom: 0,
+                          }}
+                        >
+                          <XAxis dataKey="name" tick={true} />
+                          <YAxis />
+                          <Tooltip />
+                          {/* content={<CustomTooltip />} */}
+                          <Area
+                            type="monotone"
+                            dataKey="value"
+                            stroke={instance.cpu_status}
+                            fill={instance.cpu_status}
+                          />
+                        </AreaChart>
+                      </ResponsiveContainer>
+                    </Col>
+                  </Row>
+                </Card.Body>
+              </Card>
+            </Col>
+            <Col md={12} lg={12} xl={4}>
+              <Card>
+                <Card.Body>
+                  <Card.Title>Memory Percentage Used</Card.Title>
+                  <Card.Subtitle>
+                    Below is the graph of the Memory usage for the past 24 hours
+                    in 1 hour intervals
+                  </Card.Subtitle>
+                  <Row>
+                    <Col className="pt-3">
+                      <ResponsiveContainer width="100%" height={200}>
+                        <AreaChart
+                          data={memData}
+                          margin={{
+                            top: 10,
+                            right: 30,
+                            left: 0,
+                            bottom: 0,
+                          }}
+                        >
+                          <XAxis dataKey="name" tick={true} />
+                          <YAxis />
+                          <Tooltip />
+                          {/* content={<CustomTooltip />} */}
+                          <Area
+                            type="monotone"
+                            dataKey="value"
+                            stroke={instance.mem_status}
+                            fill={instance.mem_status}
+                          />
+                        </AreaChart>
+                      </ResponsiveContainer>
+                    </Col>
+                  </Row>
+                </Card.Body>
+              </Card>
+            </Col>
+            <Col md={12} lg={12} xl={4}>
+              <Card>
+                <Card.Body>
+                  <Card.Title>Disk Percentage Used</Card.Title>
+                  <Card.Subtitle>
+                    Below is the graph of the Disk usage for the past 24 hours
+                    in 1 hour intervals
+                  </Card.Subtitle>
+                  <Row>
+                    <Col className="pt-3">
+                      <ResponsiveContainer width="100%" height={200}>
+                        <AreaChart
+                          data={diskData}
+                          margin={{
+                            top: 10,
+                            right: 30,
+                            left: 0,
+                            bottom: 0,
+                          }}
+                        >
+                          <XAxis dataKey="name" tick={true} />
+                          <YAxis />
+                          <Tooltip />
+                          {/* content={<CustomTooltip />} */}
+                          <Area
+                            type="monotone"
+                            dataKey="value"
+                            stroke={instance.disk_status}
+                            fill={instance.disk_status}
+                          />
+                        </AreaChart>
+                      </ResponsiveContainer>
+                    </Col>
+                  </Row>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+        </>
       )}
 
-      {instance && (
-        <Row>
-          <Col>
-            <Card>
-              <Card.Body>
-                <Card.Title>Memory Percentage Used</Card.Title>
-                <Card.Subtitle>
-                  Below is the graph of the Memory usage for the past 24 hours
-                  in 1 hour intervals {instance.mem_status}
-                </Card.Subtitle>
+      <Row>
+        <Col>
+          <Card>
+            <Card.Body>
+              <Card.Title>
                 <Row>
-                  <Col className="pt-3">
-                    <ResponsiveContainer width="100%" height={200}>
-                      <AreaChart
-                        data={memData}
-                        margin={{
-                          top: 10,
-                          right: 30,
-                          left: 0,
-                          bottom: 0,
-                        }}
-                      >
-                        <XAxis dataKey="name" tick={true} />
-                        <YAxis />
-                        <Tooltip />
-                        {/* content={<CustomTooltip />} */}
-                        <Area
-                          type="monotone"
-                          dataKey="value"
-                          stroke={instance.mem_status}
-                          fill={instance.mem_status}
-                        />
-                      </AreaChart>
-                    </ResponsiveContainer>
+                  <Col>Notifications</Col>
+                  <Col className="text-right">
+                    <Button
+                      variant="link"
+                      className="p-0 m-0 btn-link"
+                      onClick={() => setShowCondition(true)}
+                    >
+                      [+] new notification
+                    </Button>
                   </Col>
                 </Row>
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
-      )}
+              </Card.Title>
+              <Card.Subtitle>
+                Below are the notifications that you have setup for this server
+              </Card.Subtitle>
 
-      {instance && (
-        <Row>
-          <Col>
-            <Card>
-              <Card.Body>
-                <Card.Title>Disk Percentage Used</Card.Title>
-                <Card.Subtitle>
-                  Below is the graph of the Disk usage for the past 24 hours in
-                  1 hour intervals
-                </Card.Subtitle>
-                <Row>
-                  <Col className="pt-3">
-                    <ResponsiveContainer width="100%" height={200}>
-                      <AreaChart
-                        data={diskData}
-                        margin={{
-                          top: 10,
-                          right: 30,
-                          left: 0,
-                          bottom: 0,
-                        }}
-                      >
-                        <XAxis dataKey="name" tick={true} />
-                        <YAxis />
-                        <Tooltip />
-                        {/* content={<CustomTooltip />} */}
-                        <Area
-                          type="monotone"
-                          dataKey="value"
-                          stroke={instance.disk_status}
-                          fill={instance.disk_status}
-                        />
-                      </AreaChart>
-                    </ResponsiveContainer>
+              {instance && showCondition && (
+                <Row className="mt-4">
+                  <Col>
+                    <MetricCondition instanceId={instance.instance_id} />
                   </Col>
                 </Row>
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
-      )}
+              )}
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
     </Body>
   );
 };

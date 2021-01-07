@@ -22,10 +22,12 @@ const Subscription = ({ paypal, ...props }) => {
   const { forceRefresh } = useAuth();
   const { role } = currentUser;
   const { subscriptions } = role.org;
-  const subscription = subscriptions.find((s) => s.product === "onerrorlog");
+  const subscription = subscriptions.find(
+    (s) => s.product_name === "onerrorlog"
+  );
   const [loading, setLoading] = useState(true);
   const [subscribed, setSubscribed] = useState(() => {
-    return subscription !== null;
+    return subscription ? true : false;
   });
   useEffect(() => {
     if (paypal) {

@@ -41,6 +41,7 @@ const PongScreen = (props) => {
   const [showCallbackBasic, setShowCallbackBasic] = useState(false);
 
   const [pongId, setPongId] = useState(null);
+  const [alertId, setAlertId] = useState(null);
   const [pongKey, setPongKey] = useState();
   const [pongName, setPongName] = useState("");
   const [docLink, setDocLink] = useState("");
@@ -85,6 +86,7 @@ const PongScreen = (props) => {
       setIncidentEndpointUser(data.alert.callback_username || "");
       setIncidentEndpointPass(data.alert.callback_password || "");
       setIncidentInterval(data.alert.incident_interval || "");
+      setAlertId(data.alert.id);
       setActive(data.active);
       setPongKey(data.push_key);
 
@@ -165,7 +167,7 @@ const PongScreen = (props) => {
     if (incidentMethod.trim().length === 0) {
       errors.push("incidentmethod");
     } else if (incidentMethod === "callback") {
-      if (incidentEndpoint.trim().length === 0) {
+      if (!incidentEndpoint || incidentEndpoint.trim().length === 0) {
         errors.push("incidentendpoint");
       } else {
         if (
@@ -513,12 +515,12 @@ const PongScreen = (props) => {
         </Col>
       </Row>
 
-      {/* <Headers
+      <Headers
         showModal={showHeaderModal}
         setShowModal={setShowHeaderModal}
         headerType={headerType}
-        pongId={pongId}
-      /> */}
+        alertId={alertId}
+      />
 
       {/* <Card>
         <Card.Body>

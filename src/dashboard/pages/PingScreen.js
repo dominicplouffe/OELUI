@@ -22,6 +22,8 @@ const PingScreen = (props) => {
 
   // Fields
   const [pingId, setPingId] = useState(null);
+  const [alertId, setAlertId] = useState(null);
+
   const [pingName, setPingName] = useState("");
   const [docLink, setDocLink] = useState("");
   const [endpoint, setEndpoint] = useState("");
@@ -222,6 +224,7 @@ const PingScreen = (props) => {
       setIncidentEndpointPass(data.alert.callback_password || "");
       setIncidentMethod(data.alert.notification_type);
       setDocLink(data.alert.doc_link || "");
+      setAlertId(data.alert.id);
 
       setShowTestPing(true);
       setActive(data.active);
@@ -806,7 +809,7 @@ const PingScreen = (props) => {
         showModal={showHeaderModal}
         setShowModal={setShowHeaderModal}
         headerType={headerType}
-        pingId={pingId}
+        alertId={alertId}
       />
     </Body>
   );

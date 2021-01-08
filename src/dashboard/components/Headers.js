@@ -45,7 +45,7 @@ const Headers = ({ alertId, headerType, setShowModal, showModal }) => {
         if (hdr.status === "update") {
           api(`ping_header/${hdr.id}/`, "PUT", hdr);
         } else if (hdr.status === "new") {
-          const { data = null, error = null } = api(`ping_header/`, "POST", {
+          api(`ping_header/`, "POST", {
             key: hdr.key,
             value: hdr.value,
             header_type: headerType,

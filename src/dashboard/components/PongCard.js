@@ -31,10 +31,10 @@ const PongCard = ({ m, showSummary, showEdit, showOther }) => {
         <Card.Title>
           <Row>
             <Col className="text-center" xl={3} md={12}>
-              {(!showOther || otherPongs.length <= 1) && <h3>{m.ping.name}</h3>}
+              {(!showOther || otherPongs.length <= 1) && <h3>{m.pong.name}</h3>}
               {showOther && otherPongs.length > 1 && (
                 <SplitButton
-                  title={m.ping.name}
+                  title={m.pong.name}
                   id="dropdown-menu-align-responsive-2"
                   variant="custom"
                 >
@@ -51,12 +51,12 @@ const PongCard = ({ m, showSummary, showEdit, showOther }) => {
               )}
             </Col>
             <Col className="text-center" xl={6} md={12}>
-              <small>{m.ping.endpoint}</small>
+              <small>{m.pong.endpoint}</small>
             </Col>
             <Col className="text-center" xl={3} md={12}>
               <small>
                 {showSummary && (
-                  <Link to={`/pong/summary/${m.ping.id}`}>summary</Link>
+                  <Link to={`/pong/summary/${m.pong.id}`}>summary</Link>
                 )}
                 {user.role.role === "admin" && showEdit && showSummary ? (
                   <span> | </span>
@@ -64,17 +64,17 @@ const PongCard = ({ m, showSummary, showEdit, showOther }) => {
                   ``
                 )}
                 {user.role.role === "admin" && showEdit && (
-                  <Link to={`/pong/${m.ping.id}`}>edit</Link>
+                  <Link to={`/pong/${m.pong.id}`}>edit</Link>
                 )}
               </small>
             </Col>
           </Row>
         </Card.Title>
-        {m.ping.active && (
+        {m.pong.active && (
           <Row>
             <Col className="text-center" xs={12} sm={12} xl={3}>
               <small>&nbsp;</small>
-              {m.ping.failure_count === 0 ? (
+              {m.pong.alert.failure_count === 0 ? (
                 <h1 className="text-success">✔</h1>
               ) : (
                 <h1 className="text-danger">✖</h1>
@@ -84,7 +84,7 @@ const PongCard = ({ m, showSummary, showEdit, showOther }) => {
               <small>Failures</small>
               <h1>{m.failure}</h1>
             </Col>
-            {m.ping.failure_count === 0 ? (
+            {m.pong.alert.failure_count === 0 ? (
               <>
                 <Col className="text-center pt-2" xs={6} sm={12} xl={3}>
                   <small>Downtime</small>
@@ -135,7 +135,7 @@ const PongCard = ({ m, showSummary, showEdit, showOther }) => {
           </Row>
         )}
 
-        {!m.ping.active && (
+        {!m.pong.active && (
           <Row>
             <Col className="text-center">
               <h2>Paused</h2>

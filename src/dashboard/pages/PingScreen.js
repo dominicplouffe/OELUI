@@ -155,7 +155,7 @@ const PingScreen = (props) => {
         expected_string: jsonKey,
         expected_value: "", //validationText || jsonValue,
         callback_url: incidentEndpoint,
-        callback_userame: incidentEndpointUser,
+        callback_username: incidentEndpointUser,
         callback_password: incidentEndpointPass,
         incident_interval: incidentInterval,
         active: pingActive,
@@ -214,12 +214,15 @@ const PingScreen = (props) => {
       setValidationText(data.expected_value || "");
       setJsonKey(data.expected_string || "");
       setJsonValue(data.expected_value || "");
-      setIncidentInterval(data.incident_interval || "");
-      setIncidentEndpoint(data.callback_url || "");
-      setIncidentEndpointUser(data.callback_userame || "");
-      setIncidentEndpointPass(data.callback_password || "");
-      setIncidentMethod(data.notification_type);
-      setDocLink(data.doc_link || "");
+
+      // Alert Settings
+      setIncidentInterval(data.alert.incident_interval || "");
+      setIncidentEndpoint(data.alert.callback_url || "");
+      setIncidentEndpointUser(data.alert.callback_username || "");
+      setIncidentEndpointPass(data.alert.callback_password || "");
+      setIncidentMethod(data.alert.notification_type);
+      setDocLink(data.alert.doc_link || "");
+
       setShowTestPing(true);
       setActive(data.active);
 
@@ -666,7 +669,7 @@ const PingScreen = (props) => {
                             }
                           >
                             <small>
-                              {showBasic
+                              {showCallbackBasic
                                 ? ` [-] basic authentication`
                                 : ` [+] show basic authentication`}
                             </small>
@@ -767,7 +770,7 @@ const PingScreen = (props) => {
         </Col>
         <Col className="text-right" xs={12} lg={6}>
           <EnableButton
-            pingId={pingId}
+            objectId={pingId}
             active={active}
             enableAction={() => {
               setActive(true);
@@ -775,7 +778,7 @@ const PingScreen = (props) => {
             }}
           />
           <DisableButton
-            pingId={pingId}
+            objectId={pingId}
             active={active}
             disableAction={() => {
               setActive(false);

@@ -32,6 +32,7 @@ const Ping = (props) => {
 
   const fetchSummary = async (skip = false) => {
     setLoading(false);
+    console.log("a");
     if (!skip) {
       const { data = null, error = null } = await api(
         `ping/summary/?direction=${direction}`

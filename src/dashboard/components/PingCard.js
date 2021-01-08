@@ -19,7 +19,7 @@ const PingCard = ({ m, showSummary, showEdit, showOther }) => {
       return "#dba222";
     }
 
-    return "#991840";
+    return "#bb1d4e";
   };
 
   const getSuccessRate = (s) => {
@@ -64,7 +64,9 @@ const PingCard = ({ m, showSummary, showEdit, showOther }) => {
   };
 
   useEffect(() => {
-    getOtherPings();
+    if (showOther) {
+      getOtherPings();
+    }
     // eslint-disable-next-line
   }, [showOther]);
 
@@ -117,7 +119,7 @@ const PingCard = ({ m, showSummary, showEdit, showOther }) => {
           <Row>
             <Col className="text-center" xs={12} sm={12} xl={3}>
               <small>&nbsp;</small>
-              {m.ping.failure_count === 0 ? (
+              {m.ping.alert.failure_count === 0 ? (
                 <h1 className="text-success">✔</h1>
               ) : (
                 <h1 className="text-danger">✖</h1>
@@ -127,7 +129,7 @@ const PingCard = ({ m, showSummary, showEdit, showOther }) => {
               <small>Availability</small>
               <h1>{m.availability.toFixed(2)}%</h1>
             </Col>
-            {m.ping.failure_count === 0 ? (
+            {m.ping.alert.failure_count === 0 ? (
               <>
                 <Col className="text-center" xs={12} sm={12} xl={3}>
                   <small>Downtime</small>

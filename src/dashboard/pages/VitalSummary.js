@@ -21,6 +21,7 @@ const VitalSummary = (props) => {
   const [memData, setMemData] = useState([]);
   const [diskData, setDiskData] = useState([]);
   const [showCondition, setShowCondition] = useState(true);
+  const [notifications, setNotifications] = useState([]);
 
   const fetchInstance = async () => {
     const { data = null, error = null } = await api(
@@ -41,6 +42,10 @@ const VitalSummary = (props) => {
     setLoading(false);
   };
 
+  const fetchNotifications = async () => {
+    setNotifications([]);
+  };
+
   const extractGraphData = (data, key, setFunc) => {
     const values = [];
 
@@ -59,6 +64,7 @@ const VitalSummary = (props) => {
 
   useEffect(() => {
     fetchInstance();
+    fetchNotifications();
     // eslint-disable-next-line
   }, []);
 
@@ -196,11 +202,11 @@ const VitalSummary = (props) => {
                   <Col>Notifications</Col>
                   <Col className="text-right">
                     <Button
-                      variant="link"
-                      className="p-0 m-0 btn-link"
+                      variant="warning"
+                      className="m-0 btn-rounded"
                       onClick={() => setShowCondition(true)}
                     >
-                      [+] new notification
+                      New Notification
                     </Button>
                   </Col>
                 </Row>
@@ -212,7 +218,30 @@ const VitalSummary = (props) => {
               {instance && showCondition && (
                 <Row className="mt-4">
                   <Col>
-                    <MetricCondition instanceId={instance.instance_id} />
+                    <MetricCondition
+                      instanceId={instance.instance_id}
+                      setShowCondition={setShowCondition}
+                    />
+                  </Col>
+                </Row>
+              )}
+
+              {!showCondition && notifications.length === 0 && (
+                <Row className="mt-4">
+                  <Col className="text-center">
+                    <h5 className="pt-3">
+                      You have not added any notifications yet.
+                    </h5>
+                    <div className="pt-2">
+                      <Button
+                        variant="warning"
+                        className="btn-rounded mb-2 mr-2"
+                        style={{ fontSize: "16px" }}
+                        onClick={() => setShowCondition(true)}
+                      >
+                        Add Your First Notification
+                      </Button>
+                    </div>
                   </Col>
                 </Row>
               )}

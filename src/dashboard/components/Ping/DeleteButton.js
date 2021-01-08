@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 
-const DeleteButton = ({ pingId, active, deleteAction }) => {
+const DeleteButton = ({ objectId, active, deleteAction, isPong }) => {
   const [showModal, setShowModal] = useState(false);
 
-  if (pingId === null) {
+  if (objectId === null) {
     return null;
   }
   if (active) {
@@ -18,11 +18,11 @@ const DeleteButton = ({ pingId, active, deleteAction }) => {
         onClick={() => setShowModal(true)}
         style={{ color: "#a0a0a0" }}
       >
-        [-] Delete Ping
+        [-] Delete {isPong ? `Pong` : `Ping`}
       </Button>
       <Modal show={showModal} onHide={setShowModal}>
         <Modal.Header closeButton>
-          <Modal.Title>Delete Ping</Modal.Title>
+          <Modal.Title>Delete {isPong ? `Pong` : `Ping`}</Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
@@ -30,10 +30,11 @@ const DeleteButton = ({ pingId, active, deleteAction }) => {
             <strong>This action is NOT reversible!</strong>
           </p>
           <p>
-            When you delete a ping, you also delete all the associated
-            historical data. If you want to keep the associated data, keep the
-            ping disabled. Disabled pings do not count towards your Ping Count
-            on your Plan.
+            When you delete a {isPong ? `pong` : `ping`}, you also delete all
+            the associated historical data. If you want to keep the associated
+            data, keep the {isPong ? `pong` : `ping`} disabled. Disabled{" "}
+            {isPong ? `pongs` : `pings`} do not count towards your{" "}
+            {isPong ? `Pong` : `Ping`} Count on your Plan.
           </p>
           <p>Are you absolutely certain you want to continue?</p>
         </Modal.Body>
@@ -54,7 +55,7 @@ const DeleteButton = ({ pingId, active, deleteAction }) => {
             }}
             className="btn-rounded"
           >
-            Yes, Delete My Ping
+            Yes, Delete My {isPong ? `Pong` : `Ping`}
           </Button>
         </Modal.Footer>
       </Modal>

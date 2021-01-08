@@ -133,7 +133,7 @@ a.text-primary:focus, a.text-primary:hover {
 }
 
 .card .card-title {
-    color: #d46512;
+    color: #f59a5a;
 }
 
 /* .navbar-header {
@@ -188,7 +188,7 @@ a.text-primary:focus, a.text-primary:hover {
 }
 
 .btn-warning {
-    background-color: #d46512;
+    background-color: #f59a5a;
     color: #fff;
 }
 
@@ -217,14 +217,14 @@ a.text-primary:focus, a.text-primary:hover {
     color: #fff;
 }
 .btn-danger {
-    background-color: #991840;
+    background-color:#bb1d4e;
     border: 1px solid #bb1d4e;
     color: #fff;
 }
 
 .btn-danger:hover {
     background-color: #bb1d4e;
-    border: 1px solid #991840;
+    border: 1px solid #bb1d4e;
     color: #fff;
 }
 
@@ -424,7 +424,7 @@ pre.code  {
 
 .btn-custom {
     font-size: 1.3125rem;
-    color: #d46512;
+    color: #f59a5a;
 }
 
 .right-align-small-center {

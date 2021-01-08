@@ -79,12 +79,12 @@ const PongScreen = (props) => {
 
     if (data) {
       setPongName(data.name);
-      setDocLink(data.doc_link);
-      setIncidentMethod(data.notification_type);
-      setIncidentEndpoint(data.callback_url || "");
-      setIncidentEndpointUser(data.callback_userame || "");
-      setIncidentEndpointPass(data.callback_password || "");
-      setIncidentInterval(data.incident_interval || "");
+      setDocLink(data.alert.doc_link);
+      setIncidentMethod(data.alert.notification_type);
+      setIncidentEndpoint(data.alert.callback_url || "");
+      setIncidentEndpointUser(data.alert.callback_username || "");
+      setIncidentEndpointPass(data.alert.callback_password || "");
+      setIncidentInterval(data.alert.incident_interval || "");
       setActive(data.active);
       setPongKey(data.push_key);
 
@@ -92,7 +92,7 @@ const PongScreen = (props) => {
     }
 
     if (error) {
-      alert("Something went wrong, we cannot find your ping");
+      alert("Something went wrong, we cannot find your pong");
     }
 
     setLoading(false);
@@ -109,13 +109,17 @@ const PongScreen = (props) => {
     method(value);
   };
 
-  const deletePong = () => {};
+  const deletePong = async () => {
+    await api(`pong/${pongId}/`, "DELETE");
 
-  const savePong = async (pingActive) => {
+    history.push("/pongs");
+  };
+
+  const savePong = async (pongActive) => {
     const errors = validateForm();
 
-    if (pingActive === null) {
-      pingActive = active;
+    if (pongActive === null) {
+      pongActive = active;
     }
     if (errors.length === 0) {
       const payload = {
@@ -124,10 +128,10 @@ const PongScreen = (props) => {
         direction: "pull",
         notification_type: incidentMethod,
         callback_url: incidentEndpoint,
-        callback_userame: incidentEndpointUser,
+        callback_username: incidentEndpointUser,
         callback_password: incidentEndpointPass,
         incident_interval: incidentInterval,
-        active: pingActive,
+        active: pongActive,
         push_key: pongKey,
       };
 
@@ -187,14 +191,14 @@ const PongScreen = (props) => {
 
   const fetchSummary = async (id) => {
     const { data = null, error = null } = await api(
-      `ping/summary/${id}/?direction=push`
+      `pong/summary/${id}/?direction=push`
     );
 
     if (data) {
-      setSummary(data.pings[0]);
+      setSummary(data.pongs[0]);
     }
     if (error) {
-      alert("Something went wrong, we cannot find your ping");
+      alert("Something went wrong, we cannot find your pong");
     }
   };
 
@@ -271,7 +275,7 @@ const PongScreen = (props) => {
                 label="Minimum Incident Count"
                 defaultValue={incidentInterval}
                 defaultText="Select an incident count"
-                helperText="onErrorLog will contact you have this many pings have failed"
+                helperText="onErrorLog will contact you have this many pongs have failed"
                 showDefault={true}
                 values={[
                   { value: "1", text: "Tell us right away" },
@@ -471,9 +475,10 @@ const PongScreen = (props) => {
       <Row>
         <Col className="text-left" xs={12} lg={6}>
           <DeleteButton
-            pingId={pongId}
+            pongId={pongId}
             active={active}
             deleteAction={() => deletePong()}
+            isPong={true}
           />
           {saved && (
             <strong className="text-success">Your pong has been saved.</strong>
@@ -481,7 +486,7 @@ const PongScreen = (props) => {
         </Col>
         <Col className="text-right" xs={12} lg={6}>
           <EnableButton
-            pingId={pongId}
+            objectId={pongId}
             active={active}
             isPong={true}
             enableAction={() => {
@@ -490,7 +495,7 @@ const PongScreen = (props) => {
             }}
           />
           <DisableButton
-            pingId={pongId}
+            objectId={pongId}
             active={active}
             isPong={true}
             disableAction={() => {
@@ -508,12 +513,12 @@ const PongScreen = (props) => {
         </Col>
       </Row>
 
-      <Headers
+      {/* <Headers
         showModal={showHeaderModal}
         setShowModal={setShowHeaderModal}
         headerType={headerType}
-        pingId={pongId}
-      />
+        pongId={pongId}
+      /> */}
 
       {/* <Card>
         <Card.Body>

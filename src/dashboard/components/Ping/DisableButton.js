@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 
-const DisableButton = ({ pingId, active, disableAction, isPong }) => {
+const DisableButton = ({ objectId, active, disableAction, isPong }) => {
   const [showModal, setShowModal] = useState(false);
 
-  if (pingId === null) {
+  if (objectId === null) {
     return null;
   }
   if (!active) {

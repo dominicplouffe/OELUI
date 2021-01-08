@@ -39,19 +39,22 @@ const PongSummary = (props) => {
 
   const fetchSummary = async (id) => {
     const { data = null, error = null } = await api(
-      `ping/summary/${id}/?direction=push&hours=168`
+      `pong/summary/${id}/?direction=push&hours=168`
     );
 
     if (data) {
-      setSummary(data.pings[0]);
+      setSummary(data.pongs[0]);
+
+      fetchFailreCounts(data.pongs[0].pong.alert.id);
+      fetchFailures(data.pongs[0].pong.alert.id);
     }
     if (error) {
-      alert("Something went wrong, we cannot find your ping");
+      alert("Something went wrong, we cannot find your pong");
     }
   };
 
   const fetchDetails = async (id) => {
-    const { data = null, error = null } = await api(`ping/details/${id}/`);
+    const { data = null, error = null } = await api(`pong/details/${id}/`);
 
     if (data) {
       setCalendarData(data.calendar.data);
@@ -59,7 +62,7 @@ const PongSummary = (props) => {
       setCalendarEnd(data.calendar.end);
     }
     if (error) {
-      alert("Something went wrong, we cannot find your ping");
+      alert("Something went wrong, we cannot find your pong");
     }
   };
 
@@ -69,19 +72,19 @@ const PongSummary = (props) => {
     setFailureCounts(data);
 
     if (error) {
-      alert("Something went wrong, we cannot find your ping");
+      alert("Something went wrong, we cannot find your pong");
     }
   };
 
   const fetchFailures = async (id) => {
     const { data = null, error = null } = await api(
-      `failure/?ping=${id}&ordering=-created_on&offset=0&limit=100`
+      `failure/?alert=${id}&ordering=-created_on&offset=0&limit=100`
     );
 
     setFailures(data.results);
 
     if (error) {
-      alert("Something went wrong, we cannot find your ping");
+      alert("Something went wrong, we cannot find your pong");
     }
   };
 
@@ -93,8 +96,7 @@ const PongSummary = (props) => {
 
     fetchSummary(id);
     fetchDetails(id);
-    fetchFailreCounts(id);
-    fetchFailures(id);
+
     setLoading(false);
   };
 
@@ -115,7 +117,7 @@ const PongSummary = (props) => {
     }
 
     const thisDate = moment(c.date);
-    const createdOn = moment(summary.ping.created_on);
+    const createdOn = moment(summary.pong.created_on);
 
     if (thisDate >= createdOn) {
       return "#409918";
@@ -264,7 +266,7 @@ const PongSummary = (props) => {
           {failures.length === 0 && (
             <Row>
               <Col className="text-center pb-3">
-                <h2>This ping has not yet experienced any incidents. Yay!</h2>
+                <h2>This pong has not yet experienced any incidents. Yay!</h2>
               </Col>
             </Row>
           )}

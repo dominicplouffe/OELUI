@@ -69,6 +69,9 @@ const PingSummary = (props) => {
       }
 
       setResponseTimeData(resData);
+
+      fetchFailreCounts(data.pings[0].ping.alert.id);
+      fetchFailures(data.pings[0].ping.alert.id);
     }
     if (error) {
       alert("Something went wrong, we cannot find your ping");
@@ -100,7 +103,7 @@ const PingSummary = (props) => {
 
   const fetchFailures = async (id) => {
     const { data = null, error = null } = await api(
-      `failure/?ping=${id}&ordering=-created_on&offset=0&limit=20`
+      `failure/?alert=${id}&ordering=-created_on&offset=0&limit=20`
     );
 
     setFailures(data.results);
@@ -114,8 +117,8 @@ const PingSummary = (props) => {
     const id = props.match.params.id;
     fetchSummary(id);
     fetchDetails(id);
-    fetchFailreCounts(id);
-    fetchFailures(id);
+    // fetchFailreCounts(id);
+    // fetchFailures(id);
 
     setLoading(false);
   };
@@ -135,17 +138,16 @@ const PingSummary = (props) => {
     } else if (c.status === "success") {
       return "#409918";
     } else if (c.status === "danger") {
-      return "#991840";
+      return "#bb1d4e";
     }
     return "#efefef";
   };
 
   const CustomTooltip = ({ active, payload, label }) => {
-    if (active) {
+    if (active && payload[0]) {
       return (
         <div className="custom-tooltip">
           <p className="label">{`Hour of day (UTC)${label} : ${payload[0].value} ms`}</p>
-          {/* <p className="intro">{getIntroOfPage(label)}</p> */}
           <p className="desc">
             {`The average response time was ${payload[0].value} ms`}
           </p>

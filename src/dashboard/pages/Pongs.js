@@ -10,9 +10,8 @@ import useAuth from "../../auth/useAuth";
 const Pong = (props) => {
   const [loading, setLoading] = useState(true);
   const [totals, setTotals] = useState({});
-  const [pings, setPings] = useState([]);
+  const [pongs, setPongs] = useState([]);
   const [fetchDate, setFetchDate] = useState(null);
-  const direction = "push";
   const hours = 168;
 
   const { refresh } = useAuth();
@@ -36,12 +35,12 @@ const Pong = (props) => {
     setLoading(false);
     if (!skip) {
       const { data = null, error = null } = await api(
-        `ping/summary/?direction=${direction}&hours=${hours}`
+        `pong/summary/?hours=${hours}`
       );
 
       if (data) {
         setTotals(data.totals);
-        setPings(data.pings);
+        setPongs(data.pongs);
         setFetchDate(new Date());
       }
 
@@ -123,10 +122,10 @@ const Pong = (props) => {
         </Card.Body>
       </Card>
 
-      {pings.map((m, i) => (
+      {pongs.map((m, i) => (
         <PongCard m={m} key={i} showSummary={true} showEdit={true} />
       ))}
-      {pings.length === 0 && !loading && (
+      {pongs.length === 0 && !loading && (
         <Card>
           <Card.Body className="p-5">
             <Row>

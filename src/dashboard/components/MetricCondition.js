@@ -42,7 +42,6 @@ const MetricCondition = ({ instanceId, setShowCondition }) => {
         span: spanType,
       },
     };
-    console.log(rule);
 
     const payload = {
       instance_id: instanceId,
@@ -138,7 +137,7 @@ const MetricCondition = ({ instanceId, setShowCondition }) => {
       } else if (metricName === "memory_percent.mem") {
         sentence.push(<strong>Memory</strong>);
       } else if (metricName === "disk_percent.disk") {
-        sentence.push(<strong>Metric</strong>);
+        sentence.push(<strong>Disk Space</strong>);
       }
 
       sentence.push("metric");
@@ -171,7 +170,7 @@ const MetricCondition = ({ instanceId, setShowCondition }) => {
 
   const doSave = async () => {
     const payload = {
-      instance_id: instanceId,
+      instance: instanceId,
       rule: {
         category: metricName.split(".")[0],
         metric: metricName.split(".")[1],
@@ -183,7 +182,20 @@ const MetricCondition = ({ instanceId, setShowCondition }) => {
         op: op,
         value: value,
       },
+      active: true,
+      notification_type: incidentMethod,
+      incident_interval: 1,
+      callback_url: null,
+      callback_username: null,
+      callback_password: null,
+      doc_link: null,
     };
+
+    const { data = null, error = null } = await api(
+      "metric_condition/",
+      "POST",
+      payload
+    );
   };
 
   useEffect(() => {
@@ -209,7 +221,10 @@ const MetricCondition = ({ instanceId, setShowCondition }) => {
               { value: "memory_percent.mem", text: "Memory" },
               { value: "disk_percent.disk", text: "Disk Space" },
             ]}
-            onChange={(e) => setMetricAndGetSample(e.target.value)}
+            onChange={(e) => {
+              setShowConfirm(false);
+              setMetricAndGetSample(e.target.value);
+            }}
             isInvalid={formErrors.indexOf("metric_name") > -1}
           />
         </Col>
@@ -244,7 +259,10 @@ const MetricCondition = ({ instanceId, setShowCondition }) => {
                   { value: "sum", text: "Sum of the values" },
                   { value: "avg", text: "Average of the values" },
                 ]}
-                onChange={(e) => setRuleValue(setMetricRollup, e.target.value)}
+                onChange={(e) => {
+                  setShowConfirm(false);
+                  setRuleValue(setMetricRollup, e.target.value);
+                }}
                 isInvalid={formErrors.indexOf("metric_rollup") > -1}
               />
               {["sum", "avg"].indexOf(metricRollup) > -1 && (
@@ -256,9 +274,10 @@ const MetricCondition = ({ instanceId, setShowCondition }) => {
                       showDefault={false}
                       values={getTimeValues()}
                       defaultValue={spanValue}
-                      onChange={(e) =>
-                        setRuleValue(setSpanValue, e.target.value)
-                      }
+                      onChange={(e) => {
+                        setShowConfirm(false);
+                        setRuleValue(setSpanValue, e.target.value);
+                      }}
                       disabled={["sum", "avg"].indexOf(metricRollup) === -1}
                       isInvalid={formErrors.indexOf("span_value") > -1}
                     />
@@ -273,9 +292,10 @@ const MetricCondition = ({ instanceId, setShowCondition }) => {
                         { value: "days", text: "Days" },
                       ]}
                       defaultValue={spanType}
-                      onChange={(e) =>
-                        setRuleValue(setSpanType, e.target.value)
-                      }
+                      onChange={(e) => {
+                        setShowConfirm(false);
+                        setRuleValue(setSpanType, e.target.value);
+                      }}
                       disabled={["sum", "avg"].indexOf(metricRollup) === -1}
                       isInvalid={formErrors.indexOf("span_type") > -1}
                     />
@@ -296,7 +316,10 @@ const MetricCondition = ({ instanceId, setShowCondition }) => {
                   { value: ">", text: "is greater than" },
                   { value: ">=", text: "is greater than or equal to" },
                 ]}
-                onChange={(e) => setRuleValue(setOp, e.target.value)}
+                onChange={(e) => {
+                  setShowConfirm(false);
+                  setRuleValue(setOp, e.target.value);
+                }}
                 isInvalid={formErrors.indexOf("op") > -1}
               />
             </Col>
@@ -327,7 +350,10 @@ const MetricCondition = ({ instanceId, setShowCondition }) => {
                     text: "Notify your team (email or text message)",
                   },
                 ]}
-                onChange={(e) => setIncidentMethod(e.target.value)}
+                onChange={(e) => {
+                  setShowConfirm(false);
+                  setIncidentMethod(e.target.value);
+                }}
                 isInvalid={formErrors.indexOf("incidentmethod") > -1}
               />
             </Col>

@@ -14,7 +14,7 @@ import Headers from "../components/Headers";
 import DisableButton from "../components/Ping/DisableButton";
 import EnableButton from "../components/Ping/EnableButton";
 import DeleteButton from "../components/Ping/DeleteButton";
-import PongCard from "../components/PongCard";
+import AlertCard from "../components/AlertCard";
 import useAuth from "../../auth/useAuth";
 
 const generatePongKey = () => {
@@ -193,11 +193,11 @@ const PongScreen = (props) => {
 
   const fetchSummary = async (id) => {
     const { data = null, error = null } = await api(
-      `pong/summary/${id}/?direction=push`
+      `alert_summary/pong/${id}/`
     );
 
     if (data) {
-      setSummary(data.pongs[0]);
+      setSummary(data.objects[0]);
     }
     if (error) {
       alert("Something went wrong, we cannot find your pong");
@@ -211,7 +211,15 @@ const PongScreen = (props) => {
       {...props}
       loading={loading}
     >
-      {summary && <PongCard m={summary} showSummary={false} showEdit={false} />}
+      {summary && (
+        <AlertCard
+          m={summary}
+          showSummary={false}
+          showEdit={false}
+          showOther={true}
+          otherPath="pong"
+        />
+      )}
       <Card>
         <Card.Body>
           <Card.Title>Notification Settings</Card.Title>

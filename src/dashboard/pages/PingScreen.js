@@ -5,7 +5,7 @@ import InputSelect from "../components/InputSelect";
 import { Card, Row, Col, Button, Form } from "react-bootstrap";
 import api from "../../utils/api";
 import { useHistory } from "react-router-dom";
-import PingCard from "../components/PingCard";
+import AlertCard from "../components/AlertCard";
 import ResultModal from "../components/ResultModal";
 import Headers from "../components/Headers";
 import DisableButton from "../components/Ping/DisableButton";
@@ -191,10 +191,12 @@ const PingScreen = (props) => {
 
   const fetchSummary = async (id) => {
     if (loading) {
-      const { data = null, error = null } = await api(`ping/summary/${id}/`);
+      const { data = null, error = null } = await api(
+        `alert_summary/ping/${id}/`
+      );
 
       if (data) {
-        setSummary(data.pings[0]);
+        setSummary(data.objects[0]);
       }
       if (error) {
         alert("Something went wrong, we cannot find your ping");
@@ -328,7 +330,15 @@ const PingScreen = (props) => {
       {...props}
       loading={loading}
     >
-      {summary && <PingCard m={summary} showSummary={false} showEdit={false} />}
+      {summary && (
+        <AlertCard
+          m={summary}
+          showSummary={false}
+          showEdit={false}
+          otherPath="ping"
+          showResponseView={true}
+        />
+      )}
       <Card>
         <Card.Body>
           <Card.Title>Ping Details</Card.Title>

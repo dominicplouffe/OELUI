@@ -13,6 +13,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import MetricCondition from "../components/MetricCondition";
+import MetricConditionSentence from "../components/MetricConditionSentence";
 
 const VitalSummary = (props) => {
   const [loading, setLoading] = useState(true);
@@ -20,7 +21,7 @@ const VitalSummary = (props) => {
   const [cpuData, setCPUData] = useState([]);
   const [memData, setMemData] = useState([]);
   const [diskData, setDiskData] = useState([]);
-  const [showCondition, setShowCondition] = useState(true);
+  const [showCondition, setShowCondition] = useState(false);
   const [notifications, setNotifications] = useState([]);
 
   const fetchInstance = async () => {
@@ -43,7 +44,17 @@ const VitalSummary = (props) => {
   };
 
   const fetchNotifications = async () => {
-    setNotifications([]);
+    const { data = null, error = null } = await api(
+      `metric_condition/?instance=${props.match.params.id}`
+    );
+
+    if (data) {
+      setNotifications(data.results);
+    }
+
+    if (error) {
+      alert("Something went wrong, cannot fetch your notifications");
+    }
   };
 
   const extractGraphData = (data, key, setFunc) => {
@@ -244,6 +255,43 @@ const VitalSummary = (props) => {
                     </div>
                   </Col>
                 </Row>
+              )}
+
+              {!showCondition && notifications.length > 0 && (
+                <>
+                  <Row className="mt-4 pl-2 pr-2">
+                    <Col>
+                      <strong>Rule</strong>
+                    </Col>
+                    <Col xs={3} className="text-right">
+                      Actions
+                    </Col>
+                  </Row>
+
+                  {notifications.map((n, i) => (
+                    <Row key={i} className="pl-2 pr-2 mt-1">
+                      <Col>
+                        <MetricConditionSentence
+                          metricRollup={n.rule.metric_rollup}
+                          metricName={`${n.rule.category}.${n.rule.metric}`}
+                          op={n.rule.op}
+                          value={n.rule.value}
+                          spanValue={n.rule.timespan.value}
+                          spanType={n.rule.timespan.span}
+                        />
+                      </Col>
+                      <Col xs={3} className="text-right">
+                        <Button
+                          variant="primary"
+                          // onClick={() => savePing(null)}
+                          className="btn-rounded"
+                        >
+                          Update Ping
+                        </Button>
+                      </Col>
+                    </Row>
+                  ))}
+                </>
               )}
             </Card.Body>
           </Card>

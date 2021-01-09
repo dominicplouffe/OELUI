@@ -92,7 +92,11 @@ const AppRoutes = () => {
         <Redirect to="/pings" />
       </DashboardRoute>
 
-      <DashboardRoute exact path="/failure/:id" component={Failure} />
+      <DashboardRoute
+        exact
+        path="/failure/:id/:otype/:oid"
+        component={Failure}
+      />
     </Switch>
   );
 };

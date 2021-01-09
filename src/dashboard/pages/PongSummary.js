@@ -3,7 +3,7 @@ import Body from "../components/Body";
 import { Card, Row, Col, ProgressBar, Table } from "react-bootstrap";
 import moment from "moment";
 import api from "../../utils/api";
-import PongCard from "../components/PongCard";
+import AlertCard from "../components/AlertCard";
 import useAuth from "../../auth/useAuth";
 import { Link } from "react-router-dom";
 import FailureStatus from "../components/FailureStatus";
@@ -18,7 +18,7 @@ const PongSummary = (props) => {
   );
   const [failureCounts, setFailureCounts] = useState([]);
   const [failures, setFailures] = useState([]);
-
+  const [otherPongs, setOtherPongs] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const { refresh } = useAuth();
@@ -39,14 +39,14 @@ const PongSummary = (props) => {
 
   const fetchSummary = async (id) => {
     const { data = null, error = null } = await api(
-      `pong/summary/${id}/?direction=push&hours=168`
+      `alert_summary/pong/${id}/?direction=push&hours=168`
     );
 
     if (data) {
-      setSummary(data.pongs[0]);
+      setSummary(data.objects[0]);
 
-      fetchFailreCounts(data.pongs[0].pong.alert.id);
-      fetchFailures(data.pongs[0].pong.alert.id);
+      fetchFailreCounts(data.objects[0].object.alert.id);
+      fetchFailures(data.objects[0].object.alert.id);
     }
     if (error) {
       alert("Something went wrong, we cannot find your pong");
@@ -96,6 +96,7 @@ const PongSummary = (props) => {
 
     fetchSummary(id);
     fetchDetails(id);
+    getOtherPongs();
 
     setLoading(false);
   };
@@ -105,6 +106,17 @@ const PongSummary = (props) => {
 
     // eslint-disable-next-line
   }, [refresh]);
+
+  const getOtherPongs = async () => {
+    const { data = null, error = null } = await api(`pong/`);
+
+    if (data) {
+      setOtherPongs(data.results);
+    }
+    if (error) {
+      alert("Someting went wrong");
+    }
+  };
 
   const getCalendarCellColor = (c) => {
     if (c.status === "warning") {
@@ -117,7 +129,7 @@ const PongSummary = (props) => {
     }
 
     const thisDate = moment(c.date);
-    const createdOn = moment(summary.pong.created_on);
+    const createdOn = moment(summary.object.created_on);
 
     if (thisDate >= createdOn) {
       return "#409918";
@@ -129,11 +141,12 @@ const PongSummary = (props) => {
   return (
     <Body title="Pong Summary" selectedMenu="pong" {...props} loading={loading}>
       {summary && (
-        <PongCard
+        <AlertCard
           m={summary}
           showEdit={true}
           showSummary={false}
-          showOther={true}
+          otherObjects={otherPongs}
+          otherPath="pong"
         />
       )}
 
@@ -248,7 +261,9 @@ const PongSummary = (props) => {
                           <FailureStatus failure={f} />
                         </td>
                         <td className="text-right hide-small">
-                          <Link to={`/failure/${f.id}`}>
+                          <Link
+                            to={`/failure/${f.id}/pong/${props.match.params.id}`}
+                          >
                             <img
                               src="https://onerrorlog.s3.amazonaws.com/images/details.png"
                               alt={`Failure Details for ${f.id}`}

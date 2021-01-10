@@ -269,7 +269,7 @@ const VitalSummary = (props) => {
         <AlertCard
           m={m}
           key={i}
-          showSummary={false}
+          showSummary={true}
           showEdit={true}
           otherPath={`vital/${instance.id}/condition`}
           showResponseView={false}

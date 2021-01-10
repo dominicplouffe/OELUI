@@ -29,6 +29,7 @@ import Profile from "./dashboard/pages/Profile";
 import Failure from "./dashboard/pages/Failure";
 
 import MetricConditionScreen from "./dashboard/pages/MetricConditionScreen";
+import MetricConditionSummary from "./dashboard/pages/MetricConditionSummary";
 
 function App() {
   return (
@@ -92,6 +93,11 @@ const AppRoutes = () => {
       <DashboardRoute
         path="/vital/:instanceId/condition/:id"
         component={MetricConditionScreen}
+        exact={true}
+      />
+      <DashboardRoute
+        path="/vital/:instanceId/condition/summary/:id"
+        component={MetricConditionSummary}
         exact={true}
       />
 

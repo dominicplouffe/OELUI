@@ -91,6 +91,9 @@ const MetricConditionScreen = (props) => {
   };
 
   const getMetricCondition = async () => {
+    if (props.match.params.id === "0") {
+      return null;
+    }
     const { data = null, error = null } = await api(
       `metric_condition/${props.match.params.id}/`
     );
@@ -281,6 +284,9 @@ const MetricConditionScreen = (props) => {
 
         if (data) {
           setSaved(true);
+
+          setMetricId(data.id);
+          history.push(`/vital/${instance.id}/condition/${data.id}`);
         }
         if (error) {
           alert("Something went wrong, we cannot save your condition");
@@ -582,8 +588,22 @@ const MetricConditionScreen = (props) => {
                       {latestValue !== null && (
                         <Row className="pt-3">
                           <Col>
-                            <Card.Title>Selected Value</Card.Title>
-                            <Row>
+                            <Card.Title>
+                              Value of the Selected Metric
+                            </Card.Title>
+                            <Card.Subtitle>
+                              <p>
+                                This is the current value based on the metric
+                                and conditions that you selected.
+                              </p>
+                              <p>
+                                For example, if you selected "Average of Disk
+                                Space in the last 24 hours", the value in the
+                                box below will be the average disk space usage
+                                over the last 24 hours.
+                              </p>
+                            </Card.Subtitle>
+                            <Row className="mt-3">
                               <Col className="pr-5 pl-5">
                                 <Badge
                                   style={{
@@ -602,7 +622,7 @@ const MetricConditionScreen = (props) => {
                                   </Row>
                                   <Row className="pt-2">
                                     <Col className="text-center">
-                                      {(latestValue * 100).toFixed(2)}%
+                                      {latestValue.toFixed(2)}
                                     </Col>
                                   </Row>
                                 </Badge>

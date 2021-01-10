@@ -109,6 +109,7 @@ const PongSummary = (props) => {
   }, [refresh]);
 
   const getOtherPongs = async () => {
+    setOtherPongs([]);
     // const { data = null, error = null } = await api(`pong/`);
     // if (data) {
     //   setOtherPongs(data.results);

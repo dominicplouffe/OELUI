@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Body from "../components/Body";
 import api from "../../utils/api";
 import moment from "moment";
+import useAuth from "../../auth/useAuth";
 import { Card, Row, Col, Badge } from "react-bootstrap";
 import InstanceCard from "../components/InstanceCard";
 import {
@@ -23,6 +24,8 @@ const VitalSummary = (props) => {
   const [diskData, setDiskData] = useState([]);
   const [totals, setTotals] = useState({});
   const [notifications, setNotifications] = useState([]);
+
+  const { refresh } = useAuth();
 
   const fetchInstance = async () => {
     const { data = null, error = null } = await api(
@@ -78,7 +81,7 @@ const VitalSummary = (props) => {
   useEffect(() => {
     fetchInstance();
     // eslint-disable-next-line
-  }, []);
+  }, [refresh]);
 
   return (
     <Body title="Vitals" selectedMenu="vitals" {...props} loading={loading}>

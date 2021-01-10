@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 
-const DisableButton = ({ objectId, active, disableAction, isPong }) => {
+const DisableButton = ({ objectId, active, disableAction, text }) => {
   const [showModal, setShowModal] = useState(false);
 
   if (objectId === null) {
@@ -11,6 +11,22 @@ const DisableButton = ({ objectId, active, disableAction, isPong }) => {
     return null;
   }
 
+  const textMapping = {
+    ping: {
+      name: "Ping",
+      warning:
+        "If you disable a Ping, the associated URL will no longer be monitored.",
+    },
+    pong: {
+      name: "Pong",
+      warning: "You about about to disable your pong.",
+    },
+    metric_condition: {
+      name: "",
+      warning: "You are about to disable your notification.",
+    },
+  };
+
   return (
     <>
       <Button
@@ -18,22 +34,15 @@ const DisableButton = ({ objectId, active, disableAction, isPong }) => {
         onClick={() => setShowModal(true)}
         className="btn-rounded"
       >
-        Pause {isPong ? `Pong` : `Ping`}
+        Pause {textMapping[text].name}
       </Button>
       <Modal show={showModal} onHide={setShowModal}>
         <Modal.Header closeButton>
-          <Modal.Title>Disable {isPong ? `Pong` : `Ping`}</Modal.Title>
+          <Modal.Title>Disable {textMapping[text].name}</Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
-          {isPong ? (
-            <p>If you disable your Pong, all requests to it will be disabled</p>
-          ) : (
-            <p>
-              If you disable a Ping, the associated URL will no longer be
-              monitored.
-            </p>
-          )}
+          <p>{textMapping[text].warning}</p>
           <p>Are you certain you want to continue?</p>
         </Modal.Body>
 

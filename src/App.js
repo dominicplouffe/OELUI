@@ -28,6 +28,8 @@ import { NewPing, NewPong } from "./dashboard/pages/NewPing";
 import Profile from "./dashboard/pages/Profile";
 import Failure from "./dashboard/pages/Failure";
 
+import MetricConditionScreen from "./dashboard/pages/MetricConditionScreen";
+
 function App() {
   return (
     <AuthProvider>
@@ -85,6 +87,11 @@ const AppRoutes = () => {
       <DashboardRoute
         path="/vitals/:id"
         component={VitalSummary}
+        exact={true}
+      />
+      <DashboardRoute
+        path="/vital/:instanceId/condition/:id"
+        component={MetricConditionScreen}
         exact={true}
       />
 

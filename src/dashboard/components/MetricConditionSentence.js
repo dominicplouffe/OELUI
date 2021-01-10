@@ -7,6 +7,10 @@ const MetricConditionSentence = ({
   spanValue,
   spanType,
 }) => {
+  if (!value) {
+    return null;
+  }
+
   const sentence = ["OnErrorLog will notify you when the "];
 
   if (metricRollup === "value") {
@@ -32,18 +36,18 @@ const MetricConditionSentence = ({
   if (["sum", "avg"].indexOf(metricRollup) > -1) {
     sentence.push(`, over the past ${spanValue}`);
     if (spanType === "hours") {
-      sentence.push("hour(s), ");
+      sentence.push("hour(s),");
     } else {
-      sentence.push("day(s), ");
+      sentence.push("day(s),");
     }
   }
 
   const opText = {
-    "==": "is equal to",
-    "<": "is less than",
-    "<=": "is less than or equal to",
-    ">": "is greater than",
-    ">=": "is greater than or equal to",
+    "==": " is equal to",
+    "<": " is less than",
+    "<=": " is less than or equal to",
+    ">": " is greater than",
+    ">=": " is greater than or equal to",
   };
 
   sentence.push(opText[op]);

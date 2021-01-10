@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 
-const EnableButton = ({ objectId, active, enableAction, isPong }) => {
+const EnableButton = ({ objectId, active, enableAction, text }) => {
   const [showModal, setShowModal] = useState(false);
 
   if (objectId === null) {
@@ -11,6 +11,24 @@ const EnableButton = ({ objectId, active, enableAction, isPong }) => {
     return null;
   }
 
+  const textMapping = {
+    ping: {
+      name: "Ping",
+      warning:
+        "If you enabled a Ping, onErrorLog wil restart monitoring the URL you provided.",
+    },
+    pong: {
+      name: "Pong",
+      warning:
+        "By enabling your Pong, you will be able to start sending requests again.",
+    },
+    metric_condition: {
+      name: "",
+      warning:
+        "By enabling your notification, onErrorLog will continue to monitor and alert your metric.",
+    },
+  };
+
   return (
     <>
       <Button
@@ -18,25 +36,15 @@ const EnableButton = ({ objectId, active, enableAction, isPong }) => {
         onClick={() => setShowModal(true)}
         className="btn-rounded"
       >
-        Enable {isPong ? `Pong` : `Ping`}
+        Enable {textMapping[text].name}
       </Button>
       <Modal show={showModal} onHide={setShowModal}>
         <Modal.Header closeButton>
-          <Modal.Title>Disable {isPong ? `Pong` : `Ping`}</Modal.Title>
+          <Modal.Title>Disable {textMapping[text].name}</Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
-          {isPong ? (
-            <p>
-              By enabling your Pong, you will be able to start sending requests
-              again
-            </p>
-          ) : (
-            <p>
-              If you enabled a {isPong ? `Pong` : `Ping`}, onErrorLog will
-              restart monitoring the URL you provided.
-            </p>
-          )}
+          <p>{textMapping[text].warning}</p>
           <p>Are you certain you want to continue?</p>
         </Modal.Body>
 

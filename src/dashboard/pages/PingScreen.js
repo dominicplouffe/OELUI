@@ -776,6 +776,7 @@ const PingScreen = (props) => {
             pingId={pingId}
             active={active}
             deleteAction={() => deletePing()}
+            text="ping"
           />
           {saved && (
             <strong className="text-success">Your ping has been saved.</strong>
@@ -789,6 +790,7 @@ const PingScreen = (props) => {
               setActive(true);
               savePing(true);
             }}
+            text="ping"
           />
           <DisableButton
             objectId={pingId}
@@ -797,6 +799,7 @@ const PingScreen = (props) => {
               setActive(false);
               savePing(false);
             }}
+            text="ping"
           />{" "}
           <Button
             variant="primary"

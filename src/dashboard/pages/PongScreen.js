@@ -488,7 +488,7 @@ const PongScreen = (props) => {
             pongId={pongId}
             active={active}
             deleteAction={() => deletePong()}
-            isPong={true}
+            text="pong"
           />
           {saved && (
             <strong className="text-success">Your pong has been saved.</strong>
@@ -498,7 +498,7 @@ const PongScreen = (props) => {
           <EnableButton
             objectId={pongId}
             active={active}
-            isPong={true}
+            text="pong"
             enableAction={() => {
               setActive(true);
               savePong(true);
@@ -507,7 +507,7 @@ const PongScreen = (props) => {
           <DisableButton
             objectId={pongId}
             active={active}
-            isPong={true}
+            text="pong"
             disableAction={() => {
               setActive(false);
               savePong(false);

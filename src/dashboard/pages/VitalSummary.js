@@ -50,7 +50,6 @@ const VitalSummary = (props) => {
     );
 
     if (data) {
-      console.log(data);
       setNotifications(data.objects);
       setTotals(data.totals);
     }

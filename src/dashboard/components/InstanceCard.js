@@ -12,7 +12,7 @@ const InstanceCard = ({ instance, showSummary }) => {
         <Card.Title>
           <Row>
             <Col className="text-left" xs={8}>
-              {instance.name}
+              {instance.name} - Current Values
             </Col>
             <Col className="right-align-small-center" xs={4}>
               {showSummary && (

@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import Body from "../components/Body";
 import api from "../../utils/api";
 import moment from "moment";
-import { Card, Row, Col, Button } from "react-bootstrap";
+import useAuth from "../../auth/useAuth";
+import { Card, Row, Col, Badge } from "react-bootstrap";
 import InstanceCard from "../components/InstanceCard";
 import {
   AreaChart,
@@ -12,7 +13,8 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-import MetricCondition from "../components/MetricCondition";
+import { Link } from "react-router-dom";
+import AlertCard from "../components/AlertCard";
 
 const VitalSummary = (props) => {
   const [loading, setLoading] = useState(true);
@@ -20,25 +22,44 @@ const VitalSummary = (props) => {
   const [cpuData, setCPUData] = useState([]);
   const [memData, setMemData] = useState([]);
   const [diskData, setDiskData] = useState([]);
-  const [showCondition, setShowCondition] = useState(true);
+  const [totals, setTotals] = useState({});
+  const [notifications, setNotifications] = useState([]);
+
+  const { refresh } = useAuth();
 
   const fetchInstance = async () => {
     const { data = null, error = null } = await api(
       `vital_instance/${props.match.params.id}/`
     );
 
-    extractGraphData(data, "cpu_graph", setCPUData);
-    extractGraphData(data, "mem_graph", setMemData);
-    extractGraphData(data, "disk_graph", setDiskData);
+    extractGraphData(data, "cpu_percent.cpu", setCPUData);
+    extractGraphData(data, "memory_percent.mem", setMemData);
+    extractGraphData(data, "disk_percent.disk", setDiskData);
 
     if (data) {
       setInstance(data);
+      fetchNotifications(data.id);
     }
     if (error) {
       alert("Something went wrong, we cannot find your instance");
     }
 
     setLoading(false);
+  };
+
+  const fetchNotifications = async (id) => {
+    const { data = null, error = null } = await api(
+      `alert_summary/metric_condition/?hours=24&filter=instance_id=${id}`
+    );
+
+    if (data) {
+      setNotifications(data.objects);
+      setTotals(data.totals);
+    }
+
+    if (error) {
+      alert("Something went wrong, cannot fetch your notifications");
+    }
   };
 
   const extractGraphData = (data, key, setFunc) => {
@@ -60,7 +81,7 @@ const VitalSummary = (props) => {
   useEffect(() => {
     fetchInstance();
     // eslint-disable-next-line
-  }, []);
+  }, [refresh]);
 
   return (
     <Body title="Vitals" selectedMenu="vitals" {...props} loading={loading}>
@@ -187,39 +208,76 @@ const VitalSummary = (props) => {
         </>
       )}
 
-      <Row>
-        <Col>
-          <Card>
-            <Card.Body>
-              <Card.Title>
+      {instance && (
+        <Card>
+          <Card.Body>
+            <Card.Title>
+              <Row>
+                <Col xs={12} lg={3} className="text-center">
+                  <h3>{instance.name} Notification Summary</h3>
+                </Col>
+                <Col className="right-align-small-center">
+                  <Link
+                    to={`/vital/${instance.id}/condition/0`}
+                    className="btn btn-warning btn-rounded"
+                  >
+                    New Notification
+                  </Link>
+                </Col>
+              </Row>
+            </Card.Title>
+            <Row>
+              <Col className="text-center" xs={12} lg={3}>
+                <small>&nbsp;</small>
+                {totals.down === 0 ? (
+                  <h1 className="text-success">✔</h1>
+                ) : (
+                  <h1 className="text-danger">✖</h1>
+                )}
+              </Col>
+              <Col xs={12} lg={9}>
                 <Row>
-                  <Col>Notifications</Col>
-                  <Col className="text-right">
-                    <Button
-                      variant="link"
-                      className="p-0 m-0 btn-link"
-                      onClick={() => setShowCondition(true)}
-                    >
-                      [+] new notification
-                    </Button>
+                  <Col className="text-center" xs={6} lg={3}>
+                    <small>Total</small>
+                    <h2>
+                      <Badge variant="primary">{totals.total}</Badge>
+                    </h2>
+                  </Col>
+                  <Col className="text-center" xs={6} lg={3}>
+                    <small>Up</small>
+                    <h2>
+                      <Badge variant="success">{totals.up}</Badge>
+                    </h2>
+                  </Col>
+                  <Col className="text-center" xs={6} lg={3}>
+                    <small>Down</small>
+                    <h2>
+                      <Badge variant="danger">{totals.down}</Badge>
+                    </h2>
+                  </Col>
+                  <Col className="text-center" xs={6} lg={3}>
+                    <small>Paused</small>
+                    <h2>
+                      <Badge variant="warning">{totals.paused}</Badge>
+                    </h2>
                   </Col>
                 </Row>
-              </Card.Title>
-              <Card.Subtitle>
-                Below are the notifications that you have setup for this server
-              </Card.Subtitle>
+              </Col>
+            </Row>
+          </Card.Body>
+        </Card>
+      )}
 
-              {instance && showCondition && (
-                <Row className="mt-4">
-                  <Col>
-                    <MetricCondition instanceId={instance.instance_id} />
-                  </Col>
-                </Row>
-              )}
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
+      {notifications.map((m, i) => (
+        <AlertCard
+          m={m}
+          key={i}
+          showSummary={true}
+          showEdit={true}
+          otherPath={`vital/${instance.id}/condition`}
+          showResponseView={false}
+        />
+      ))}
     </Body>
   );
 };

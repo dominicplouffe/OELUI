@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Body from "../components/Body";
 import { Card, Row, Col, Badge } from "react-bootstrap";
 import api from "../../utils/api";
-import PingCard from "../components/PingCard";
+import AlertCard from "../components/AlertCard";
 import moment from "moment";
 import { Link } from "react-router-dom";
 import useAuth from "../../auth/useAuth";
@@ -12,7 +12,6 @@ const Ping = (props) => {
   const [totals, setTotals] = useState({});
   const [pings, setPings] = useState([]);
   const [fetchDate, setFetchDate] = useState(null);
-  const direction = "pull";
   const { refresh } = useAuth();
 
   const useFetchInterval = (delay) => {
@@ -34,12 +33,12 @@ const Ping = (props) => {
     setLoading(false);
     if (!skip) {
       const { data = null, error = null } = await api(
-        `ping/summary/?direction=${direction}`
+        `alert_summary/ping/?hours=24`
       );
 
       if (data) {
         setTotals(data.totals);
-        setPings(data.pings);
+        setPings(data.objects);
         setFetchDate(new Date());
       }
 
@@ -122,7 +121,14 @@ const Ping = (props) => {
         </Card.Body>
       </Card>
       {pings.map((m, i) => (
-        <PingCard m={m} key={i} showSummary={true} showEdit={true} />
+        <AlertCard
+          m={m}
+          key={i}
+          showSummary={true}
+          showEdit={true}
+          otherPath="ping"
+          showResponseView={true}
+        />
       ))}
 
       {pings.length === 0 && !loading && (

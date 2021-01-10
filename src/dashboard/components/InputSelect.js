@@ -15,6 +15,7 @@ const InputSelect = ({
   placeholder = null,
   helperText = null,
   type = "text",
+  disabled = false,
 }) => (
   <Form.Group controlId={id}>
     {label && <Form.Label>{label}</Form.Label>}
@@ -26,6 +27,7 @@ const InputSelect = ({
       value={defaultValue}
       className={isInvalid ? `is-invalid` : ``}
       onChange={onChange}
+      disabled={disabled}
     >
       {showDefault && <option value="">{defaultText}</option>}
       {values.map((m, i) => (

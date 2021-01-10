@@ -5,7 +5,7 @@ import InputSelect from "../components/InputSelect";
 import { Card, Row, Col, Button, Form } from "react-bootstrap";
 import api from "../../utils/api";
 import { useHistory } from "react-router-dom";
-import PingCard from "../components/PingCard";
+import AlertCard from "../components/AlertCard";
 import ResultModal from "../components/ResultModal";
 import Headers from "../components/Headers";
 import DisableButton from "../components/Ping/DisableButton";
@@ -22,6 +22,8 @@ const PingScreen = (props) => {
 
   // Fields
   const [pingId, setPingId] = useState(null);
+  const [alertId, setAlertId] = useState(null);
+
   const [pingName, setPingName] = useState("");
   const [docLink, setDocLink] = useState("");
   const [endpoint, setEndpoint] = useState("");
@@ -155,7 +157,7 @@ const PingScreen = (props) => {
         expected_string: jsonKey,
         expected_value: "", //validationText || jsonValue,
         callback_url: incidentEndpoint,
-        callback_userame: incidentEndpointUser,
+        callback_username: incidentEndpointUser,
         callback_password: incidentEndpointPass,
         incident_interval: incidentInterval,
         active: pingActive,
@@ -189,10 +191,12 @@ const PingScreen = (props) => {
 
   const fetchSummary = async (id) => {
     if (loading) {
-      const { data = null, error = null } = await api(`ping/summary/${id}/`);
+      const { data = null, error = null } = await api(
+        `alert_summary/ping/${id}/`
+      );
 
       if (data) {
-        setSummary(data.pings[0]);
+        setSummary(data.objects[0]);
       }
       if (error) {
         alert("Something went wrong, we cannot find your ping");
@@ -214,12 +218,16 @@ const PingScreen = (props) => {
       setValidationText(data.expected_value || "");
       setJsonKey(data.expected_string || "");
       setJsonValue(data.expected_value || "");
-      setIncidentInterval(data.incident_interval || "");
-      setIncidentEndpoint(data.callback_url || "");
-      setIncidentEndpointUser(data.callback_userame || "");
-      setIncidentEndpointPass(data.callback_password || "");
-      setIncidentMethod(data.notification_type);
-      setDocLink(data.doc_link || "");
+
+      // Alert Settings
+      setIncidentInterval(data.alert.incident_interval || "");
+      setIncidentEndpoint(data.alert.callback_url || "");
+      setIncidentEndpointUser(data.alert.callback_username || "");
+      setIncidentEndpointPass(data.alert.callback_password || "");
+      setIncidentMethod(data.alert.notification_type);
+      setDocLink(data.alert.doc_link || "");
+      setAlertId(data.alert.id);
+
       setShowTestPing(true);
       setActive(data.active);
 
@@ -322,7 +330,15 @@ const PingScreen = (props) => {
       {...props}
       loading={loading}
     >
-      {summary && <PingCard m={summary} showSummary={false} showEdit={false} />}
+      {summary && (
+        <AlertCard
+          m={summary}
+          showSummary={false}
+          showEdit={false}
+          otherPath="ping"
+          showResponseView={true}
+        />
+      )}
       <Card>
         <Card.Body>
           <Card.Title>Ping Details</Card.Title>
@@ -666,7 +682,7 @@ const PingScreen = (props) => {
                             }
                           >
                             <small>
-                              {showBasic
+                              {showCallbackBasic
                                 ? ` [-] basic authentication`
                                 : ` [+] show basic authentication`}
                             </small>
@@ -767,7 +783,7 @@ const PingScreen = (props) => {
         </Col>
         <Col className="text-right" xs={12} lg={6}>
           <EnableButton
-            pingId={pingId}
+            objectId={pingId}
             active={active}
             enableAction={() => {
               setActive(true);
@@ -775,7 +791,7 @@ const PingScreen = (props) => {
             }}
           />
           <DisableButton
-            pingId={pingId}
+            objectId={pingId}
             active={active}
             disableAction={() => {
               setActive(false);
@@ -803,7 +819,7 @@ const PingScreen = (props) => {
         showModal={showHeaderModal}
         setShowModal={setShowHeaderModal}
         headerType={headerType}
-        pingId={pingId}
+        alertId={alertId}
       />
     </Body>
   );

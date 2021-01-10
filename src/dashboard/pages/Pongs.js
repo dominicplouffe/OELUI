@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Body from "../components/Body";
 import { Card, Row, Col, Badge } from "react-bootstrap";
 import api from "../../utils/api";
-import PongCard from "../components/PongCard";
+import AlertCard from "../components/AlertCard";
 import moment from "moment";
 import { Link } from "react-router-dom";
 import useAuth from "../../auth/useAuth";
@@ -10,9 +10,8 @@ import useAuth from "../../auth/useAuth";
 const Pong = (props) => {
   const [loading, setLoading] = useState(true);
   const [totals, setTotals] = useState({});
-  const [pings, setPings] = useState([]);
+  const [pongs, setPongs] = useState([]);
   const [fetchDate, setFetchDate] = useState(null);
-  const direction = "push";
   const hours = 168;
 
   const { refresh } = useAuth();
@@ -36,12 +35,12 @@ const Pong = (props) => {
     setLoading(false);
     if (!skip) {
       const { data = null, error = null } = await api(
-        `ping/summary/?direction=${direction}&hours=${hours}`
+        `alert_summary/pong/?hours=${hours}`
       );
 
       if (data) {
         setTotals(data.totals);
-        setPings(data.pings);
+        setPongs(data.objects);
         setFetchDate(new Date());
       }
 
@@ -123,10 +122,16 @@ const Pong = (props) => {
         </Card.Body>
       </Card>
 
-      {pings.map((m, i) => (
-        <PongCard m={m} key={i} showSummary={true} showEdit={true} />
+      {pongs.map((m, i) => (
+        <AlertCard
+          m={m}
+          key={i}
+          showSummary={true}
+          showEdit={true}
+          otherPath="pong"
+        />
       ))}
-      {pings.length === 0 && !loading && (
+      {pongs.length === 0 && !loading && (
         <Card>
           <Card.Body className="p-5">
             <Row>

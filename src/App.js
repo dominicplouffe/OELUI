@@ -93,6 +93,7 @@ const AppRoutes = () => {
         path="/subscription"
         component={Subscription}
         exact={true}
+        skipSubscriptionCheck
       />
 
       <DashboardRoute exact path="/">

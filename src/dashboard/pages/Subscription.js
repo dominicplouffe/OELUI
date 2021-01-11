@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import makeAsyncScriptLoader from "react-async-script";
-import Body from "../components/Body";
 import api from "../../utils/api";
-import { Card, Col, Row, Button } from "react-bootstrap";
+import { Card, Col, Row } from "react-bootstrap";
 import useAuth from "../../auth/useAuth";
+import { Redirect } from "react-router-dom";
 
 const CLIENT = {
   sandbox:
@@ -19,7 +19,7 @@ let PayPalButton = null;
 
 const Subscription = ({ paypal, ...props }) => {
   const { currentUser } = props;
-  const { forceRefresh } = useAuth();
+  const { forceRefresh, loginUser } = useAuth();
   const { role } = currentUser;
   const { subscriptions } = role.org;
   const subscription = subscriptions.find(
@@ -36,33 +36,29 @@ const Subscription = ({ paypal, ...props }) => {
     }
   }, [paypal]);
   return (
-    <Body title="Subscription" selectedMenu="team" loading={loading} {...props}>
-      <Card>
-        <Card.Body>
-          <Card.Title>Manage Plan</Card.Title>
+    <div className="auth-wrapper d-flex no-block justify-content-center align-items-center position-relative">
+      <div className="auth-box-big row">
+        <div
+          className="col-lg-6 col-md-4 modal-bg-img"
+          style={{
+            backgroundImage:
+              "url(https://onerrorlog.s3.amazonaws.com/images/peace-of-mind-2.jpg)",
+            backgroundSize: "cover",
+          }}
+        ></div>
+
+        <div className="col-lg-6 col-md-8 bg-white flex flex-column align-items-center justify-content-center">
           {subscribed ? (
-            <>
-              <Row>
-                <Col>Basic Plan</Col>
-              </Row>
-              <Row>
-                <Col>Status: {subscription.status}</Col>
-              </Row>
-              <Row>
-                <Col className="text-right" xs={12}>
-                  <Button variant="text">Cancel Plan</Button>
-                </Col>
-              </Row>
-            </>
+            <Redirect to="/" />
           ) : (
             <>
-              <Row className="mt-5 mb-2 mx-4">
-                <Col xs={12} className="text-center">
-                  <h3>Subscribe to basic plan, $5 / month</h3>
-                </Col>
-              </Row>
-              <Row className="mt-0 mb-5 mx-4">
-                <Col xs={12} lg={4} className="text-center offset-lg-4">
+              <div className="mt-5 mb-4 mx-4 text-center">
+                <h3>Subscribe to the basic plan, for $5 / month</h3>
+              </div>
+              <div className="mt-0 mb-5 mx-4 text-center">
+                {loading ? (
+                  "Loading..."
+                ) : (
                   <PayPalButton
                     style={{
                       shape: "rect",
@@ -86,18 +82,19 @@ const Subscription = ({ paypal, ...props }) => {
                         }
                       );
                       if (resp) {
+                        await loginUser();
                         forceRefresh();
                         setSubscribed(true);
                       }
                     }}
                   />
-                </Col>
-              </Row>
+                )}
+              </div>
             </>
           )}
-        </Card.Body>
-      </Card>
-    </Body>
+        </div>
+      </div>
+    </div>
   );
 };
 

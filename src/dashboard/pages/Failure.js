@@ -4,8 +4,7 @@ import { Card, Row, Col } from "react-bootstrap";
 import "react-phone-number-input/style.css";
 import { REASONS } from "../../utils/globals";
 import api from "../../utils/api";
-import PingCard from "../components/PingCard";
-import PongCard from "../components/PongCard";
+import AlertCard from "../components/AlertCard";
 import FailureStatus from "../components/FailureStatus";
 import moment from "moment";
 
@@ -13,6 +12,7 @@ const Failure = (props) => {
   const [loading, setLoading] = useState(true);
   const [failure, setFailure] = useState(null);
   const [summary, setSummary] = useState(null);
+  const [ping, setPing] = useState(null);
 
   const useFetchInterval = (delay) => {
     const [doFetch, setDoFetch] = useState(true);
@@ -33,7 +33,7 @@ const Failure = (props) => {
 
     if (data) {
       setFailure(data);
-      fetchSummary(data.ping);
+      fetchSummary();
       setLoading(false);
     }
 
@@ -42,15 +42,32 @@ const Failure = (props) => {
     }
   };
 
-  const fetchSummary = async (ping) => {
+  const fetchSummary = async () => {
     const { data = null, error = null } = await api(
-      `ping/summary/${ping.id}/?direction=${ping.direction}`
+      `alert_summary/${props.match.params.otype}/${props.match.params.oid}/`
     );
     if (data) {
-      setSummary(data.pings[0]);
+      setSummary(data.objects[0]);
+
+      if (props.match.params.otype === "ping") {
+        fetchPing();
+      }
     }
     if (error) {
       alert("Something went wrong fetching summary");
+    }
+  };
+
+  const fetchPing = async () => {
+    const { data = null, error = null } = await api(
+      `ping/${props.match.params.oid}/`
+    );
+
+    if (data) {
+      setPing(data);
+    }
+    if (error) {
+      alert("Something went wrong fetching your ping");
     }
   };
 
@@ -65,20 +82,13 @@ const Failure = (props) => {
 
   return (
     <Body title="Failure" selectedMenu="failure" {...props} loading={loading}>
-      {summary && summary.ping.direction === "pull" && (
-        <PingCard
+      {summary && (
+        <AlertCard
           m={summary}
           showEdit={false}
           showSummary={true}
-          showOther={true}
-        />
-      )}
-      {summary && summary.ping.direction === "push" && (
-        <PongCard
-          m={summary}
-          showEdit={false}
-          showSummary={true}
-          showOther={true}
+          otherPath={props.match.params.otype}
+          showResponseView={props.match.params.otype === "ping"}
         />
       )}
       {!loading && (
@@ -202,16 +212,14 @@ const Failure = (props) => {
             </Card.Body>
           </Card>
 
-          {summary && summary.ping.direction && (
+          {ping && (
             <Card>
               <Card.Body>
                 <Card.Title>
                   <Row>
                     <Col>
                       Content returned from:{" "}
-                      <span className="text-primary">
-                        {summary.ping.endpoint}
-                      </span>
+                      <span className="text-primary">{ping.endpoint}</span>
                     </Col>
                   </Row>
                 </Card.Title>
@@ -223,8 +231,7 @@ const Failure = (props) => {
                   )}
                   {!failure.content && (
                     <Col className="pl-3 pr-3">
-                      The content was empty or not returned from{" "}
-                      {summary.ping.endpoint}
+                      The content was empty or not returned from {ping.endpoint}
                     </Col>
                   )}
                 </Row>

@@ -179,7 +179,7 @@ const Team = (props) => {
                           <Col className="pt-1">
                             <Form.Check
                               type="checkbox"
-                              label="Actve"
+                              label="Active"
                               checked={u.active}
                               disabled={u.id === currentUser.role.id}
                               onChange={(e) => {

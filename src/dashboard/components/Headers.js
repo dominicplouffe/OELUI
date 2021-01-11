@@ -2,18 +2,18 @@ import React, { useEffect, useState } from "react";
 import { Modal, Table, Row, Col, Button, Form } from "react-bootstrap";
 import api from "../../utils/api";
 
-const Headers = ({ pingId, headerType, setShowModal, showModal }) => {
+const Headers = ({ alertId, headerType, setShowModal, showModal }) => {
   const [headers, setHeaders] = useState([]);
   const [newHeaderValue, setNewHeaderValue] = useState("");
   const [newHeaderKey, setNewHeaderKey] = useState("");
   const [newHeaderId, setNewHeaderId] = useState(null);
 
   const fetchHeaders = async () => {
-    if (pingId === null) {
+    if (alertId === null) {
       return;
     }
     const { data = null, error = null } = await api(
-      `ping_header/?ping=${pingId}&header_type=${headerType}`
+      `ping_header/?alert=${alertId}&header_type=${headerType}`
     );
 
     if (data) {
@@ -49,7 +49,7 @@ const Headers = ({ pingId, headerType, setShowModal, showModal }) => {
             key: hdr.key,
             value: hdr.value,
             header_type: headerType,
-            ping: pingId,
+            alert: alertId,
           });
         } else if (hdr.status === "delete") {
           api(`ping_header/${hdr.id}/`, "DELETE");

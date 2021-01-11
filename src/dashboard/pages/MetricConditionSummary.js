@@ -39,7 +39,7 @@ const PongSummary = (props) => {
 
   const fetchSummary = async (id) => {
     const { data = null, error = null } = await api(
-      `alert_summary/pong/${id}/?direction=push&hours=168`
+      `alert_summary/metric_condition/${id}/?direction=push&hours=168`
     );
 
     if (data) {
@@ -49,13 +49,14 @@ const PongSummary = (props) => {
       fetchFailures(data.objects[0].object.alert.id);
     }
     if (error) {
-      alert("Something went wrong, we cannot find your pong");
+      alert("Something went wrong, we cannot find your alert");
     }
   };
 
   const fetchDetails = async (id) => {
-    const { data = null, error = null } = await api(`pong/details/${id}/`);
-
+    const { data = null, error = null } = await api(
+      `metric_condition/details/${id}/`
+    );
     if (data) {
       setCalendarData(data.calendar.data);
       setCalendarStart(data.calendar.start);
@@ -108,14 +109,14 @@ const PongSummary = (props) => {
   }, [refresh]);
 
   const getOtherPongs = async () => {
-    const { data = null, error = null } = await api(`pong/`);
-
-    if (data) {
-      setOtherPongs(data.results);
-    }
-    if (error) {
-      alert("Someting went wrong");
-    }
+    setOtherPongs([]);
+    // const { data = null, error = null } = await api(`pong/`);
+    // if (data) {
+    //   setOtherPongs(data.results);
+    // }
+    // if (error) {
+    //   alert("Someting went wrong");
+    // }
   };
 
   const getCalendarCellColor = (c) => {
@@ -139,14 +140,14 @@ const PongSummary = (props) => {
   };
 
   return (
-    <Body title="Pong Summary" selectedMenu="pong" {...props} loading={loading}>
+    <Body title="Vitals" selectedMenu="vitals" {...props} loading={loading}>
       {summary && (
         <AlertCard
           m={summary}
           showEdit={true}
           showSummary={false}
           otherObjects={otherPongs}
-          otherPath="pong"
+          otherPath={`vital/${props.match.params.instanceId}/condition`}
         />
       )}
 

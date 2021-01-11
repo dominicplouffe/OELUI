@@ -3,7 +3,7 @@ import Body from "../components/Body";
 import { Card, Row, Col, ProgressBar, Table } from "react-bootstrap";
 import moment from "moment";
 import api from "../../utils/api";
-import PingCard from "../components/PingCard";
+import AlertCard from "../components/AlertCard";
 import useAuth from "../../auth/useAuth";
 import { REASONS } from "../../utils/globals";
 import { Link } from "react-router-dom";
@@ -28,7 +28,7 @@ const PingSummary = (props) => {
   const [responseTimeData, setResponseTimeData] = useState(null);
   const [failureCounts, setFailureCounts] = useState([]);
   const [failures, setFailures] = useState([]);
-
+  const [otherPings, setOtherPings] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const { refresh } = useAuth();
@@ -48,15 +48,17 @@ const PingSummary = (props) => {
   };
 
   const fetchSummary = async (id) => {
-    const { data = null, error = null } = await api(`ping/summary/${id}/`);
+    const { data = null, error = null } = await api(
+      `alert_summary/ping/${id}/`
+    );
 
     if (data) {
-      setSummary(data.pings[0]);
+      setSummary(data.objects[0]);
 
       const resData = [];
 
-      for (let i = 0; i < data.pings[0].snapshot.length; i++) {
-        const ss = data.pings[0].snapshot[i];
+      for (let i = 0; i < data.objects[0].snapshot.length; i++) {
+        const ss = data.objects[0].snapshot[i];
         const row = {
           name: `${moment(ss.date).format("H")}:00`,
           response_ms: null,
@@ -69,6 +71,9 @@ const PingSummary = (props) => {
       }
 
       setResponseTimeData(resData);
+
+      fetchFailreCounts(data.objects[0].object.alert.id);
+      fetchFailures(data.objects[0].object.alert.id);
     }
     if (error) {
       alert("Something went wrong, we cannot find your ping");
@@ -100,7 +105,7 @@ const PingSummary = (props) => {
 
   const fetchFailures = async (id) => {
     const { data = null, error = null } = await api(
-      `failure/?ping=${id}&ordering=-created_on&offset=0&limit=20`
+      `failure/?alert=${id}&ordering=-created_on&offset=0&limit=20`
     );
 
     setFailures(data.results);
@@ -110,12 +115,22 @@ const PingSummary = (props) => {
     }
   };
 
+  const getOtherPings = async () => {
+    const { data = null, error = null } = await api(`ping/`);
+
+    if (data) {
+      setOtherPings(data.results);
+    }
+    if (error) {
+      alert("Someting went wrong");
+    }
+  };
+
   const fetchAll = async () => {
     const id = props.match.params.id;
     fetchSummary(id);
     fetchDetails(id);
-    fetchFailreCounts(id);
-    fetchFailures(id);
+    getOtherPings();
 
     setLoading(false);
   };
@@ -135,17 +150,16 @@ const PingSummary = (props) => {
     } else if (c.status === "success") {
       return "#409918";
     } else if (c.status === "danger") {
-      return "#991840";
+      return "#bb1d4e";
     }
     return "#efefef";
   };
 
   const CustomTooltip = ({ active, payload, label }) => {
-    if (active) {
+    if (active && payload[0]) {
       return (
         <div className="custom-tooltip">
           <p className="label">{`Hour of day (UTC)${label} : ${payload[0].value} ms`}</p>
-          {/* <p className="intro">{getIntroOfPage(label)}</p> */}
           <p className="desc">
             {`The average response time was ${payload[0].value} ms`}
           </p>
@@ -159,11 +173,14 @@ const PingSummary = (props) => {
   return (
     <Body title="Ping Summary" selectedMenu="ping" {...props} loading={loading}>
       {summary && (
-        <PingCard
+        <AlertCard
           m={summary}
           showEdit={true}
           showSummary={false}
           showOther={true}
+          otherPath="ping"
+          otherObjects={otherPings}
+          showResponseView={true}
         />
       )}
       <Card>
@@ -322,7 +339,9 @@ const PingSummary = (props) => {
                           <FailureStatus failure={f} />
                         </td>
                         <td className="text-right hide-small">
-                          <Link to={`/failure/${f.id}`}>
+                          <Link
+                            to={`/failure/${f.id}/ping/${props.match.params.id}`}
+                          >
                             <img
                               src="https://onerrorlog.s3.amazonaws.com/images/details.png"
                               alt={`Failure Details for ${f.id}`}

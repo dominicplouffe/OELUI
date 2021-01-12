@@ -13,13 +13,13 @@ const DeleteButton = ({ objectId, active, deleteAction, text }) => {
 
   const textMapping = {
     ping: {
-      name: "Ping",
+      name: "Endpoint",
       warning:
-        "If you disable a Ping, the associated URL will no longer be monitored.",
+        "If you disable a Endpoint, the associated URL will no longer be monitored.",
     },
     pong: {
-      name: "Pong",
-      warning: "You about about to disable your pong.",
+      name: "Monitor",
+      warning: "You about about to disable your monitor.",
     },
     metric_condition: {
       name: "Condition",

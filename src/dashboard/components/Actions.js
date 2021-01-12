@@ -3,7 +3,7 @@ import { Row, Col, Button } from "react-bootstrap";
 import api from "../../utils/api";
 import useAuth from "../../auth/useAuth";
 
-const Action = ({ fail }) => {
+const Action = ({ fail, small = false }) => {
   const { forceRefresh } = useAuth();
 
   const sendStatus = async (fail, status) => {
@@ -27,7 +27,7 @@ const Action = ({ fail }) => {
           style={{ width: "100%" }}
           disabled={fail.acknowledged_by}
         >
-          Acknowledge
+          {small ? `Ack` : `Acknowledge`}
         </Button>
       </Col>
       <Col xs={12} lg={4} className="pt-2">

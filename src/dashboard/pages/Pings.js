@@ -71,11 +71,11 @@ const Ping = (props) => {
           <Card.Title>
             <Row>
               <Col xs={12} lg={3} className="text-center">
-                <h3>Ping Summary</h3>
+                <h3>Endpoint Monitor Summary</h3>
               </Col>
               <Col className="right-align-small-center">
                 <Link to="/newping" className="btn btn-warning btn-rounded">
-                  New Ping
+                  New Endpoint Monitor
                 </Link>
               </Col>
             </Row>

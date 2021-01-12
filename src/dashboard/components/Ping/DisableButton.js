@@ -15,11 +15,11 @@ const DisableButton = ({ objectId, active, disableAction, text }) => {
     ping: {
       name: "Ping",
       warning:
-        "If you disable a Ping, the associated URL will no longer be monitored.",
+        "If you disable a Endpoint, the associated URL will no longer be monitored.",
     },
     pong: {
-      name: "Pong",
-      warning: "You about about to disable your pong.",
+      name: "Monitor",
+      warning: "You about about to disable your Monitor.",
     },
     metric_condition: {
       name: "",

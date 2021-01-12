@@ -171,7 +171,12 @@ const PingSummary = (props) => {
   };
 
   return (
-    <Body title="Ping Summary" selectedMenu="ping" {...props} loading={loading}>
+    <Body
+      title="Endpoint Monitor Summary"
+      selectedMenu="ping"
+      {...props}
+      loading={loading}
+    >
       {summary && (
         <AlertCard
           m={summary}

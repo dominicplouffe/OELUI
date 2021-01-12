@@ -39,7 +39,7 @@ const PongSummary = (props) => {
 
   const fetchSummary = async (id) => {
     const { data = null, error = null } = await api(
-      `alert_summary/pong/${id}/?direction=push&hours=168`
+      `alert_summary/pong/${id}/?direction=push&hours=24`
     );
 
     if (data) {

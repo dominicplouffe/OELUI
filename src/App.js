@@ -31,6 +31,8 @@ import Failure from "./dashboard/pages/Failure";
 import MetricConditionScreen from "./dashboard/pages/MetricConditionScreen";
 import MetricConditionSummary from "./dashboard/pages/MetricConditionSummary";
 
+import Dashboard from "./dashboard/pages/Dashboard";
+
 function App() {
   return (
     <AuthProvider>
@@ -45,6 +47,9 @@ const AppRoutes = () => {
       <Route path="/auth">
         <AuthRoutes />
       </Route>
+
+      <DashboardRoute path="/dashboard" component={Dashboard} exact={true} />
+
       <DashboardRoute path="/profile" component={Profile} exact={true} />
       <DashboardRoute path="/pings" component={Ping} />
       <DashboardRoute path="/pongs" component={Pong} />

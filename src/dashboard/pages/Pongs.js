@@ -58,7 +58,12 @@ const Pong = (props) => {
   useFetchInterval(1000 * 60 * 5);
 
   return (
-    <Body title="Pongs" selectedMenu="pong" {...props} loading={loading}>
+    <Body
+      title="Inbound Monitor"
+      selectedMenu="pong"
+      {...props}
+      loading={loading}
+    >
       <Row>
         <Col className="right-align-small-center">
           <small>
@@ -72,11 +77,11 @@ const Pong = (props) => {
           <Card.Title>
             <Row>
               <Col xs={12} lg={3} className="text-center">
-                <h3>Pong Summary</h3>
+                <h3>Inbound Monitor Summary</h3>
               </Col>
               <Col className="right-align-small-center">
                 <Link to="/newpong" className="btn btn-warning btn-rounded">
-                  New Pong
+                  New Inbound Monitor
                 </Link>
               </Col>
             </Row>

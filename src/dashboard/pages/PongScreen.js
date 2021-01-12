@@ -206,7 +206,7 @@ const PongScreen = (props) => {
 
   return (
     <Body
-      title="Pong Management"
+      title="Inbound Management"
       selectedMenu="pong"
       {...props}
       loading={loading}
@@ -224,7 +224,7 @@ const PongScreen = (props) => {
         <Card.Body>
           <Card.Title>Notification Settings</Card.Title>
           <Card.Subtitle>
-            Tell us what to do when we get a request from your pong
+            Tell us what to do when we get trigger from your application
           </Card.Subtitle>
           <Row className="mt-3">
             <Col>
@@ -232,7 +232,7 @@ const PongScreen = (props) => {
                 <Col xs={12} sm={12} lg={6}>
                   <InputText
                     id="name"
-                    label="Pong Name"
+                    label="Monitor Name"
                     value={pongName}
                     isInvalid={formErrors.indexOf("name") > -1}
                     onChange={(e) => setValue(setPongName, e.target.value)}
@@ -266,7 +266,7 @@ const PongScreen = (props) => {
                 label="How would your link to be contacted"
                 defaultValue={incidentMethod}
                 defaultText="Select a contact method"
-                helperText="The method that onErrorLog will contact you if we get a request from your pong"
+                helperText="The method that onErrorLog will contact you when your monitor is triggered"
                 showDefault={true}
                 values={[
                   {
@@ -285,7 +285,9 @@ const PongScreen = (props) => {
                 label="Minimum Incident Count"
                 defaultValue={incidentInterval}
                 defaultText="Select an incident count"
-                helperText="onErrorLog will contact you have this many pongs have failed"
+                helperText={`onErrorLog will contact you when your monitor has been triggered ${
+                  incidentInterval ? incidentInterval : `1`
+                } time(s)`}
                 showDefault={true}
                 values={[
                   { value: "1", text: "Tell us right away" },
@@ -431,16 +433,16 @@ const PongScreen = (props) => {
 
       <Card className="hide-small">
         <Card.Body>
-          <Card.Title>How To Send a Pong</Card.Title>
+          <Card.Title>How To Send Trigger your Monitor</Card.Title>
           <Card.Subtitle>
-            Below is the information that you'll need to send onErrorLog a pong
+            Below is the information that you'll need to trigger your monitor
           </Card.Subtitle>
           <Row className="mt-3">
             <Col xs={12} lg={6}>
               <InputText
-                label={`Your Pong URL`}
+                label={`Your Monitor URL`}
                 value={`${API_URL}pongme/${pongKey}`}
-                helperText={`Use this Pong URL to send data to onErrorLog`}
+                helperText={`Use this URL to trigger your monitor on onErrorLog`}
                 disabled={true}
                 copy={true}
                 id="api-url"
@@ -453,8 +455,8 @@ const PongScreen = (props) => {
               <div className="card-title h5 pb-0 mb-0">Examples</div>
               <div className="pl-1 pb-3">
                 <small>
-                  Show examples of how to use a Pong with your programming
-                  language.
+                  Show examples of how to trigger your monitor with your
+                  programming language.
                 </small>
               </div>
 
@@ -491,7 +493,9 @@ const PongScreen = (props) => {
             text="pong"
           />
           {saved && (
-            <strong className="text-success">Your pong has been saved.</strong>
+            <strong className="text-success">
+              Your monitor has been saved.
+            </strong>
           )}
         </Col>
         <Col className="text-right" xs={12} lg={6}>
@@ -518,7 +522,7 @@ const PongScreen = (props) => {
             onClick={() => savePong(null)}
             className="btn-rounded"
           >
-            Save Pong
+            Save Monitor
           </Button>
         </Col>
       </Row>

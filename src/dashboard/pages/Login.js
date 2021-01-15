@@ -37,7 +37,7 @@ const Login = () => {
   };
 
   if (loggedIn) {
-    document.location.href = next || "/pings";
+    document.location.href = next || "/dashboard";
   }
 
   return (

@@ -6,6 +6,7 @@ import AlertCard from "../components/AlertCard";
 import moment from "moment";
 import { Link } from "react-router-dom";
 import useAuth from "../../auth/useAuth";
+import CheckLimits from "../components/CheckLimits";
 
 const Ping = (props) => {
   const [loading, setLoading] = useState(true);
@@ -74,9 +75,19 @@ const Ping = (props) => {
                 <h3>Ping Summary</h3>
               </Col>
               <Col className="right-align-small-center">
-                <Link to="/newping" className="btn btn-warning btn-rounded">
-                  New Ping
-                </Link>
+                <CheckLimits
+                  limitName="pings_max"
+                  currentLimitValue={totals.total || 0}
+                  LimitExceededComponent={({ limit }) => (
+                    <span className="text-warning">
+                      Reached maxium pings ({limit})
+                    </span>
+                  )}
+                >
+                  <Link to="/newping" className="btn btn-warning btn-rounded">
+                    New Ping
+                  </Link>
+                </CheckLimits>
               </Col>
             </Row>
           </Card.Title>

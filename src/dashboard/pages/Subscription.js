@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import makeAsyncScriptLoader from "react-async-script";
 import api from "../../utils/api";
-import { Card, Col, Row } from "react-bootstrap";
 import useAuth from "../../auth/useAuth";
 import { Redirect } from "react-router-dom";
 

@@ -290,7 +290,7 @@ const PingScreen = (props) => {
       return "Failure";
     }
 
-    return "Test Ping";
+    return "Test Your Endpoint";
   };
 
   const getTestButtonVariant = () => {
@@ -341,18 +341,18 @@ const PingScreen = (props) => {
       )}
       <Card>
         <Card.Body>
-          <Card.Title>Ping Details</Card.Title>
+          <Card.Title>Endpoint Monitor Details</Card.Title>
           <Card.Subtitle>
-            A Ping will contact a URL of your choice on a regular cadence to
-            ensure that it is still working as expected. onErrorLog will not
-            only confirm that the URL is up and working, but will also confirm
-            that the data the web server sends back is correct.
+            A Endpoint Monitor will contact a URL of your choice on a regular
+            cadence to ensure that it is still working as expected. onErrorLog
+            will not only confirm that the URL is up and working, but will also
+            confirm that the data the web server sends back is correct.
           </Card.Subtitle>
           <Row className="mt-3">
             <Col xs={12} sm={12} lg={6}>
               <InputText
                 id="name"
-                label="Ping Name"
+                label="Endpoint Monitor"
                 value={pingName}
                 isInvalid={formErrors.indexOf("name") > -1}
                 onChange={(e) => setValue(setPingName, e.target.value)}
@@ -428,10 +428,10 @@ const PingScreen = (props) => {
             <Col xs={12} sm={12} lg={6}>
               <InputSelect
                 id="interval"
-                label="Ping Interval"
+                label="Monitor Interval"
                 defaultValue={interval}
                 defaultText="Select an interval"
-                helperText="The number of minutes you want to ping your endpoint"
+                helperText="The number of minutes that onErrorLog will wait in between requests to your endpoint"
                 showDefault={true}
                 values={[
                   { value: "5", text: "5 Minutes" },
@@ -482,9 +482,10 @@ const PingScreen = (props) => {
 
       <Card>
         <Card.Body>
-          <Card.Title>Ping Check Validation</Card.Title>
+          <Card.Title>Endpoint Check Validation</Card.Title>
           <Card.Subtitle>
-            Enter the information needed to validate your ping
+            Enter the information needed to validate that your endpoint is
+            working correctly.
           </Card.Subtitle>
           <Row className="pt-3">
             <Col xs={12} sm={12} lg={6}>
@@ -617,7 +618,7 @@ const PingScreen = (props) => {
         <Card.Body>
           <Card.Title>Notification Settings</Card.Title>
           <Card.Subtitle>
-            Tell us what to do when we find an issue with your ping
+            Tell us what to do when we find an issue with your endpoint
           </Card.Subtitle>
           <Row className="pt-3">
             <Col xs={12} sm={12} lg={6}>
@@ -626,7 +627,7 @@ const PingScreen = (props) => {
                 label="How would your link to be contacted"
                 defaultValue={incidentMethod}
                 defaultText="Select a contact method"
-                helperText="The method that onErrorLog will contact you if it can't ping your endpoint"
+                helperText="The method that onErrorLog will contact you if we find an issue with your endpoint"
                 showDefault={true}
                 values={[
                   {
@@ -645,7 +646,9 @@ const PingScreen = (props) => {
                 label="Minimum Incident Count"
                 defaultValue={incidentInterval}
                 defaultText="Select an incident count"
-                helperText="onErrorLog will contact you have this many pings have failed"
+                helperText={`onErrorLog will contact you when your monitor has been triggered ${
+                  incidentInterval ? incidentInterval : `1`
+                } time(s)`}
                 showDefault={true}
                 values={[
                   { value: "1", text: "Tell us right away" },
@@ -806,7 +809,7 @@ const PingScreen = (props) => {
             onClick={() => savePing(null)}
             className="btn-rounded"
           >
-            Save Ping
+            Save Endpoint
           </Button>
         </Col>
       </Row>
@@ -814,7 +817,7 @@ const PingScreen = (props) => {
       <ResultModal
         setShowModal={setShowResultModal}
         showModal={showResultModal}
-        title={`Ping Test Results`}
+        title={`Endpoint Test Results`}
         result={testResults}
       />
 

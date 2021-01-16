@@ -13,14 +13,14 @@ const EnableButton = ({ objectId, active, enableAction, text }) => {
 
   const textMapping = {
     ping: {
-      name: "Ping",
+      name: "Endpoint",
       warning:
-        "If you enabled a Ping, onErrorLog wil restart monitoring the URL you provided.",
+        "If you enabled a Endpoint, onErrorLog wil restart monitoring the URL you provided.",
     },
     pong: {
-      name: "Pong",
+      name: "Monitor",
       warning:
-        "By enabling your Pong, you will be able to start sending requests again.",
+        "By enabling your Monitor, you will be able to start sending requests again.",
     },
     metric_condition: {
       name: "",

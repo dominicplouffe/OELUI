@@ -9,9 +9,6 @@ const Body = ({
   children,
   loading = false,
 }) => {
-  // const [sideBarType, setSideBarType] = useState("full");
-  // const [sideBarLeft, setSideBarLeft] = useState(null);
-
   const getSelectedMenuClass = (menuName) => {
     if (selectedMenu === menuName) {
       return "selected";
@@ -26,25 +23,11 @@ const Body = ({
     }
   };
 
-  const windowSize = () => {
-    // if (window.innerWidth <= 1024) {
-    //   setSideBarType("mini-sidebar");
-    // } else {
-    //   setSideBarType("full");
-    // }
-  };
+  const windowSize = () => {};
 
   window.onresize = (e) => {
     windowSize();
   };
-
-  // const hamburgerClick = () => {
-  //   if (sideBarLeft === "0") {
-  //     setSideBarLeft(null);
-  //   } else {
-  //     setSideBarLeft("0");
-  //   }
-  // };
 
   useEffect(() => {
     windowSize();
@@ -67,19 +50,6 @@ const Body = ({
             onErrorLog
           </span>
         </a>
-        {/* <button
-          className="navbar-toggler position-absolute d-md-none collapsed"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#sidebarMenu"
-          aria-controls="sidebarMenu"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon"></span>
-        </button> */}
-
-        {/* <Navbar.Toggle aria-controls="sidebarMenu" /> */}
 
         <ul className="navbar-nav px-3">
           <li className="nav-item text-nowrap">
@@ -104,6 +74,25 @@ const Body = ({
             className="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse mt-3 sidebar-nav"
           >
             <ul id="sidebarnav">
+              <li
+                className={`sidebar-item ${getSelectedMenuClass("dashboard")}`}
+              >
+                <Link
+                  className={`sidebar-link sidebar-link ${getActiveMenuClass(
+                    "dashboard"
+                  )}`}
+                  to="/dashboard"
+                >
+                  <img
+                    src="https://onerrorlog.s3.amazonaws.com/images/ping.png"
+                    alt="dashboard"
+                    className="icon"
+                  />
+                  <span className="hide-menu">Dashboard</span>
+                </Link>
+              </li>
+              <li className="sidebar-title">Monitors</li>
+
               <li className={`sidebar-item ${getSelectedMenuClass("ping")}`}>
                 <Link
                   className={`sidebar-link sidebar-link ${getActiveMenuClass(
@@ -116,7 +105,7 @@ const Body = ({
                     alt="pings"
                     className="icon"
                   />
-                  <span className="hide-menu">Pings</span>
+                  <span className="hide-menu">Endpoint</span>
                 </Link>
               </li>
               <li className={`sidebar-item ${getSelectedMenuClass("pong")}`}>
@@ -131,7 +120,7 @@ const Body = ({
                     alt="pings"
                     className="icon"
                   />
-                  <span className="hide-menu">Pongs</span>
+                  <span className="hide-menu">Inbound </span>
                 </Link>
               </li>
 
@@ -151,7 +140,7 @@ const Body = ({
                 </Link>
               </li>
 
-              <li className="list-divider"></li>
+              <li className="sidebar-title">Team &amp; Profile</li>
               {currentUser.role.role === "admin" && (
                 <li className={`sidebar-item ${getSelectedMenuClass("team")}`}>
                   <Link

@@ -27,6 +27,7 @@ import Schedule from "./dashboard/pages/Schedule";
 import { NewPing, NewPong } from "./dashboard/pages/NewPing";
 import Profile from "./dashboard/pages/Profile";
 import Failure from "./dashboard/pages/Failure";
+import Subscription from "./dashboard/pages/Subscription";
 
 import MetricConditionScreen from "./dashboard/pages/MetricConditionScreen";
 import MetricConditionSummary from "./dashboard/pages/MetricConditionSummary";
@@ -94,6 +95,13 @@ const AppRoutes = () => {
         path="/vitals/:id"
         component={VitalSummary}
         exact={true}
+      />
+      <DashboardRoute
+        exact
+        path="/subscription"
+        component={Subscription}
+        exact={true}
+        skipSubscriptionCheck
       />
       <DashboardRoute
         path="/vital/:instanceId/condition/:id"

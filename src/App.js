@@ -107,7 +107,7 @@ const AppRoutes = () => {
       />
 
       <DashboardRoute exact path="/">
-        <Redirect to="/pings" />
+        <Redirect to="/dashboard" />
       </DashboardRoute>
 
       <DashboardRoute

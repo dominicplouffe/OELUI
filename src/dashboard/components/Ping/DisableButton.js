@@ -15,7 +15,7 @@ const DisableButton = ({ objectId, active, disableAction, text }) => {
     ping: {
       name: "Ping",
       warning:
-        "If you disable a Endpoint, the associated URL will no longer be monitored.",
+        "If you disable your Uptime monitor, the associated URL will no longer be monitored.",
     },
     pong: {
       name: "Monitor",

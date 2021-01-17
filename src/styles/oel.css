@@ -364,11 +364,13 @@ pre.code  {
 }
 
 .sidebar-nav #sidebarnav .sidebar-item.selected>.sidebar-link {
-    border-radius: 0 60px 60px 0;
+    /* border-radius: 0 60px 60px 0;
     color: #fff!important;
     background: linear-gradient(90deg,#186099,#185699,#185699,#184b99,#184b99);
     box-shadow: 0 7px 12px 0 rgba(95,118,232,.21);
-    opacity: 1;
+    opacity: 1; */
+    font-weight: 900;
+    color: #186099;
 }
 .sidebar-nav #sidebarnav .sidebar-item .sidebar-link.active, .sidebar-nav #sidebarnav .sidebar-item .sidebar-link:hover {
     opacity: 1;

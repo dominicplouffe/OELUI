@@ -341,18 +341,18 @@ const PingScreen = (props) => {
       )}
       <Card>
         <Card.Body>
-          <Card.Title>Endpoint Monitor Details</Card.Title>
+          <Card.Title>Uptime Monitor Details</Card.Title>
           <Card.Subtitle>
-            A Endpoint Monitor will contact a URL of your choice on a regular
-            cadence to ensure that it is still working as expected. onErrorLog
-            will not only confirm that the URL is up and working, but will also
-            confirm that the data the web server sends back is correct.
+            A Uptime Monitor will hit a URL of your choice on a regular cadence
+            to ensure that it is still working as expected. onErrorLog will not
+            only confirm that the URL is up and working, but will also confirm
+            that the data the web server sends back is correct.
           </Card.Subtitle>
           <Row className="mt-3">
             <Col xs={12} sm={12} lg={6}>
               <InputText
                 id="name"
-                label="Endpoint Monitor"
+                label="Uptime Monitor"
                 value={pingName}
                 isInvalid={formErrors.indexOf("name") > -1}
                 onChange={(e) => setValue(setPingName, e.target.value)}
@@ -482,7 +482,7 @@ const PingScreen = (props) => {
 
       <Card>
         <Card.Body>
-          <Card.Title>Endpoint Check Validation</Card.Title>
+          <Card.Title>Uptime Monitor Validation</Card.Title>
           <Card.Subtitle>
             Enter the information needed to validate that your endpoint is
             working correctly.
@@ -809,7 +809,7 @@ const PingScreen = (props) => {
             onClick={() => savePing(null)}
             className="btn-rounded"
           >
-            Save Endpoint
+            Save Uptime
           </Button>
         </Col>
       </Row>

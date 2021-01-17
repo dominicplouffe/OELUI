@@ -105,7 +105,7 @@ const Body = ({
                     alt="pings"
                     className="icon"
                   />
-                  <span className="hide-menu">Endpoint</span>
+                  <span className="hide-menu">Uptime</span>
                 </Link>
               </li>
               <li className={`sidebar-item ${getSelectedMenuClass("pong")}`}>
@@ -120,7 +120,7 @@ const Body = ({
                     alt="pings"
                     className="icon"
                   />
-                  <span className="hide-menu">Inbound </span>
+                  <span className="hide-menu">Heartbeat </span>
                 </Link>
               </li>
 

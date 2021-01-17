@@ -13,9 +13,9 @@ const EnableButton = ({ objectId, active, enableAction, text }) => {
 
   const textMapping = {
     ping: {
-      name: "Endpoint",
+      name: "Uptime",
       warning:
-        "If you enabled a Endpoint, onErrorLog wil restart monitoring the URL you provided.",
+        "If you enabled your Uptime monitor, onErrorLog wil restart monitoring the URL you provided.",
     },
     pong: {
       name: "Monitor",

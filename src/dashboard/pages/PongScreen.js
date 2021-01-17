@@ -206,7 +206,7 @@ const PongScreen = (props) => {
 
   return (
     <Body
-      title="Inbound Management"
+      title="Heartbeat Management"
       selectedMenu="pong"
       {...props}
       loading={loading}
@@ -222,10 +222,8 @@ const PongScreen = (props) => {
       )}
       <Card>
         <Card.Body>
-          <Card.Title>Notification Settings</Card.Title>
-          <Card.Subtitle>
-            Tell us what to do when we get trigger from your application
-          </Card.Subtitle>
+          <Card.Title>Heartbeat</Card.Title>
+          <Card.Subtitle>Tell us a bit about your heartbeat</Card.Subtitle>
           <Row className="mt-3">
             <Col>
               <Row className="mt-3">
@@ -259,6 +257,14 @@ const PongScreen = (props) => {
               </Row>
             </Col>
           </Row>
+        </Card.Body>
+      </Card>
+      <Card>
+        <Card.Body>
+          <Card.Title>Notification Settings</Card.Title>
+          <Card.Subtitle>
+            Tell us what to do when we get trigger from your application
+          </Card.Subtitle>
           <Row className="pt-3">
             <Col xs={12} sm={12} lg={6}>
               <InputSelect
@@ -433,22 +439,32 @@ const PongScreen = (props) => {
 
       <Card className="hide-small">
         <Card.Body>
-          <Card.Title>How To Send Trigger your Monitor</Card.Title>
+          <Card.Title>Sending Requests to your Monitor</Card.Title>
           <Card.Subtitle>
-            Below is the information that you'll need to trigger your monitor
+            Below is the information that you'll need to send requests to your
+            monitor
           </Card.Subtitle>
           <Row className="mt-3">
             <Col xs={12} lg={6}>
               <InputText
-                label={`Your Monitor URL`}
-                value={`${API_URL}pongme/${pongKey}`}
-                helperText={`Use this URL to trigger your monitor on onErrorLog`}
+                label={`Start Endpoint`}
+                value={`${API_URL}pongme/start/${pongKey}`}
+                helperText={`Use this endpoint when you start your task`}
                 disabled={true}
                 copy={true}
                 id="api-url"
               />
             </Col>
-            <Col xs={12} lg={6}></Col>
+            <Col xs={12} lg={6}>
+              <InputText
+                label={`Complete Endpoint`}
+                value={`${API_URL}pongme/end/${pongKey}`}
+                helperText={`Use this endpoint when you complete your task`}
+                disabled={true}
+                copy={true}
+                id="api-url"
+              />
+            </Col>
           </Row>
           <Row className="mt-3">
             <Col>

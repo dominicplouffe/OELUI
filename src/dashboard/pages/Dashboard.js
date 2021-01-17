@@ -234,7 +234,7 @@ const Dashboard = (props) => {
             <Card.Title>
               <Row>
                 <Col xs={12} className="text-left">
-                  <h3>Your Endpoint Monitors</h3>
+                  <h3>Your Uptime Monitors</h3>
                 </Col>
               </Row>
             </Card.Title>
@@ -248,12 +248,12 @@ const Dashboard = (props) => {
             {!loading && pings.length === 0 && (
               <Row>
                 <Col className="text-center pt-1 pb-3" xs={12}>
-                  You have no Endpoint Monitors setup.
+                  You have no Uptime Monitors setup.
                 </Col>
 
                 <Col className="text-center pt-1 pb-3" xs={12}>
                   <Link to="/newping" className="btn btn-warning btn-rounded">
-                    New Endpoint Monitor
+                    New Uptime Monitor
                   </Link>
                 </Col>
               </Row>
@@ -336,7 +336,7 @@ const Dashboard = (props) => {
             <Card.Title>
               <Row>
                 <Col xs={12} className="text-left">
-                  <h3>Your Inbound Monitors</h3>
+                  <h3>Your Heartbeat Monitors</h3>
                 </Col>
               </Row>
             </Card.Title>
@@ -350,11 +350,11 @@ const Dashboard = (props) => {
             {!loading && pongs.length === 0 && (
               <Row>
                 <Col className="text-center pt-1 pb-3" xs={12}>
-                  You have no Inbound Monitors setup.
+                  You have no Heartbeat Monitors setup.
                 </Col>
                 <Col className="text-center pt-1 pb-3" xs={12}>
                   <Link to="/newpong" className="btn btn-warning btn-rounded">
-                    New Inbound Monitor
+                    New Heartbeat Monitor
                   </Link>
                 </Col>
               </Row>

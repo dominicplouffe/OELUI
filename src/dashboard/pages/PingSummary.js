@@ -172,7 +172,7 @@ const PingSummary = (props) => {
 
   return (
     <Body
-      title="Endpoint Monitor Summary"
+      title="Uptime Monitor Summary"
       selectedMenu="ping"
       {...props}
       loading={loading}

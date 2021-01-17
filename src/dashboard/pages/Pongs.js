@@ -59,7 +59,7 @@ const Pong = (props) => {
 
   return (
     <Body
-      title="Inbound Monitor"
+      title="Heartbeat Monitor"
       selectedMenu="pong"
       {...props}
       loading={loading}
@@ -77,11 +77,11 @@ const Pong = (props) => {
           <Card.Title>
             <Row>
               <Col xs={12} lg={3} className="text-center">
-                <h3>Inbound Monitor Summary</h3>
+                <h3>Heartbeat Monitor Summary</h3>
               </Col>
               <Col className="right-align-small-center">
                 <Link to="/newpong" className="btn btn-warning btn-rounded">
-                  New Inbound Monitor
+                  New Heartbeat Monitor
                 </Link>
               </Col>
             </Row>

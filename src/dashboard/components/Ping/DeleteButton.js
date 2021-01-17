@@ -13,17 +13,17 @@ const DeleteButton = ({ objectId, active, deleteAction, text }) => {
 
   const textMapping = {
     ping: {
-      name: "Endpoint",
+      name: "Uptime",
       warning:
-        "If you disable a Endpoint, the associated URL will no longer be monitored.",
+        "If you delete your Uptime monitor, the associated URL will no longer be monitored.",
     },
     pong: {
       name: "Monitor",
-      warning: "You about about to disable your monitor.",
+      warning: "You about about to delete your monitor.",
     },
     metric_condition: {
       name: "Condition",
-      warning: "You are about to disable your notification.",
+      warning: "You are about to delete your notification.",
     },
   };
 

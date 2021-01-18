@@ -1,28 +1,36 @@
 import React from "react";
 import { Row, Col } from "react-bootstrap";
 
-const Python = ({ pongKey, api_url }) => {
+const CSharp = ({ pongKey, api_url }) => {
   return (
     <>
       <Row>
         <Col xs={12}>
           <pre className="code p-4" style={{ lineHeight: "20px" }}>
             <span className="text-success">
-              # Example to send a start and end request to onErrorLog using
-              Python
+              # Example to send a start and end request to onErrorLog using PHP
             </span>
             <br />
-            <span className="text-danger">import</span> requests
+            $curl = curl_init();
             <br />
             <br />
             <span className="text-success"># Send your start request</span>
             <br />
-            res = <span className="text-success">requests</span>
-            .get('
+            curl_setopt_array(
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;$curl,
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;array(
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CURLOPT_URL =&gt; '
             <span className="text-warning">
               {api_url}pongme/start/{pongKey}
             </span>
-            ')
+            '
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;)
+            <br />
+            );
             <br />
             <br />
             <span className="text-success"># START OF YOUR CODE BLOCK...</span>
@@ -34,12 +42,21 @@ const Python = ({ pongKey, api_url }) => {
             <br />
             <span className="text-success"># Send your end request</span>
             <br />
-            res = <span className="text-success">requests</span>
-            .get('
+            curl_setopt_array(
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;$curl,
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;array(
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CURLOPT_URL =&gt; '
             <span className="text-warning">
               {api_url}pongme/end/{pongKey}
             </span>
-            ')
+            '
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;)
+            <br />
+            );
           </pre>
         </Col>
         <Col xs={12}>
@@ -53,4 +70,4 @@ const Python = ({ pongKey, api_url }) => {
   );
 };
 
-export default Python;
+export default CSharp;

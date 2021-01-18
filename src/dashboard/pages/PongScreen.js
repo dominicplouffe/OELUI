@@ -8,8 +8,9 @@ import InputText from "../components/InputText";
 import InputSelect from "../components/InputSelect";
 import Python from "../components/Pong/Examples/Python";
 import Node from "../components/Pong/Examples/Node";
-import Java from "../components/Pong/Examples/Java";
-import CSharp from "../components/Pong/Examples/CSharp";
+import Bash from "../components/Pong/Examples/Bash";
+import PHP from "../components/Pong/Examples/PHP";
+import Ruby from "../components/Pong/Examples/Ruby";
 import Headers from "../components/Headers";
 import DisableButton from "../components/Ping/DisableButton";
 import EnableButton from "../components/Ping/EnableButton";
@@ -54,6 +55,18 @@ const PongScreen = (props) => {
   const [showHeaderModal, setShowHeaderModal] = useState(false);
   const [headerType, setHeaderType] = useState("endpoint");
   const [active, setActive] = useState(true);
+  const [triggers, setTriggers] = useState([
+    {
+      id: null,
+      trigger_type: "complete_not_triggered_in",
+      interval_value: 5,
+      unit: "minutes",
+      interval_error: false,
+      is_delete: false,
+    },
+  ]);
+  const [cron, setCron] = useState("");
+  const [cronError, setCronError] = useState(false);
 
   const [formErrors, setFormErrors] = useState([""]);
 
@@ -89,6 +102,8 @@ const PongScreen = (props) => {
       setAlertId(data.alert.id);
       setActive(data.active);
       setPongKey(data.push_key);
+      setCron(data.cron_desc);
+      setTriggers(data.triggers);
 
       fetchSummary(id);
     }
@@ -123,7 +138,7 @@ const PongScreen = (props) => {
     if (pongActive === null) {
       pongActive = active;
     }
-    if (errors.length === 0) {
+    if (errors.length === 0 && !cronError) {
       const payload = {
         name: pongName,
         doc_link: docLink,
@@ -135,6 +150,8 @@ const PongScreen = (props) => {
         incident_interval: incidentInterval,
         active: pongActive,
         push_key: pongKey,
+        cron_desc: cron,
+        triggers: triggers,
       };
 
       let data = null;
@@ -204,6 +221,152 @@ const PongScreen = (props) => {
     }
   };
 
+  const setTriggerValue = (k, v, idx) => {
+    const newtrigs = [...triggers];
+
+    if (k === "interval") {
+      if (isNaN(parseInt(v))) {
+        newtrigs[idx].interval_error = true;
+      } else {
+        newtrigs[idx].interval_error = false;
+      }
+    }
+
+    newtrigs[idx][k] = v;
+
+    setTriggers(newtrigs);
+  };
+
+  const addTrigger = () => {
+    const newtrigs = [...triggers];
+
+    newtrigs.push({
+      id: null,
+      trigger_type: "complete_not_triggered_in",
+      interval: 5,
+      unit: "minutes",
+      interval_error: false,
+      is_delete: false,
+    });
+
+    setTriggers(newtrigs);
+  };
+
+  const deleteTrigger = (idx) => {
+    const newtrigs = [];
+
+    for (let i = 0; i < triggers.length; i++) {
+      if (i === idx) {
+        if (triggers[i] === null) {
+          continue;
+        }
+        triggers[i].is_delete = true;
+      }
+
+      newtrigs.push(triggers[i]);
+    }
+
+    setTriggers(newtrigs);
+  };
+
+  const checkCron = async (cron) => {
+    const { data = null, error = null } = await api(
+      "pong/cron_check/",
+      "POST",
+      {
+        cron: cron,
+      }
+    );
+
+    if (data) {
+      setCronError(false);
+    }
+
+    if (error) {
+      setCronError(true);
+    }
+  };
+
+  const renderTrigger = (t, i) => {
+    if (t.is_delete) {
+      return null;
+    }
+    return (
+      <Row key={i} className="pt-2">
+        <Col xs={7}>
+          <InputSelect
+            id="triggertype"
+            label="Select your trigger"
+            defaultValue={t.trigger_type}
+            showDefault={false}
+            values={[
+              {
+                value: "complete_not_triggered_in",
+                text: "Complete endpoint has not been requested in",
+              },
+              {
+                value: "start_not_triggered_in",
+                text: "Start endpoint has not been requested in",
+              },
+              {
+                value: "runs_less_than",
+                text: "Task runs in less than",
+              },
+              {
+                value: "runs_more_than",
+                text: "Task runs for more than",
+              },
+            ]}
+            onChange={(e) => setTriggerValue("trigger_type", e.target.value, i)}
+          />
+        </Col>
+        <Col xs={2}>
+          <InputText
+            id="triggerinterval"
+            label={"Duration"}
+            value={t.interval_value}
+            onChange={(e) =>
+              setTriggerValue("interval_value", e.target.value, i)
+            }
+            isInvalid={t.interval_error}
+          />
+        </Col>
+        <Col xs={3} className="text-right">
+          <InputSelect
+            id="triggertype"
+            label="Time Unit"
+            defaultValue={t.unit}
+            showDefault={false}
+            values={[
+              {
+                value: "seconds",
+                text: "Second(s)",
+              },
+              {
+                value: "minutes",
+                text: "Minute(s)",
+              },
+              {
+                value: "days",
+                text: "Day(s)",
+              },
+            ]}
+            onChange={(e) => setTriggerValue("unit", e.target.value, i)}
+          />
+          {i !== 0 && (
+            <Button
+              variant="link"
+              className="pt-1 mr-0 pr-0"
+              onClick={() => deleteTrigger(i)}
+            >
+              <small>delete</small>
+            </Button>
+          )}
+        </Col>
+      </Row>
+    );
+  };
+
   return (
     <Body
       title="Heartbeat Management"
@@ -222,11 +385,18 @@ const PongScreen = (props) => {
       )}
       <Card>
         <Card.Body>
-          <Card.Title>Heartbeat</Card.Title>
-          <Card.Subtitle>Tell us a bit about your heartbeat</Card.Subtitle>
-          <Row className="mt-3">
-            <Col>
-              <Row className="mt-3">
+          <Row className="pt-3">
+            <Col xs={12} lg={7}>
+              <Row>
+                <Col>
+                  <Card.Title>Heartbeat</Card.Title>
+                  <Card.Subtitle>
+                    Tell us a bit about your heartbeat
+                  </Card.Subtitle>
+                </Col>
+              </Row>
+
+              <Row>
                 <Col xs={12} sm={12} lg={6}>
                   <InputText
                     id="name"
@@ -236,6 +406,28 @@ const PongScreen = (props) => {
                     onChange={(e) => setValue(setPongName, e.target.value)}
                   />
                 </Col>
+                <Col>
+                  <InputText
+                    id="name"
+                    label="Cron Schedule"
+                    value={cron}
+                    isInvalid={cronError}
+                    onChange={(e) => setValue(setCron, e.target.value)}
+                    helperText={
+                      <>
+                        <span>
+                          If this task is running as a cron, let us know the
+                          cron schedule (e.g. "5 0 * 8 *"). If no cron schedule
+                          is specified, onErrorLog will assume the task is
+                          running 24h per day.
+                        </span>
+                      </>
+                    }
+                    onBlur={(e) => checkCron(e.target.value)}
+                  />
+                </Col>
+              </Row>
+              <Row>
                 <Col xs={12} sm={12} lg={6}>
                   <InputText
                     id="doc_link"
@@ -256,249 +448,402 @@ const PongScreen = (props) => {
                 </Col>
               </Row>
             </Col>
+            <Col className="doc-box">
+              <h5 className="mt-0 pt-0">Help with this form</h5>
+              <p>
+                <strong>Monitor Name</strong>
+                <span className="doc-text">
+                  <br /> Give us a unique name to identify your monitor
+                </span>
+              </p>
+              <p>
+                <strong>Cron Schedule</strong>
+                <br />
+                <span className="doc-text">
+                  If your task has a cron schedule, paste it here. This will
+                  ensure that onErrorLog does not monitor the task when it is{" "}
+                  <em>"not"</em> suppose to be running. For example, if you
+                  enter this cron schedule <em>"5 4-12 * * *"</em>. onErrorLog
+                  will monitor your task between the hours of 4am and 12pm UTC
+                  only.
+                  <br />
+                  <br />
+                  If you do not enter a cron schedule, onErrorLog will assume
+                  that the task is running 24 hours a day, every day.
+                </span>
+              </p>
+              <p>
+                <strong>Documentation URL</strong>
+                <span className="doc-text">
+                  <br /> If you have a URL to a wiki page that explains what to
+                  do in case this monitor is triggered, paste it here. It will
+                  be sent along with the notification.
+                </span>
+              </p>
+            </Col>
           </Row>
         </Card.Body>
       </Card>
+
       <Card>
         <Card.Body>
-          <Card.Title>Notification Settings</Card.Title>
-          <Card.Subtitle>
-            Tell us what to do when we get trigger from your application
-          </Card.Subtitle>
           <Row className="pt-3">
-            <Col xs={12} sm={12} lg={6}>
-              <InputSelect
-                id="incidentmethod"
-                label="How would your link to be contacted"
-                defaultValue={incidentMethod}
-                defaultText="Select a contact method"
-                helperText="The method that onErrorLog will contact you when your monitor is triggered"
-                showDefault={true}
-                values={[
-                  {
-                    value: "team",
-                    text: "Notify your team (email or text message)",
-                  },
-                  { value: "callback", text: "HTTP Callback" },
-                ]}
-                onChange={(e) => setValue(setIncidentMethod, e.target.value)}
-                isInvalid={formErrors.indexOf("incidentmethod") > -1}
-              />
+            <Col xs={12} lg={7}>
+              <Row>
+                <Col>
+                  <Card.Title>Notification Rules</Card.Title>
+                  <Card.Subtitle>
+                    Tell us the rules that onErrorLog should apply to know when
+                    to send an alert.
+                  </Card.Subtitle>
+                </Col>
+              </Row>
+              {triggers.map((t, i) => renderTrigger(t, i))}
+              <Row className="pt-4">
+                <Col className="text-right">
+                  <Button
+                    variant="primary"
+                    onClick={() => addTrigger()}
+                    className="btn-rounded"
+                  >
+                    New Rule
+                  </Button>
+                </Col>
+              </Row>
             </Col>
-            <Col xs={12} sm={12} lg={6}>
-              <InputSelect
-                id="incidentinternal"
-                label="Minimum Incident Count"
-                defaultValue={incidentInterval}
-                defaultText="Select an incident count"
-                helperText={`onErrorLog will contact you when your monitor has been triggered ${
-                  incidentInterval ? incidentInterval : `1`
-                } time(s)`}
-                showDefault={true}
-                values={[
-                  { value: "1", text: "Tell us right away" },
-                  { value: "2", text: "2 Incidents" },
-                  { value: "5", text: "5 Incidents" },
-                  { value: "10", text: "10 Incidents" },
-                ]}
-                isInvalid={formErrors.indexOf("incidentinterval") > -1}
-                onChange={(e) => setValue(setIncidentInterval, e.target.value)}
-              />
+            <Col className="doc-box">
+              <h5 className="mt-0 pt-0">Help with this form</h5>
+              <p>
+                <strong>Trigger</strong>
+                <span className="doc-text">
+                  <br />
+                  This rules tells onErrorLog when to check for an issue.
+                  <br />
+                  Once you save your monitor, you will be given two REST
+                  endpoints. A <em>start</em> and an <em>end</em> endpoint. The
+                  start endpoint is to be called at the beginning of your code
+                  block and the end endpoint is to be called at the completion
+                  of your code block. Using both of these endpoints, onErrorLog
+                  can monitor your code to ensure it has completed successfully.
+                  <ul className="mt-2">
+                    <li>
+                      <strong>Start endpoint has not be requested in</strong>:
+                      If onErrorLog does not receive a request from your start
+                      endpoint in x minutes, an alert will be triggered. For
+                      example: The duration/unit is <em>5 minutes</em>.
+                      onErrorLog receives a notification at 11:00am. By 11:05am
+                      it has not yet recieved a notification from your{" "}
+                      <em>start endpoint</em>, an alert will be triggered.
+                    </li>
+                    <li>
+                      <strong>Complete endpoint has not be requested in</strong>
+                      : If onErrorLog does not receive a request from your end
+                      endpoint in x minutes, an alert will be triggered. For
+                      example: The duration/unit is <em>5 minutes</em>.
+                      onErrorLog receives a notification at 11:00am. By 11:05am
+                      it has not yet recieved a notification from your{" "}
+                      <em>end endpoint</em>, an alert will be triggered.
+                    </li>
+                    <li>
+                      <strong>Task runs in less than</strong>: If onErrorLog
+                      recieves your end endpoint request, but and the difference
+                      from the start and end requests is less than the specified
+                      duration/unit, an alert will be triggered. For example:
+                      The duration/unit is 10 minutes, meaning that the task
+                      should last at least 10 minutes. If onErrorLog recieves
+                      your start endpoint at 11:00am and your end enpoint at
+                      11:05am, an alert will be triggered. The task ran for 5
+                      minutes less than expected.
+                    </li>
+                    <li>
+                      <strong>Task runs for more than</strong>: If onErrorLog
+                      recieves your end endpoint request, but and the difference
+                      from the start and end requests is more than the specified
+                      duration/unit, an alert will be triggered. For example:
+                      The duration/unit is 10 minutes, meaning that the task
+                      should not run for more than 10 minutes. If onErrorLog
+                      recieves your start endpoint at 11:00am and your end
+                      enpoint at 11:15am, an alert will be triggered. The task
+                      ran for 15 minutes, 5 more minutes than expected.
+                    </li>
+                  </ul>
+                </span>
+              </p>
             </Col>
           </Row>
-
-          {incidentMethod === "email" && (
-            <Row className="pt-3 pl-2">
-              <Col xs={12} sm={12} lg={6}>
-                <InputText
-                  id="incidentemail"
-                  label="Contact Email"
-                  value={incidentEmail}
-                  placeholder="incident-report@mydomain.com"
-                  helperText="The email address onErrorLog will contact when it finds an incident"
-                  isInvalid={formErrors.indexOf("incidentemail") > -1}
-                  onChange={(e) => {
-                    setValue(setIncidentEmail, e.target.value);
-                  }}
-                />
-              </Col>
-            </Row>
-          )}
-          {incidentMethod === "callback" && (
-            <Row className="pt-3">
-              <Col xs={12} sm={12} lg={6}>
-                <InputText
-                  id="incidentenpoint"
-                  label="HTTP Callback URL"
-                  value={incidentEndpoint}
-                  placeholder="https://www.mydomain.com/callback"
-                  helperText={
-                    <>
-                      <span>
-                        The callback that onErrorLog will hit when it finds an
-                        incident (only POSTs are supported)
-                      </span>
-                      <Row>
-                        <Col>
-                          <Button
-                            variant="link"
-                            className="p-0 m-0 btn-link"
-                            onClick={() =>
-                              setValue(setShowCallbackBasic, !showCallbackBasic)
-                            }
-                          >
-                            <small>
-                              {showCallbackBasic
-                                ? ` [-] basic authentication`
-                                : ` [+] show basic authentication`}
-                            </small>
-                          </Button>
-                        </Col>
-                        <Col className="text-right">
-                          {pongId !== null && (
-                            <Button
-                              variant="link"
-                              className="p-2 m-0 btn-link"
-                              onClick={() => {
-                                setShowHeaderModal(true);
-                                setHeaderType("callback");
-                              }}
-                            >
-                              <small>My endpoint needs headers</small>
-                            </Button>
-                          )}
-                        </Col>
-                      </Row>
-                    </>
-                  }
-                  isInvalid={formErrors.indexOf("incidentendpoint") > -1}
-                  onChange={(e) => {
-                    setValue(setIncidentEndpoint, e.target.value);
-                  }}
-                />
-              </Col>
-              <Col>
-                <strong>About Callbacks</strong>
-                <small>
-                  <div>
-                    Callbacks will be sent in the case that an incident is
-                    triggered. If everything is working properly, the callback
-                    will be not initiated.
-                  </div>
-                  <Row className="mt-2">
-                    <Col>
-                      <strong>Method</strong>: POST
-                    </Col>
-                    <Col>
-                      <strong>Body Content Type</strong>: application/json
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col>
-                      <strong>Body Fields:</strong> http_status_code, reason,
-                      response_time
-                    </Col>
-                  </Row>
-                </small>
-              </Col>
-            </Row>
-          )}
-          {showCallbackBasic && (
-            <Row className="pt-2 pl-2">
-              <Col xs={12} sm={12} lg={6}>
-                <InputText
-                  id="callbackusenrame"
-                  label="Username (OPTIONAL)"
-                  value={incidentEndpointUser}
-                  placeholder=""
-                  helperText="The username if your BASIC authentication for your callback endpoint."
-                  isInvalid={formErrors.indexOf("callbackusername") > -1}
-                  onChange={(e) =>
-                    setValue(setIncidentEndpointUser, e.target.value)
-                  }
-                />
-              </Col>
-              <Col xs={12} sm={12} lg={6}>
-                <InputText
-                  id="callbackpassword"
-                  label="Password (OPTIONAL)"
-                  value={incidentEndpointPass}
-                  placeholder=""
-                  helperText="The password if your BASIC authentication for your callback endpoint."
-                  type="password"
-                  isInvalid={formErrors.indexOf("callbackpassword") > -1}
-                  onChange={(e) =>
-                    setValue(setIncidentEndpointPass, e.target.value)
-                  }
-                />
-              </Col>
-            </Row>
-          )}
         </Card.Body>
       </Card>
 
-      <Card className="hide-small">
+      <Card>
         <Card.Body>
-          <Card.Title>Sending Requests to your Monitor</Card.Title>
-          <Card.Subtitle>
-            Below is the information that you'll need to send requests to your
-            monitor
-          </Card.Subtitle>
-          <Row className="mt-3">
-            <Col xs={12} lg={6}>
-              <InputText
-                label={`Start Endpoint`}
-                value={`${API_URL}pongme/start/${pongKey}`}
-                helperText={`Use this endpoint when you start your task`}
-                disabled={true}
-                copy={true}
-                id="api-url"
-              />
-            </Col>
-            <Col xs={12} lg={6}>
-              <InputText
-                label={`Complete Endpoint`}
-                value={`${API_URL}pongme/end/${pongKey}`}
-                helperText={`Use this endpoint when you complete your task`}
-                disabled={true}
-                copy={true}
-                id="api-url"
-              />
-            </Col>
-          </Row>
-          <Row className="mt-3">
-            <Col>
-              <div className="card-title h5 pb-0 mb-0">Examples</div>
-              <div className="pl-1 pb-3">
-                <small>
-                  Show examples of how to trigger your monitor with your
-                  programming language.
-                </small>
-              </div>
+          <Row className="pt-3">
+            <Col xs={12} sm={12} lg={7}>
+              <Row>
+                <Col>
+                  <Card.Title>Notification Settings</Card.Title>
+                  <Card.Subtitle>
+                    Tell us what to do when we get trigger from your application
+                  </Card.Subtitle>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <InputSelect
+                    id="incidentmethod"
+                    label="How would you like to be contacted"
+                    defaultValue={incidentMethod}
+                    defaultText="Select a contact method"
+                    helperText="The method that onErrorLog will contact you when your monitor is triggered"
+                    showDefault={true}
+                    values={[
+                      {
+                        value: "team",
+                        text: "Notify your team (email or text message)",
+                      },
+                      { value: "callback", text: "HTTP Callback" },
+                    ]}
+                    onChange={(e) =>
+                      setValue(setIncidentMethod, e.target.value)
+                    }
+                    isInvalid={formErrors.indexOf("incidentmethod") > -1}
+                  />
+                </Col>
+                <Col>
+                  <InputSelect
+                    id="incidentinternal"
+                    label="Minimum Incident Count"
+                    defaultValue={incidentInterval}
+                    defaultText="Select an incident count"
+                    helperText={`onErrorLog will contact you when your monitor has been triggered ${
+                      incidentInterval ? incidentInterval : `1`
+                    } time(s)`}
+                    showDefault={true}
+                    values={[
+                      { value: "1", text: "Tell us right away" },
+                      { value: "2", text: "2 Incidents" },
+                      { value: "5", text: "5 Incidents" },
+                      { value: "10", text: "10 Incidents" },
+                    ]}
+                    isInvalid={formErrors.indexOf("incidentinterval") > -1}
+                    onChange={(e) =>
+                      setValue(setIncidentInterval, e.target.value)
+                    }
+                  />
+                </Col>
+              </Row>
 
-              <Tabs
-                id="example-code-tabs"
-                activeKey={exampleTab}
-                onSelect={(k) => setExampleTab(k)}
-                className="pl-3 pr-3"
-              >
-                <Tab eventKey="python" title="Python">
-                  <Python pongKey={pongKey} />
-                </Tab>
-                <Tab eventKey="node" title="Node.js">
-                  <Node pongKey={pongKey} />
-                </Tab>
-                <Tab eventKey="java" title="Java">
-                  <Java pongKey={pongKey} />
-                </Tab>
-                <Tab eventKey="csharp" title="C#">
-                  <CSharp pongKey={pongKey} />
-                </Tab>
-              </Tabs>
+              {incidentMethod === "email" && (
+                <Row className="pt-3 pl-2">
+                  <Col xs={12} sm={12} lg={6}>
+                    <InputText
+                      id="incidentemail"
+                      label="Contact Email"
+                      value={incidentEmail}
+                      placeholder="incident-report@mydomain.com"
+                      helperText="The email address onErrorLog will contact when it finds an incident"
+                      isInvalid={formErrors.indexOf("incidentemail") > -1}
+                      onChange={(e) => {
+                        setValue(setIncidentEmail, e.target.value);
+                      }}
+                    />
+                  </Col>
+                </Row>
+              )}
+              {incidentMethod === "callback" && (
+                <Row className="pt-3">
+                  <Col xs={12} sm={12} lg={12}>
+                    <InputText
+                      id="incidentenpoint"
+                      label="HTTP Callback URL"
+                      value={incidentEndpoint}
+                      placeholder="https://www.mydomain.com/callback"
+                      helperText={
+                        <>
+                          <span>
+                            The callback that onErrorLog will hit when it finds
+                            an incident (only POSTs are supported)
+                          </span>
+                          <Row>
+                            <Col>
+                              <Button
+                                variant="link"
+                                className="p-0 m-0 btn-link"
+                                onClick={() =>
+                                  setValue(
+                                    setShowCallbackBasic,
+                                    !showCallbackBasic
+                                  )
+                                }
+                              >
+                                <small>
+                                  {showCallbackBasic
+                                    ? ` [-] basic authentication`
+                                    : ` [+] show basic authentication`}
+                                </small>
+                              </Button>
+                            </Col>
+                            <Col className="text-right">
+                              {pongId !== null && (
+                                <Button
+                                  variant="link"
+                                  className="p-2 m-0 btn-link"
+                                  onClick={() => {
+                                    setShowHeaderModal(true);
+                                    setHeaderType("callback");
+                                  }}
+                                >
+                                  <small>My endpoint needs headers</small>
+                                </Button>
+                              )}
+                            </Col>
+                          </Row>
+                        </>
+                      }
+                      isInvalid={formErrors.indexOf("incidentendpoint") > -1}
+                      onChange={(e) => {
+                        setValue(setIncidentEndpoint, e.target.value);
+                      }}
+                    />
+                  </Col>
+                </Row>
+              )}
+              {showCallbackBasic && (
+                <Row className="pt-2 pl-2">
+                  <Col xs={12} sm={12} lg={6}>
+                    <InputText
+                      id="callbackusenrame"
+                      label="Username (OPTIONAL)"
+                      value={incidentEndpointUser}
+                      placeholder=""
+                      helperText="The username if your BASIC authentication for your callback endpoint."
+                      isInvalid={formErrors.indexOf("callbackusername") > -1}
+                      onChange={(e) =>
+                        setValue(setIncidentEndpointUser, e.target.value)
+                      }
+                    />
+                  </Col>
+                  <Col xs={12} sm={12} lg={6}>
+                    <InputText
+                      id="callbackpassword"
+                      label="Password (OPTIONAL)"
+                      value={incidentEndpointPass}
+                      placeholder=""
+                      helperText="The password if your BASIC authentication for your callback endpoint."
+                      type="password"
+                      isInvalid={formErrors.indexOf("callbackpassword") > -1}
+                      onChange={(e) =>
+                        setValue(setIncidentEndpointPass, e.target.value)
+                      }
+                    />
+                  </Col>
+                </Row>
+              )}
+            </Col>
+            <Col className="doc-box">
+              <h5 className="mt-0 pt-0">Help with this form</h5>
+              <p>
+                <strong>How would you like to be contacted</strong>
+                <span className="doc-text">
+                  <br />
+                  Select how you want your team to be contacted in case your
+                  monitor is triggered
+                  <ul className="mt-2">
+                    <li>
+                      <strong>Notify your team (email or text message)</strong>:
+                      If you choose this option the team member that is on-call
+                      will be alerted. Each team member can choose to receive
+                      their notifications through email or text message from
+                      their profile.
+                    </li>
+                    <li>
+                      <strong>HTTP Callback</strong>: If you choose this option
+                      the endpoint callback you specify will be requested by
+                      onErrorLog. onErrorLog will perfor a <em>POST</em>. The
+                      body of the request will contain some information about
+                      the notification. You also have the option of configuring
+                      HTTP headers and Basic Authentication.
+                      <div className="mt-2">
+                        <strong>Body Content Type</strong>: application/json
+                        <br />
+                        <strong>Body Fields</strong>: http_status_code, reason,
+                        response_time
+                      </div>
+                    </li>
+                  </ul>
+                </span>
+              </p>
             </Col>
           </Row>
         </Card.Body>
       </Card>
+
+      {pongId && (
+        <Card className="hide-small">
+          <Card.Body>
+            <Card.Title>Sending Requests to your Monitor</Card.Title>
+            <Card.Subtitle>
+              Below is the information that you'll need to send requests to your
+              monitor
+            </Card.Subtitle>
+            <Row className="mt-3">
+              <Col xs={12} lg={6}>
+                <InputText
+                  label={`Start Endpoint`}
+                  value={`${API_URL}pongme/start/${pongKey}`}
+                  helperText={`Use this endpoint when you start your task`}
+                  disabled={true}
+                  copy={true}
+                  id="api-url"
+                />
+              </Col>
+              <Col xs={12} lg={6}>
+                <InputText
+                  label={`End Endpoint`}
+                  value={`${API_URL}pongme/end/${pongKey}`}
+                  helperText={`Use this endpoint when you complete your task`}
+                  disabled={true}
+                  copy={true}
+                  id="api-url"
+                />
+              </Col>
+            </Row>
+            <Row className="mt-3">
+              <Col>
+                <div className="card-title h5 pb-0 mb-0">Examples</div>
+                <div className="pl-1 pb-3">
+                  <small>
+                    Show examples of how to trigger your monitor with your
+                    programming language.
+                  </small>
+                </div>
+
+                <Tabs
+                  id="example-code-tabs"
+                  activeKey={exampleTab}
+                  onSelect={(k) => setExampleTab(k)}
+                  className="pl-3 pr-3"
+                >
+                  <Tab eventKey="python" title="Python">
+                    <Python pongKey={pongKey} api_url={API_URL} />
+                  </Tab>
+                  <Tab eventKey="node" title="Node.js">
+                    <Node pongKey={pongKey} api_url={API_URL} />
+                  </Tab>
+                  <Tab eventKey="bash" title="Bash">
+                    <Bash pongKey={pongKey} api_url={API_URL} />
+                  </Tab>
+                  <Tab eventKey="php" title="PHP">
+                    <PHP pongKey={pongKey} api_url={API_URL} />
+                  </Tab>
+                  <Tab eventKey="ruby" title="Ruby">
+                    <Ruby pongKey={pongKey} api_url={API_URL} />
+                  </Tab>
+                </Tabs>
+              </Col>
+            </Row>
+          </Card.Body>
+        </Card>
+      )}
 
       <Row>
         <Col className="text-left" xs={12} lg={6}>
@@ -549,18 +894,6 @@ const PongScreen = (props) => {
         headerType={headerType}
         alertId={alertId}
       />
-
-      {/* <Card>
-        <Card.Body>
-          <Card.Title>Notification Condition</Card.Title>
-          <Card.Subtitle>this should be somehting here</Card.Subtitle>
-          <Row>
-            <Col>
-              <Condition />
-            </Col>
-          </Row>
-        </Card.Body>
-      </Card> */}
     </Body>
   );
 };

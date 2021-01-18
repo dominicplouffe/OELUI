@@ -624,7 +624,7 @@ const PingScreen = (props) => {
             <Col xs={12} sm={12} lg={6}>
               <InputSelect
                 id="incidentmethod"
-                label="How would your link to be contacted"
+                label="How would you like to be contacted"
                 defaultValue={incidentMethod}
                 defaultText="Select a contact method"
                 helperText="The method that onErrorLog will contact you if we find an issue with your endpoint"

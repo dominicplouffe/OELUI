@@ -1,7 +1,7 @@
 import React from "react";
 import { Row, Col } from "react-bootstrap";
 
-const Python = ({ pongKey, api_url }) => {
+const Ruby = ({ pongKey, api_url }) => {
   return (
     <>
       <Row>
@@ -12,13 +12,13 @@ const Python = ({ pongKey, api_url }) => {
               Python
             </span>
             <br />
-            <span className="text-danger">import</span> requests
+            <span className="text-danger">require </span> 'open-uri'
             <br />
             <br />
             <span className="text-success"># Send your start request</span>
             <br />
-            res = <span className="text-success">requests</span>
-            .get('
+            <span className="text-success">open</span>
+            ('
             <span className="text-warning">
               {api_url}pongme/start/{pongKey}
             </span>
@@ -34,8 +34,8 @@ const Python = ({ pongKey, api_url }) => {
             <br />
             <span className="text-success"># Send your end request</span>
             <br />
-            res = <span className="text-success">requests</span>
-            .get('
+            <span className="text-success">open</span>
+            ('
             <span className="text-warning">
               {api_url}pongme/end/{pongKey}
             </span>
@@ -43,14 +43,11 @@ const Python = ({ pongKey, api_url }) => {
           </pre>
         </Col>
         <Col xs={12}>
-          <small>
-            Note: You need to install the request library:{" "}
-            <strong>pip install requests</strong>
-          </small>
+          <small>Note: You need to install the open-uri library</small>
         </Col>
       </Row>
     </>
   );
 };
 
-export default Python;
+export default Ruby;

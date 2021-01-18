@@ -467,7 +467,7 @@ const MetricConditionScreen = (props) => {
                         <Col xs={12} sm={12} xl={12}>
                           <InputSelect
                             id="incidentmethod"
-                            label="How would your link to be contacted"
+                            label="How would you like to be contacted"
                             defaultValue={incidentMethod}
                             defaultText="Select a contact method"
                             helperText="The method that onErrorLog will contact you if it can't ping your endpoint"

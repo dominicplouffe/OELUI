@@ -182,12 +182,8 @@ const AlertCard = ({
                       Summary
                     </Link>
                   )}
-                  {user.role.role === "admin" && showEdit && showSummary ? (
-                    <span> | </span>
-                  ) : (
-                    ``
-                  )}
-                  {user.role.role === "admin" && showEdit && (
+                  {showEdit && showSummary ? <span> | </span> : ``}
+                  {showEdit && (
                     <Link
                       className="btn btn-link btn-small"
                       to={`/${otherPath}/${m.object.id}`}
@@ -195,11 +191,7 @@ const AlertCard = ({
                       Edit
                     </Link>
                   )}
-                  {user.role.role === "admin" || showEdit || showSummary ? (
-                    <span> | </span>
-                  ) : (
-                    ``
-                  )}
+                  {showResponseView ? <span> | </span> : ``}
                   {showResponseView && (
                     <Button
                       variant="link"

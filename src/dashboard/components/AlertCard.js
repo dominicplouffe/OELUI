@@ -31,11 +31,11 @@ const AlertCard = ({
   const renderStatusView = () => {
     return (
       <>
-        <Col className="text-center pt-2" xs={6} sm={12} xl={3}>
+        <Col className="text-center" xs={6} sm={12} xl={3}>
           <small>Downtime</small>
-          <h2>{m.stats ? m.stats.total_time_s : `0h 0m`}</h2>
+          <h2>{m.downtime_s}</h2>
         </Col>
-        <Col className="text-center" xs={12} sm={12} xl={3}>
+        <Col className="text-center text-nowrap" xs={12} sm={12} xl={3}>
           <Row>
             <Col xs={6} lg={3}>
               <small>Acknowledged</small>
@@ -76,11 +76,11 @@ const AlertCard = ({
   const renderResponseView = () => {
     return (
       <>
-        <Col className="text-center pt-2" xs={12} sm={12} xl={3}>
+        <Col className="text-center" xs={12} sm={12} xl={3}>
           <small>Downtime</small>
           <h2>{m.downtime_s}</h2>
         </Col>
-        <Col className="text-center pt-2" xs={12} sm={12} xl={3}>
+        <Col className="text-center" xs={12} sm={12} xl={3}>
           <small>Avg. Response Time</small>
           <h2>
             {(m.avg_resp * 1000).toFixed(2)}
@@ -173,29 +173,36 @@ const AlertCard = ({
             </Col>
             <Col className="text-center" xl={3} md={12}>
               <Row>
-                <Col>
-                  <small>
-                    {showSummary && (
-                      <Link to={`/${otherPath}/summary/${m.object.id}`}>
-                        summary
-                      </Link>
-                    )}
-                    {user.role.role === "admin" && showEdit && showSummary ? (
-                      <span> | </span>
-                    ) : (
-                      ``
-                    )}
-                    {user.role.role === "admin" && showEdit && (
-                      <Link to={`/${otherPath}/${m.object.id}`}>edit</Link>
-                    )}
-                  </small>
-                </Col>
-
-                <Col className="text-right">
+                <Col className="text-center text-md-right">
+                  {showSummary && (
+                    <Link
+                      className="btn btn-link btn-small"
+                      to={`/${otherPath}/summary/${m.object.id}`}
+                    >
+                      Summary
+                    </Link>
+                  )}
+                  {user.role.role === "admin" && showEdit && showSummary ? (
+                    <span> | </span>
+                  ) : (
+                    ``
+                  )}
+                  {user.role.role === "admin" && showEdit && (
+                    <Link
+                      className="btn btn-link btn-small"
+                      to={`/${otherPath}/${m.object.id}`}
+                    >
+                      Edit
+                    </Link>
+                  )}
+                  {user.role.role === "admin" || showEdit || showSummary ? (
+                    <span> | </span>
+                  ) : (
+                    ``
+                  )}
                   {showResponseView && (
                     <Button
-                      variant="custom"
-                      className="p-0 m-0"
+                      variant="link"
                       onClick={() => {
                         setStatusOverride(!statusOverride);
                       }}

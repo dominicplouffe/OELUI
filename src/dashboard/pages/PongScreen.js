@@ -287,6 +287,21 @@ const PongScreen = (props) => {
     }
   };
 
+  const showDelete = () => {
+    let cnt = 0;
+    for (let i = 0; i < triggers.length; i++) {
+      if (!cnt.is_delete) {
+        cnt += 1;
+      }
+    }
+
+    if (cnt === 1) {
+      return false;
+    }
+
+    return true;
+  };
+
   const renderTrigger = (t, i) => {
     if (t.is_delete) {
       return null;
@@ -353,7 +368,7 @@ const PongScreen = (props) => {
             ]}
             onChange={(e) => setTriggerValue("unit", e.target.value, i)}
           />
-          {i !== 0 && (
+          {showDelete() && (
             <Button
               variant="link"
               className="pt-1 mr-0 pr-0"

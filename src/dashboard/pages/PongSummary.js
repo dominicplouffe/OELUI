@@ -7,6 +7,14 @@ import AlertCard from "../components/AlertCard";
 import useAuth from "../../auth/useAuth";
 import { Link } from "react-router-dom";
 import FailureStatus from "../components/FailureStatus";
+import {
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 
 const PongSummary = (props) => {
   const [calendarData, setCalendarData] = useState([]);
@@ -16,6 +24,7 @@ const PongSummary = (props) => {
   const [calendarHelp, setCalendarHelp] = useState(
     <div className="mt-2">&nbsp;</div>
   );
+  const [responseTimeData, setResponseTimeData] = useState(null);
   const [failureCounts, setFailureCounts] = useState([]);
   const [failures, setFailures] = useState([]);
   const [otherPongs, setOtherPongs] = useState([]);
@@ -44,6 +53,23 @@ const PongSummary = (props) => {
 
     if (data) {
       setSummary(data.objects[0]);
+
+      const resData = [];
+
+      for (let i = 0; i < data.objects[0].snapshot.length; i++) {
+        const ss = data.objects[0].snapshot[i];
+        const row = {
+          name: `${moment(ss.date).format("H")}:00`,
+          response_ms: null,
+        };
+        if (ss.status) {
+          row.response_ms = parseInt(ss.avg_res * 1000);
+        }
+
+        resData.push(row);
+      }
+
+      setResponseTimeData(resData);
 
       fetchFailreCounts(data.objects[0].object.alert.id);
       fetchFailures(data.objects[0].object.alert.id);
@@ -138,6 +164,21 @@ const PongSummary = (props) => {
     return "#efefef";
   };
 
+  const CustomTooltip = ({ active, payload, label }) => {
+    if (active && payload[0]) {
+      return (
+        <div className="custom-tooltip">
+          <p className="label">{`Hour of day (UTC)${label} : ${payload[0].value} ms`}</p>
+          <p className="desc">
+            {`The task time time was ${payload[0].value} ms`}
+          </p>
+        </div>
+      );
+    }
+
+    return null;
+  };
+
   return (
     <Body title="Pong Summary" selectedMenu="pong" {...props} loading={loading}>
       {summary && (
@@ -149,6 +190,48 @@ const PongSummary = (props) => {
           otherPath="pong"
         />
       )}
+
+      <Card>
+        <Card.Body>
+          <Card.Title>
+            <Row>
+              <Col>
+                <h3>Average Task Time (ms)</h3>
+              </Col>
+            </Row>
+          </Card.Title>
+          <Row>
+            <Col>
+              {responseTimeData && (
+                <ResponsiveContainer width="100%" height={200}>
+                  <AreaChart
+                    data={responseTimeData}
+                    margin={{
+                      top: 10,
+                      right: 30,
+                      left: 0,
+                      bottom: 0,
+                    }}
+                  >
+                    <XAxis dataKey="name" tick={true} />
+                    <YAxis />
+                    <Tooltip content={<CustomTooltip />} />
+                    <Area
+                      type="monotone"
+                      dataKey="response_ms"
+                      stroke="#184b99"
+                      fill="#184b99"
+                    />
+                  </AreaChart>
+                </ResponsiveContainer>
+              )}
+              <div className="pt-1 text-center">
+                <small>Hour of day (UTC)</small>
+              </div>
+            </Col>
+          </Row>
+        </Card.Body>
+      </Card>
 
       <Card>
         <Card.Body>

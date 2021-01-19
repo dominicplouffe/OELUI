@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Row, Col, Alert } from "react-bootstrap";
+import { Row, Col, Alert, Badge, Button } from "react-bootstrap";
 
 const Body = ({
   currentUser,
@@ -53,16 +53,43 @@ const Body = ({
 
         <ul className="navbar-nav px-3">
           <li className="nav-item text-nowrap">
-            <Link className="nav-link" to="/auth/logout">
-              <div className="top-link">
-                <img
-                  src="https://onerrorlog.s3.amazonaws.com/images/logout.png"
-                  alt="logout"
-                  className="icon"
-                />
-                &nbsp; Logout
-              </div>
-            </Link>
+            <Row noGutters>
+              <Col className="pr-2">
+                <Link className="nav-link" to="/newmonitor">
+                  <div className="top-link text-center">
+                    <Badge variant="success" className="p-0 mr-1">
+                      &nbsp;&nbsp;
+                    </Badge>
+                    <Badge variant="primary" className="p-0 mr-1">
+                      &nbsp;&nbsp;
+                    </Badge>
+                    <Badge variant="danger" className="p-0 mr-1">
+                      &nbsp;&nbsp;
+                    </Badge>
+                    <Badge variant="warning" className="p-0 mr-1">
+                      &nbsp;&nbsp;
+                    </Badge>
+                    <div class="p-0 m-0" style={{ lineHeight: "10px" }}>
+                      <small>New Monitor</small>
+                    </div>
+                  </div>
+                </Link>
+              </Col>
+              <Col>
+                <Link className="nav-link" to="/auth/logout">
+                  <div className="top-link text-center">
+                    <img
+                      src="https://onerrorlog.s3.amazonaws.com/images/logout.png"
+                      alt="logout"
+                      className="icon"
+                    />
+                    <div class="p-0 m-0" style={{ lineHeight: "10px" }}>
+                      <small>Logout</small>
+                    </div>
+                  </div>
+                </Link>
+              </Col>
+            </Row>
           </li>
         </ul>
       </header>

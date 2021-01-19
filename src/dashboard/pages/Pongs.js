@@ -32,7 +32,6 @@ const Pong = (props) => {
   };
 
   const fetchSummary = async (skip = false) => {
-    setLoading(false);
     if (!skip) {
       const { data = null, error = null } = await api(
         `alert_summary/pong/?hours=${hours}`
@@ -42,6 +41,7 @@ const Pong = (props) => {
         setTotals(data.totals);
         setPongs(data.objects);
         setFetchDate(new Date());
+        setLoading(false);
       }
 
       if (error) {
@@ -142,12 +142,12 @@ const Pong = (props) => {
             <Row>
               <Col className="text-center">
                 <img
-                  src="https://dplouffe.ca/static/img/domlogo.png"
+                  src="https://onerrorlog.s3.amazonaws.com/images/oel-logo.png"
                   alt="Oops"
                   className="mb-3 list-logo"
                 />
                 <h2 className="pt-3">
-                  You have not added any Pongs to your account yet.
+                  You have not added any Heartbeat Monitors to your account yet.
                 </h2>
                 <div className="pt-5">
                   <Link
@@ -155,7 +155,7 @@ const Pong = (props) => {
                     className="btn btn-warning btn-rounded mb-2 mr-2"
                     style={{ fontSize: "20px" }}
                   >
-                    Add Your First Pong
+                    Add Your First Heartbeat Monitor
                   </Link>
                 </div>
               </Col>

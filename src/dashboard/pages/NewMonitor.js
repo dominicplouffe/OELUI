@@ -11,7 +11,7 @@ const NewMonitor = (props) => {
           <Row>
             <Col className="text-center">
               <img
-                src="https://dplouffe.ca/static/img/domlogo.png"
+                src="https://onerrorlog.s3.amazonaws.com/images/oel-logo.png"
                 alt="Oops"
                 className="mb-3 list-logo"
               />

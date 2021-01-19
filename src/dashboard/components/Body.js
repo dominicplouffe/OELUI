@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Row, Col, Alert, Badge, Button } from "react-bootstrap";
+import { Row, Col, Alert, Badge, Card } from "react-bootstrap";
 
 const Body = ({
   currentUser,
@@ -39,13 +39,18 @@ const Body = ({
       <header className="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
         <a className="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="/">
           <img
-            src="https://dplouffe.ca/static/img/domlogo.png"
+            src="https://onerrorlog.s3.amazonaws.com/images/oel-logo.png"
             alt="wrapkit"
-            style={{ maxWidth: "100px", margin: "auto", float: "left" }}
+            style={{ maxWidth: "80px", margin: "auto", float: "left" }}
           />
           <span
             className="pl-3 h3 mt-3 hide-small"
-            style={{ color: "#000", float: "left" }}
+            style={{
+              color: "#000",
+              float: "left",
+              lineHeight: "10px",
+              verticalAlign: "middle",
+            }}
           >
             onErrorLog
           </span>
@@ -253,7 +258,22 @@ const Body = ({
                         </p>
                       </Alert>
                     )}
-                  {loading ? `loading....` : children}
+                  {loading ? (
+                    <Row className="w-100" noGutters>
+                      <Col>
+                        <Card>
+                          <Card.Body className="p-5 text-center">
+                            <h4>
+                              Your data is being loaded... In the meantime,
+                              please be safe!
+                            </h4>
+                          </Card.Body>
+                        </Card>
+                      </Col>
+                    </Row>
+                  ) : (
+                    children
+                  )}
                 </Col>
               </Row>
             </div>

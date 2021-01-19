@@ -465,6 +465,26 @@ span.doc-text {
     padding: 5px;
 }
 
+.bottom-menu {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 58px;
+    background-color: #fff;
+    border-top: 1px solid #194b99;
+    display: none;
+}
+
+.bottom-menu .active {
+    background-color: #ccdaf7;
+}
+
+@media(max-width: 765px) {
+    .bottom-menu {
+        display: block;
+    }
+}
+
 @media(max-width: 400px) { 
     .show-small {
         display: block;
@@ -484,6 +504,7 @@ span.doc-text {
     .dashboard-box {
         width: 100%;
     }
+
 }
 
 
@@ -505,6 +526,7 @@ span.doc-text {
     .dashboard-box {
         width: 100%;
     }
+
 }
 
 @media (min-width: 261px) {
@@ -518,9 +540,8 @@ span.doc-text {
     .hide {
         display: none;
     }
-    /* .dashboard-box {
-        width: 100%;
-    } */
+
+
 }
 
 @media (min-width: 1200px) {

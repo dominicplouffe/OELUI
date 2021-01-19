@@ -307,6 +307,83 @@ const Body = ({
           </main>
         </Row>
       </div>
+
+      <div className="bottom-menu">
+        <Row className="pb-3">
+          <Col
+            className={`text-center pt-3 pb-3 ml-2 ${getActiveMenuClass(
+              "dashboard"
+            )}`}
+          >
+            <Link to="/dashboard">
+              <img
+                src="https://onerrorlog.s3.amazonaws.com/images/dashboard.png"
+                alt="dashboard"
+                className="icon-30"
+              />
+            </Link>
+          </Col>
+          <Col
+            className={`text-center pt-3 pb-3 ${getActiveMenuClass("ping")}`}
+          >
+            <Link to="/pings">
+              <img
+                src="https://onerrorlog.s3.amazonaws.com/images/website.png"
+                alt="pings"
+                className="icon-30"
+              />
+            </Link>
+          </Col>
+          <Col
+            className={`text-center pt-3 pb-3 ${getActiveMenuClass("pong")}`}
+          >
+            <Link to="/pongs">
+              <img
+                src="https://onerrorlog.s3.amazonaws.com/images/heartbeat.png"
+                alt="pings"
+                className="icon-30"
+              />
+            </Link>
+          </Col>
+          <Col
+            className={`text-center pt-3 pb-3 ${getActiveMenuClass("team")}`}
+          >
+            <Link to="/team">
+              <img
+                src="https://onerrorlog.s3.amazonaws.com/images/teams.png"
+                alt="pings"
+                className="icon-30"
+              />
+            </Link>
+          </Col>
+          <Col
+            className={`text-center pt-3 pb-3 ${getActiveMenuClass(
+              "schedule"
+            )}`}
+          >
+            <Link to="/schedule">
+              <img
+                src="https://onerrorlog.s3.amazonaws.com/images/schedule.png"
+                alt="pings"
+                className="icon-30"
+              />
+            </Link>
+          </Col>
+          <Col
+            className={`text-center pt-3 pb-3 mr-2 ${getActiveMenuClass(
+              "profile"
+            )}`}
+          >
+            <Link to="/profile">
+              <img
+                src="https://onerrorlog.s3.amazonaws.com/images/profile.png"
+                alt="pings"
+                className="icon-30"
+              />
+            </Link>
+          </Col>
+        </Row>
+      </div>
     </>
   );
 };

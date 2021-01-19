@@ -69,7 +69,7 @@ const Body = ({
                     <Badge variant="warning" className="p-0 mr-1">
                       &nbsp;&nbsp;
                     </Badge>
-                    <div class="p-0 m-0" style={{ lineHeight: "10px" }}>
+                    <div className="p-0 m-0" style={{ lineHeight: "10px" }}>
                       <small>New Monitor</small>
                     </div>
                   </div>
@@ -83,7 +83,7 @@ const Body = ({
                       alt="logout"
                       className="icon"
                     />
-                    <div class="p-0 m-0" style={{ lineHeight: "10px" }}>
+                    <div className="p-0 m-0" style={{ lineHeight: "10px" }}>
                       <small>Logout</small>
                     </div>
                   </div>

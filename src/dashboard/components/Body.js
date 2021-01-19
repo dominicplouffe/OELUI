@@ -111,7 +111,7 @@ const Body = ({
                   to="/dashboard"
                 >
                   <img
-                    src="https://onerrorlog.s3.amazonaws.com/images/ping.png"
+                    src="https://onerrorlog.s3.amazonaws.com/images/dashboard.png"
                     alt="dashboard"
                     className="icon"
                   />
@@ -128,11 +128,11 @@ const Body = ({
                   to="/pings"
                 >
                   <img
-                    src="https://onerrorlog.s3.amazonaws.com/images/ping.png"
+                    src="https://onerrorlog.s3.amazonaws.com/images/website.png"
                     alt="pings"
                     className="icon"
                   />
-                  <span className="hide-menu">Uptime</span>
+                  <span className="hide-menu">REST Uptime</span>
                 </Link>
               </li>
               <li className={`sidebar-item ${getSelectedMenuClass("pong")}`}>
@@ -143,7 +143,7 @@ const Body = ({
                   to="/pongs"
                 >
                   <img
-                    src="https://onerrorlog.s3.amazonaws.com/images/pong.png"
+                    src="https://onerrorlog.s3.amazonaws.com/images/heartbeat.png"
                     alt="pings"
                     className="icon"
                   />

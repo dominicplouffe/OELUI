@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Body from "../components/Body";
 import InputText from "../components/InputText";
 import InputSelect from "../components/InputSelect";
@@ -19,6 +19,7 @@ const PingScreen = (props) => {
 
   const [showBasic, setShowBasic] = useState(false);
   const [showCallbackBasic, setShowCallbackBasic] = useState(false);
+  const headersRef = useRef(null);
 
   // Fields
   const [pingId, setPingId] = useState(null);
@@ -44,7 +45,6 @@ const PingScreen = (props) => {
   const [incidentEndpointPass, setIncidentEndpointPass] = useState("");
 
   const [active, setActive] = useState(true);
-  const [showTestPing, setShowTestPing] = useState(false);
   const [showResultModal, setShowResultModal] = useState(false);
   const [showHeaderModal, setShowHeaderModal] = useState(false);
   const [headerType, setHeaderType] = useState("endpoint");
@@ -182,8 +182,8 @@ const PingScreen = (props) => {
       }
 
       if (data) {
+        await headersRef.current.saveHeaders(data.id);
         history.push(`/ping/${data.id}/`);
-        setShowTestPing(true);
         setSaved(true);
       }
     }
@@ -228,7 +228,6 @@ const PingScreen = (props) => {
       setDocLink(data.alert.doc_link || "");
       setAlertId(data.alert.id);
 
-      setShowTestPing(true);
       setActive(data.active);
 
       fetchSummary(id);
@@ -248,15 +247,25 @@ const PingScreen = (props) => {
   };
 
   const testPing = async () => {
-    const errors = validateTesterForm();
+    /*const errors = validateTesterForm();
     if (errors.length !== 0) {
       return;
-    }
+    }*/
 
     setIsTesting(true);
     setTestResults(null);
 
-    let { data = null } = await api(`ping-test/${pingId}/`);
+    const headers = headersRef.current.getHeaders();
+    let { data = null } = await api(`ping-test/`, "POST", {
+      endpoint,
+      headers,
+      status_code: returnCode,
+      content_type: contentType,
+      expected_str: jsonKey,
+      expected_value: jsonKey ? jsonValue : validationText,
+      username: endpointUsername,
+      password: endpointPassword,
+    });
 
     if (data === null) {
       data = {};
@@ -319,7 +328,6 @@ const PingScreen = (props) => {
       }
     }
     method(value);
-    setShowTestPing(false);
     setTestResults(null);
   };
 
@@ -405,18 +413,16 @@ const PingScreen = (props) => {
                         </Button>
                       </Col>
                       <Col className="text-right">
-                        {pingId !== null && (
-                          <Button
-                            variant="link"
-                            className="p-2 m-0 btn-link"
-                            onClick={() => {
-                              setShowHeaderModal(true);
-                              setHeaderType("endpoint");
-                            }}
-                          >
-                            <small>My endpoint needs headers</small>
-                          </Button>
-                        )}
+                        <Button
+                          variant="link"
+                          className="p-2 m-0 btn-link"
+                          onClick={() => {
+                            setShowHeaderModal(true);
+                            setHeaderType("endpoint");
+                          }}
+                        >
+                          <small>My endpoint needs headers</small>
+                        </Button>
                       </Col>
                     </Row>
                   </>
@@ -594,7 +600,6 @@ const PingScreen = (props) => {
                 <Button
                   variant={getTestButtonVariant()}
                   onClick={() => testPing()}
-                  disabled={!showTestPing}
                   className="btn-rounded"
                 >
                   {renderTestingLabel()}
@@ -692,18 +697,16 @@ const PingScreen = (props) => {
                           </Button>
                         </Col>
                         <Col className="text-right">
-                          {pingId !== null && (
-                            <Button
-                              variant="link"
-                              className="p-2 m-0 btn-link"
-                              onClick={() => {
-                                setShowHeaderModal(true);
-                                setHeaderType("callback");
-                              }}
-                            >
-                              <small>My endpoint needs headers</small>
-                            </Button>
-                          )}
+                          <Button
+                            variant="link"
+                            className="p-2 m-0 btn-link"
+                            onClick={() => {
+                              setShowHeaderModal(true);
+                              setHeaderType("callback");
+                            }}
+                          >
+                            <small>My endpoint needs headers</small>
+                          </Button>
                         </Col>
                       </Row>
                     </>
@@ -822,6 +825,7 @@ const PingScreen = (props) => {
       />
 
       <Headers
+        ref={headersRef}
         showModal={showHeaderModal}
         setShowModal={setShowHeaderModal}
         headerType={headerType}

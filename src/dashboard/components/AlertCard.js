@@ -9,7 +9,6 @@ import {
   Button,
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import useAuth from "../../auth/useAuth";
 import Actions from "../components/Actions";
 
 const AlertCard = ({
@@ -22,7 +21,6 @@ const AlertCard = ({
 }) => {
   const [statusItem, setStatusItem] = useState(null);
   const [statusOverride, setStatusOverride] = useState(false);
-  const { user } = useAuth();
 
   useEffect(() => {
     // eslint-disable-next-line

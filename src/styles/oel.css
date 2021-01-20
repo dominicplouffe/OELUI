@@ -507,6 +507,9 @@ span.doc-text {
         display: block;
         margin-bottom: 5px;
     }
+     .right-align-small-center {
+        text-align: center !important;
+    }
     
  }
 @media (min-width:481px)  { /* portrait e-readers (Nook/Kindle), smaller tablets @ 600 or @ 640 wide. */ }
@@ -527,6 +530,14 @@ span.doc-text {
     .sidebar-nav ul {
         margin: 50px 0 0 0;
         padding: 0;
+    }
+
+     .right-align-small-center {
+        text-align: right !important;
+    }
+
+    .bottom-menu {
+        display: none;
     }
  }
 

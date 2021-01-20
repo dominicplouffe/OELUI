@@ -79,11 +79,8 @@ const Pong = (props) => {
               <Col xs={12} lg={3} className="text-center">
                 <h3>Heartbeat Monitor Summary</h3>
               </Col>
-              <Col className="right-align-small-center">
-                <Link
-                  to="/newpong"
-                  className="btn btn-warning btn-rounded hide-small"
-                >
+              <Col className="right-align-small-center  hide-small">
+                <Link to="/newpong" className="btn btn-warning btn-rounded">
                   New Heartbeat Monitor
                 </Link>
               </Col>

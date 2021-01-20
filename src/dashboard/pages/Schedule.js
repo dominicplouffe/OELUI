@@ -1,10 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Body from "../components/Body";
-import { Card, Row, Col, Badge, Button } from "react-bootstrap";
+import { Card, Row, Col, Badge, Button, Modal, Table } from "react-bootstrap";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import api from "../../utils/api";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
+import interactionPlugin from "@fullcalendar/interaction";
+import InputSelect from "../components/InputSelect";
+import DatePicker from "react-datepicker";
+import moment from "moment";
+
+import "react-datepicker/dist/react-datepicker.css";
 
 const Schedule = (props) => {
   const [loading, setLoading] = useState(true);
@@ -14,6 +20,18 @@ const Schedule = (props) => {
   const [refresh, setRefresh] = useState(0);
   const [onCallUser, setOnCallUser] = useState(null);
 
+  // Override
+  const [showOverride, setShowOverride] = useState(false);
+  const [overrideStartDate, setOverrideStartDate] = useState(new Date());
+  const [overrideEndDate, setOverrideEndDate] = useState(new Date());
+  const [overrideDateError, setOverrideDateError] = useState(` `);
+  const [overrideUser, setOverrideUser] = useState(null);
+  const [overrideData, setOverrideData] = useState({});
+  const [overrideRaw, setOverrideRaw] = useState([]);
+  const [override, setOverride] = useState(null);
+  const [showOverrideDelete, setShowOverrideDelete] = useState(null);
+
+  const calendarRef = useRef(null);
   const { currentUser } = props;
 
   const fetchUsers = async () => {
@@ -39,8 +57,8 @@ const Schedule = (props) => {
       setOnCallUser(users[currentUser.role.org.week - 1]);
 
       setUsers(users);
-      generateCalendarEvents(users);
       setLoading(false);
+      getOverrides(users);
     }
 
     if (error) {
@@ -48,7 +66,42 @@ const Schedule = (props) => {
     }
   };
 
-  const generateCalendarEvents = (users) => {
+  const getOverrides = async (users) => {
+    const start = moment(new Date()).format("YYYY-MM-DD");
+
+    const { data = null, error = null } = await api(
+      `schedule_override/?start_date__gte=${start} 00:00:00`
+    );
+
+    if (data) {
+      setOverrideRaw(data.results);
+      const overrides = {};
+
+      for (let i = 0; i < data.results.length; i++) {
+        const d = data.results[i];
+        const start = moment.utc(d.start_date);
+        const end = moment.utc(d.end_date);
+
+        let current = start;
+        while (current <= end) {
+          overrides[current.format("YYYY-MM-DD")] = {
+            user: d.org_user,
+            id: d.id,
+          };
+          current = current.add(1, "days");
+        }
+      }
+
+      setOverrideData(overrides);
+      generateCalendarEvents(users, overrides);
+    }
+
+    if (error) {
+      alert("Something went wrong when getting overrides");
+    }
+  };
+
+  const generateCalendarEvents = (users, overrides) => {
     const newEvents = [];
 
     let week = currentUser.role.org.week;
@@ -75,16 +128,35 @@ const Schedule = (props) => {
       let day = `${calDate.getDate()}`;
       let month = `${calDate.getMonth() + 1}`;
 
+      const overrideDate = moment(calDate).format("YYYY-MM-DD");
+
       if (day.length === 1) {
         day = `0${day}`;
       }
       if (month.length === 1) {
         month = `0${month}`;
       }
+
+      let onCallUser = curUser;
+      let overrideText = "";
+      let overrideId = null;
+
+      if (overrides[overrideDate]) {
+        const o = overrides[overrideDate].user;
+        overrideId = overrides[overrideDate].id;
+        for (let j = 0; j < users.length; j++) {
+          if (users[j].id === o) {
+            onCallUser = users[j];
+            overrideText = " (o)";
+          }
+        }
+      }
+
       newEvents.push({
-        title: `${curUser.first_name} ${curUser.last_name}`,
+        title: `${onCallUser.first_name} ${onCallUser.last_name} ${overrideText}`,
         date: `${calDate.getFullYear()}-${month}-${day}`,
-        color: curUser.color,
+        color: onCallUser.color,
+        overrideId: overrideId,
       });
       calDate = new Date(calDate.setDate(calDate.getDate() + 1));
 
@@ -172,6 +244,105 @@ const Schedule = (props) => {
     // styles we need to apply on draggables
     ...draggableStyle,
   });
+
+  const evClick = ({ event, jsEvent }) => {
+    if (!users || users.length < 2) {
+      return;
+    }
+
+    if (event.start < new Date()) {
+      alert("You cannot override a date from the past");
+      return;
+    }
+    const thisDate = moment.utc(event.start).format("YYYY-MM-DD");
+
+    if (overrideData[thisDate]) {
+      for (let i = 0; i < overrideRaw.length; i++) {
+        if (overrideRaw[i].id === event.extendedProps.overrideId) {
+          setOverride(overrideRaw[i]);
+          setShowOverrideDelete(true);
+        }
+      }
+      return;
+    }
+
+    document.activeElement.blur();
+    jsEvent.target.focus();
+    setOverrideUser(users[0].id);
+    setOverrideStartDate(event.start);
+    setOverrideEndDate(event.start);
+    setShowOverride(true);
+    setOverrideDateError("");
+  };
+
+  const setOverrideDate = (dt, date) => {
+    let isError = false;
+    if (dt === "start") {
+      setOverrideStartDate(date);
+
+      if (date > overrideEndDate) {
+        isError = true;
+      }
+    } else {
+      setOverrideEndDate(date);
+
+      if (overrideStartDate > date) {
+        isError = true;
+      }
+    }
+
+    if (!isError && date < new Date()) {
+      isError = true;
+    }
+
+    if (isError) {
+      setOverrideDateError(
+        "Dates must be bigger than today and end date must be larger than to the start date"
+      );
+    } else {
+      setOverrideDateError("");
+    }
+  };
+
+  const showOverrideModal = () => {
+    setOverrideUser(users[0].id);
+    setOverrideStartDate(new Date());
+    setOverrideEndDate(new Date());
+    setShowOverride(true);
+    setOverrideDateError("");
+  };
+
+  const saveOverride = async () => {
+    const payload = {
+      org: props.currentUser.role.org.id,
+      org_user: overrideUser,
+      start_date: `${moment(overrideStartDate).format("YYYY-MM-DD")} 00:00:00`,
+      end_date: `${moment(overrideEndDate).format("YYYY-MM-DD")} 23:59:59`,
+    };
+
+    const { data = null, error = null } = await api(
+      `schedule_override/`,
+      "POST",
+      payload
+    );
+
+    if (data) {
+      setShowOverride(false);
+      setRefresh(refresh + 1);
+    }
+
+    if (error) {
+      alert("Something went wrong saving your override");
+    }
+  };
+
+  const deleteOverride = async () => {
+    await api(`schedule_override/${override.id}/`, "DELETE");
+
+    setShowOverrideDelete(false);
+    setOverride(null);
+    setRefresh(refresh + 1);
+  };
 
   return (
     <Body title="Schedule" selectedMenu="schedule" loading={loading} {...props}>
@@ -261,14 +432,152 @@ const Schedule = (props) => {
             </Col>
             <Col className="hide-small">
               <FullCalendar
-                plugins={[dayGridPlugin]}
+                ref={calendarRef}
+                plugins={[dayGridPlugin, interactionPlugin]}
                 initialView="dayGridMonth"
+                eventClick={evClick}
                 events={events}
+                customButtons={{
+                  createOverride: {
+                    text: "+ Override",
+                    click: () => showOverrideModal(),
+                  },
+                }}
+                headerToolbar={{
+                  right: "prev,next today createOverride",
+                  center: "title",
+                }}
               />
             </Col>
           </Row>
         </Card.Body>
       </Card>
+
+      <Modal
+        show={showOverrideDelete}
+        onHide={() => setShowOverrideDelete(false)}
+        aria-labelledby="override-modal"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title id="override-modal">Delete the override</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Row className="mb-3">
+            <Col>You are about to override the following override</Col>
+          </Row>
+          {override && (
+            <Table borderless size="sm">
+              <tr>
+                <td>
+                  <strong>Start Date: </strong>
+                </td>
+                <td>{moment.utc(override.start_date).format("LLL")}</td>
+              </tr>
+              <tr>
+                <td>
+                  <strong>End Date: </strong>
+                </td>
+                <td>{moment.utc(override.end_date).format("LLL")}</td>
+              </tr>
+              <tr>
+                <td>
+                  <strong>Team Member: </strong>
+                </td>
+                <td>
+                  {
+                    users.filter((u) => u.id === override.org_user)[0]
+                      .first_name
+                  }{" "}
+                  {users.filter((u) => u.id === override.org_user)[0].last_name}
+                </td>
+              </tr>
+            </Table>
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="secondary"
+            onClick={() => setShowOverrideDelete(false)}
+          >
+            Close
+          </Button>
+          <Button variant="primary" onClick={() => deleteOverride()}>
+            Delete
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal
+        show={showOverride}
+        onHide={() => setShowOverride(false)}
+        aria-labelledby="override-modal"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title id="override-modal">Override Schedule</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <InputSelect
+            id="override"
+            label="Who will be overriding the schedule?"
+            helperText="Select the user who will be override the schedule"
+            showDefault={false}
+            values={users.map((u, i) => ({
+              value: u.id,
+              text: `${u.first_name} ${u.last_name}`,
+            }))}
+            onChange={(e) => setOverrideUser(parseInt(e.target.value))}
+          />
+
+          <div className="form-group mt-3">
+            <label className="form-label">
+              Which dates do you want to override?
+            </label>
+          </div>
+          <Row noGutters>
+            <Col xs={12} lg={6}>
+              <p className="mb-0 ml-0">Start Date</p>
+            </Col>
+            <Col xs={12} lg={6}>
+              <p className="mb-0  ml-2">End Date</p>
+            </Col>
+          </Row>
+          <Row>
+            <Col xs={12} lg={6}>
+              <DatePicker
+                selected={overrideStartDate}
+                onChange={(date) => setOverrideDate("start", date)}
+                className="form-control"
+              />
+            </Col>
+            <Col xs={12} lg={6}>
+              <DatePicker
+                selected={overrideEndDate}
+                onChange={(date) => setOverrideDate("end", date)}
+                className="form-control"
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col className="ml-1">
+              <span className="text-danger">
+                <small>{overrideDateError}</small>
+              </span>
+            </Col>
+          </Row>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowOverride(false)}>
+            Close
+          </Button>
+          <Button
+            variant="primary"
+            onClick={() => saveOverride(false)}
+            disabled={overrideDateError.length > 0}
+          >
+            Override
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </Body>
   );
 };

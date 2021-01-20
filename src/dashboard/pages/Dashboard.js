@@ -17,8 +17,8 @@ const Dashboard = (props) => {
   const [pingTotals, setPingTotals] = useState({});
   const [pongs, setPongs] = useState([]);
   const [pongTotals, setPongTotals] = useState({});
-  const [metricConditions, setMetricConditions] = useState([]);
-  const [metricTotals, setMetricTotals] = useState({});
+  // const [metricConditions, setMetricConditions] = useState([]);
+  // const [metricTotals, setMetricTotals] = useState({});
   const [hours, setHours] = useState(168);
 
   const useFetchInterval = (delay) => {
@@ -72,28 +72,28 @@ const Dashboard = (props) => {
     }
   };
 
-  const fetchMetricConditions = async (skip = false) => {
-    if (!skip) {
-      const { data = null, error = null } = await api(
-        `alert_summary/metric_condition/?hours=${hours}`
-      );
+  // const fetchMetricConditions = async (skip = false) => {
+  //   if (!skip) {
+  //     const { data = null, error = null } = await api(
+  //       `alert_summary/metric_condition/?hours=${hours}`
+  //     );
 
-      if (data) {
-        setMetricTotals(data.totals);
-        setMetricConditions(data.objects);
-        setFetchDate(new Date());
-      }
+  //     if (data) {
+  //       setMetricTotals(data.totals);
+  //       setMetricConditions(data.objects);
+  //       setFetchDate(new Date());
+  //     }
 
-      if (error) {
-        alert("Something went wrong, we cannot find your ping");
-      }
-    }
-  };
+  //     if (error) {
+  //       alert("Something went wrong, we cannot find your ping");
+  //     }
+  //   }
+  // };
 
   const fetchAll = async () => {
     await fetchPings();
     await fetchPongs();
-    await fetchMetricConditions();
+    // await fetchMetricConditions();
     setLoading(false);
   };
 
@@ -115,7 +115,7 @@ const Dashboard = (props) => {
       down: 0,
     };
 
-    const totalVals = [pingTotals, pongTotals, metricTotals];
+    const totalVals = [pingTotals, pongTotals]; //, metricTotals
 
     for (let i = 0; i < totalVals.length; i++) {
       const tv = totalVals[i];

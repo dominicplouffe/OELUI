@@ -67,12 +67,13 @@ const PongScreen = (props) => {
   ]);
   const [cron, setCron] = useState("");
   const [cronError, setCronError] = useState(false);
-
   const [formErrors, setFormErrors] = useState([""]);
-
   const [summary, setSummary] = useState(null);
-
   const { refresh } = useAuth();
+
+  const [cronHelper, setCronHelper] = useState(
+    'If this task is running as a cron, let us know the cron schedule (e.g. "5 0 * 8 *"). If no cron schedule is specified, onErrorLog will assume the task is running 24h per day.'
+  );
 
   let history = useHistory();
   useEffect(() => {
@@ -102,7 +103,7 @@ const PongScreen = (props) => {
       setAlertId(data.alert.id);
       setActive(data.active);
       setPongKey(data.push_key);
-      setCron(data.cron_desc);
+      setCron(data.cron_desc || "");
       setTriggers(data.triggers);
 
       fetchSummary(id);
@@ -280,6 +281,16 @@ const PongScreen = (props) => {
 
     if (data) {
       setCronError(false);
+      let pretty = data.pretty;
+      pretty = `${pretty.substr(0, 1).toLowerCase()}${pretty.substr(1)}`;
+      setCronHelper(
+        <>
+          <span>
+            onErrorLog will check this heartbeat{" "}
+            <strong className="text-warning">{pretty}</strong>
+          </span>
+        </>
+      );
     }
 
     if (error) {
@@ -444,12 +455,7 @@ const PongScreen = (props) => {
                     onChange={(e) => setValue(setCron, e.target.value)}
                     helperText={
                       <>
-                        <span>
-                          If this task is running as a cron, let us know the
-                          cron schedule (e.g. "5 0 * 8 *"). If no cron schedule
-                          is specified, onErrorLog will assume the task is
-                          running 24h per day.
-                        </span>
+                        <span>{cronHelper}</span>
                       </>
                     }
                     onBlur={(e) => checkCron(e.target.value)}

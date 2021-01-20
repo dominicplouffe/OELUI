@@ -366,7 +366,7 @@ span.doc-text {
 .sidebar-title {
     font-size: 20px;
     color: #fff!important;
-    background: linear-gradient(90deg,#186099,#185699,#185699,#184b99,#184b99);
+    background: linear-gradient(90deg,#1e3e70,#1e3e70,#1e3e70,#1e3e70,#1e3e70);
     box-shadow: 0 7px 12px 0 rgba(95,118,232,.21);
     opacity: 1;
     padding: 10px;
@@ -421,6 +421,10 @@ span.doc-text {
     height: 20px;
 }
 
+.icon-30 {
+    height: 30px;
+}
+
 
 .h3, h3 {
     font-size: 1.3125rem;
@@ -461,6 +465,95 @@ span.doc-text {
     padding: 5px;
 }
 
+.bottom-menu {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 58px;
+    background-color: #fff;
+    border-top: 1px solid #194b99;
+    display: none;
+}
+
+.bottom-menu .active {
+    background-color: #ccdaf7;
+}
+
+
+
+@media (min-width:320px)  { 
+    .container-fluid {
+        padding: 5px !important;
+    }
+    .show-small {
+        display: block;
+    }
+    .hide-small {
+        display: none;
+    }
+
+    .right-align-small-center {
+        text-align: center !important;
+    }
+    .dashboard-box {
+        width: 100%;
+    }
+
+    .doc-box {
+        margin-top: 10px;
+    }
+
+    .bottom-menu {
+        display: block;
+        margin-bottom: 5px;
+    }
+     .right-align-small-center {
+        text-align: center !important;
+    }
+    
+ }
+@media (min-width:481px)  { /* portrait e-readers (Nook/Kindle), smaller tablets @ 600 or @ 640 wide. */ }
+@media (min-width:641px)  { /* portrait tablets, portrait iPad, landscape e-readers, landscape 800x480 or 854x480 phones */ }
+@media (min-width:961px)  { /* tablet, landscape iPad, lo-res laptops ands desktops */ }
+@media (min-width:1025px) { /* big landscape tablets, laptops, and desktops */ }
+@media (min-width:1281px) {
+    .hide-small {
+        display: block;
+    }
+    .dashboard-box {
+        width: 50%;
+    }
+    .show-small {
+        display: node;
+    }
+
+    .sidebar-nav ul {
+        margin: 50px 0 0 0;
+        padding: 0;
+    }
+
+     .right-align-small-center {
+        text-align: right !important;
+    }
+
+    .bottom-menu {
+        display: none;
+    }
+ }
+
+/* 
+@media(max-width: 765px) {
+    
+
+    .doc-box {
+        margin-top: 10px;
+    }
+
+    .side-instructions {
+        display: none;
+    }
+}
+
 @media(max-width: 400px) { 
     .show-small {
         display: block;
@@ -480,10 +573,10 @@ span.doc-text {
     .dashboard-box {
         width: 100%;
     }
+
 }
 
-
-@media(max-width: 261px) { 
+@media(min-width: 415px) { 
     .container-fluid {
         padding: 5px !important;
     }
@@ -503,9 +596,12 @@ span.doc-text {
     }
 }
 
-@media (min-width: 261px) {
-  
 
+@media(max-width: 261px) { 
+    
+}
+
+@media (min-width: 261px) {
     .page-wrapper>.container-fluid {
         padding-left: 90px;
         min-height: calc(100vh - 210px);
@@ -514,9 +610,6 @@ span.doc-text {
     .hide {
         display: none;
     }
-    /* .dashboard-box {
-        width: 100%;
-    } */
 }
 
 @media (min-width: 1200px) {
@@ -544,8 +637,5 @@ span.doc-text {
         width: 100%;
     }
 
-    .sidebar-nav ul {
-        margin: 50px 0 0 0;
-        padding: 0;
-    }
-}
+    
+} */

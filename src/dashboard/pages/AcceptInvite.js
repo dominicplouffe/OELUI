@@ -113,7 +113,7 @@ const AcceptInvite = (props) => {
             <div className="p-3">
               <div className="text-center">
                 <img
-                  src="https://dplouffe.ca/static/img/domlogo.png"
+                  src="https://onerrorlog.s3.amazonaws.com/images/oel-logo.png"
                   alt="wrapkit"
                   style={{ maxWidth: "100px" }}
                 />

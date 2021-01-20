@@ -67,12 +67,13 @@ const PongScreen = (props) => {
   ]);
   const [cron, setCron] = useState("");
   const [cronError, setCronError] = useState(false);
-
   const [formErrors, setFormErrors] = useState([""]);
-
   const [summary, setSummary] = useState(null);
-
   const { refresh } = useAuth();
+
+  const [cronHelper, setCronHelper] = useState(
+    'If this task is running as a cron, let us know the cron schedule (e.g. "5 0 * 8 *"). If no cron schedule is specified, onErrorLog will assume the task is running 24h per day.'
+  );
 
   let history = useHistory();
   useEffect(() => {
@@ -102,7 +103,7 @@ const PongScreen = (props) => {
       setAlertId(data.alert.id);
       setActive(data.active);
       setPongKey(data.push_key);
-      setCron(data.cron_desc);
+      setCron(data.cron_desc || "");
       setTriggers(data.triggers);
 
       fetchSummary(id);
@@ -243,7 +244,7 @@ const PongScreen = (props) => {
     newtrigs.push({
       id: null,
       trigger_type: "complete_not_triggered_in",
-      interval: 5,
+      interval_value: 5,
       unit: "minutes",
       interval_error: false,
       is_delete: false,
@@ -280,6 +281,16 @@ const PongScreen = (props) => {
 
     if (data) {
       setCronError(false);
+      let pretty = data.pretty;
+      pretty = `${pretty.substr(0, 1).toLowerCase()}${pretty.substr(1)}`;
+      setCronHelper(
+        <>
+          <span>
+            onErrorLog will check this heartbeat{" "}
+            <strong className="text-warning">{pretty}</strong>
+          </span>
+        </>
+      );
     }
 
     if (error) {
@@ -308,10 +319,25 @@ const PongScreen = (props) => {
     }
     return (
       <Row key={i} className="pt-2">
-        <Col xs={7}>
+        <Col xs={12} lg={7}>
+          <Row>
+            <Col xs={10}>
+              <label className="form-label">Select your trigger</label>
+            </Col>
+            <Col className="text-right">
+              {showDelete() && (
+                <Button
+                  variant="link"
+                  className="pt-1 mr-0 pr-0"
+                  onClick={() => deleteTrigger(i)}
+                >
+                  <small>delete</small>
+                </Button>
+              )}
+            </Col>
+          </Row>
           <InputSelect
             id="triggertype"
-            label="Select your trigger"
             defaultValue={t.trigger_type}
             showDefault={false}
             values={[
@@ -331,51 +357,50 @@ const PongScreen = (props) => {
                 value: "runs_more_than",
                 text: "Task runs for more than",
               },
+              {
+                value: "heartbeat_triggered",
+                text: "Your heartbeat fail was triggered",
+              },
             ]}
             onChange={(e) => setTriggerValue("trigger_type", e.target.value, i)}
           />
         </Col>
-        <Col xs={2}>
-          <InputText
-            id="triggerinterval"
-            label={"Duration"}
-            value={t.interval_value}
-            onChange={(e) =>
-              setTriggerValue("interval_value", e.target.value, i)
-            }
-            isInvalid={t.interval_error}
-          />
+        <Col xs={6} lg={2}>
+          {t.trigger_type !== "heartbeat_triggered" && (
+            <InputText
+              id="triggerinterval"
+              label={"Duration"}
+              value={t.interval_value}
+              onChange={(e) =>
+                setTriggerValue("interval_value", e.target.value, i)
+              }
+              isInvalid={t.interval_error}
+            />
+          )}
         </Col>
-        <Col xs={3} className="text-right">
-          <InputSelect
-            id="triggertype"
-            label="Time Unit"
-            defaultValue={t.unit}
-            showDefault={false}
-            values={[
-              {
-                value: "seconds",
-                text: "Second(s)",
-              },
-              {
-                value: "minutes",
-                text: "Minute(s)",
-              },
-              {
-                value: "days",
-                text: "Day(s)",
-              },
-            ]}
-            onChange={(e) => setTriggerValue("unit", e.target.value, i)}
-          />
-          {showDelete() && (
-            <Button
-              variant="link"
-              className="pt-1 mr-0 pr-0"
-              onClick={() => deleteTrigger(i)}
-            >
-              <small>delete</small>
-            </Button>
+        <Col xs={6} lg={3} className="text-right">
+          {t.trigger_type !== "heartbeat_triggered" && (
+            <InputSelect
+              id="triggertype"
+              label="Time Unit"
+              defaultValue={t.unit}
+              showDefault={false}
+              values={[
+                {
+                  value: "seconds",
+                  text: "Second(s)",
+                },
+                {
+                  value: "minutes",
+                  text: "Minute(s)",
+                },
+                {
+                  value: "days",
+                  text: "Day(s)",
+                },
+              ]}
+              onChange={(e) => setTriggerValue("unit", e.target.value, i)}
+            />
           )}
         </Col>
       </Row>
@@ -430,12 +455,7 @@ const PongScreen = (props) => {
                     onChange={(e) => setValue(setCron, e.target.value)}
                     helperText={
                       <>
-                        <span>
-                          If this task is running as a cron, let us know the
-                          cron schedule (e.g. "5 0 * 8 *"). If no cron schedule
-                          is specified, onErrorLog will assume the task is
-                          running 24h per day.
-                        </span>
+                        <span>{cronHelper}</span>
                       </>
                     }
                     onBlur={(e) => checkCron(e.target.value)}
@@ -540,50 +560,65 @@ const PongScreen = (props) => {
                   block and the end endpoint is to be called at the completion
                   of your code block. Using both of these endpoints, onErrorLog
                   can monitor your code to ensure it has completed successfully.
-                  <ul className="mt-2">
-                    <li>
-                      <strong>Start endpoint has not be requested in</strong>:
-                      If onErrorLog does not receive a request from your start
-                      endpoint in x minutes, an alert will be triggered. For
-                      example: The duration/unit is <em>5 minutes</em>.
-                      onErrorLog receives a notification at 11:00am. By 11:05am
-                      it has not yet recieved a notification from your{" "}
-                      <em>start endpoint</em>, an alert will be triggered.
-                    </li>
-                    <li>
-                      <strong>Complete endpoint has not be requested in</strong>
-                      : If onErrorLog does not receive a request from your end
-                      endpoint in x minutes, an alert will be triggered. For
-                      example: The duration/unit is <em>5 minutes</em>.
-                      onErrorLog receives a notification at 11:00am. By 11:05am
-                      it has not yet recieved a notification from your{" "}
-                      <em>end endpoint</em>, an alert will be triggered.
-                    </li>
-                    <li>
-                      <strong>Task runs in less than</strong>: If onErrorLog
-                      recieves your end endpoint request, but and the difference
-                      from the start and end requests is less than the specified
-                      duration/unit, an alert will be triggered. For example:
-                      The duration/unit is 10 minutes, meaning that the task
-                      should last at least 10 minutes. If onErrorLog recieves
-                      your start endpoint at 11:00am and your end enpoint at
-                      11:05am, an alert will be triggered. The task ran for 5
-                      minutes less than expected.
-                    </li>
-                    <li>
-                      <strong>Task runs for more than</strong>: If onErrorLog
-                      recieves your end endpoint request, but and the difference
-                      from the start and end requests is more than the specified
-                      duration/unit, an alert will be triggered. For example:
-                      The duration/unit is 10 minutes, meaning that the task
-                      should not run for more than 10 minutes. If onErrorLog
-                      recieves your start endpoint at 11:00am and your end
-                      enpoint at 11:15am, an alert will be triggered. The task
-                      ran for 15 minutes, 5 more minutes than expected.
-                    </li>
-                  </ul>
                 </span>
               </p>
+              <ul className="mt-2">
+                <li>
+                  <span className="doc-text">
+                    <strong>Start endpoint has not be requested in</strong>: If
+                    onErrorLog does not receive a request from your start
+                    endpoint in x minutes, an alert will be triggered. For
+                    example: The duration/unit is <em>5 minutes</em>. onErrorLog
+                    receives a notification at 11:00am. By 11:05am it has not
+                    yet recieved a notification from your{" "}
+                    <em>start endpoint</em>, an alert will be triggered.
+                  </span>
+                </li>
+                <li>
+                  <span className="doc-text">
+                    <strong>Complete endpoint has not be requested in</strong>:
+                    If onErrorLog does not receive a request from your end
+                    endpoint in x minutes, an alert will be triggered. For
+                    example: The duration/unit is <em>5 minutes</em>. onErrorLog
+                    receives a notification at 11:00am. By 11:05am it has not
+                    yet recieved a notification from your <em>end endpoint</em>,
+                    an alert will be triggered.
+                  </span>
+                </li>
+                <li>
+                  <span className="doc-text">
+                    <strong>Task runs in less than</strong>: If onErrorLog
+                    recieves a request from your end endpoint, but and the
+                    difference from the start and end requests is less than the
+                    specified duration/unit, an alert will be triggered. For
+                    example: The duration/unit is 10 minutes, meaning that the
+                    task should last at least 10 minutes. If onErrorLog recieves
+                    your start endpoint at 11:00am and your end enpoint at
+                    11:05am, an alert will be triggered. The task ran for 5
+                    minutes less than expected.
+                  </span>
+                </li>
+                <li>
+                  <span className="doc-text">
+                    <strong>Task runs for more than</strong>: If onErrorLog
+                    recieves a request from your end endpoint, but and the
+                    difference from the start and end requests is more than the
+                    specified duration/unit, an alert will be triggered. For
+                    example: The duration/unit is 10 minutes, meaning that the
+                    task should not run for more than 10 minutes. If onErrorLog
+                    recieves your start endpoint at 11:00am and your end enpoint
+                    at 11:15am, an alert will be triggered. The task ran for 15
+                    minutes, 5 more minutes than expected.
+                  </span>
+                </li>
+                <li>
+                  <span className="doc-text">
+                    <strong>Your heartbeat fail was triggered</strong>: If
+                    onErrorLog receives a request from the fail endpoint, the
+                    monitor will be triggered.
+                  </span>
+                </li>
+              </ul>
             </Col>
           </Row>
         </Card.Body>
@@ -602,7 +637,7 @@ const PongScreen = (props) => {
                 </Col>
               </Row>
               <Row>
-                <Col>
+                <Col xs={12} lg={6}>
                   <InputSelect
                     id="incidentmethod"
                     label="How would you like to be contacted"
@@ -623,7 +658,7 @@ const PongScreen = (props) => {
                     isInvalid={formErrors.indexOf("incidentmethod") > -1}
                   />
                 </Col>
-                <Col>
+                <Col xs={12} lg={6}>
                   <InputSelect
                     id="incidentinternal"
                     label="Minimum Incident Count"
@@ -762,31 +797,36 @@ const PongScreen = (props) => {
                   <br />
                   Select how you want your team to be contacted in case your
                   monitor is triggered
-                  <ul className="mt-2">
-                    <li>
-                      <strong>Notify your team (email or text message)</strong>:
-                      If you choose this option the team member that is on-call
-                      will be alerted. Each team member can choose to receive
-                      their notifications through email or text message from
-                      their profile.
-                    </li>
-                    <li>
-                      <strong>HTTP Callback</strong>: If you choose this option
-                      the endpoint callback you specify will be requested by
-                      onErrorLog. onErrorLog will perfor a <em>POST</em>. The
-                      body of the request will contain some information about
-                      the notification. You also have the option of configuring
-                      HTTP headers and Basic Authentication.
-                      <div className="mt-2">
-                        <strong>Body Content Type</strong>: application/json
-                        <br />
-                        <strong>Body Fields</strong>: http_status_code, reason,
-                        response_time
-                      </div>
-                    </li>
-                  </ul>
                 </span>
               </p>
+
+              <ul className="mt-2">
+                <li>
+                  <span className="doc-text">
+                    <strong>Notify your team (email or text message)</strong>:
+                    If you choose this option the team member that is on-call
+                    will be alerted. Each team member can choose to receive
+                    their notifications through email or text message from their
+                    profile.
+                  </span>
+                </li>
+                <li>
+                  <span className="doc-text">
+                    <strong>HTTP Callback</strong>: If you choose this option
+                    the endpoint callback you specify will be requested by
+                    onErrorLog. onErrorLog will perfor a <em>POST</em>. The body
+                    of the request will contain some information about the
+                    notification. You also have the option of configuring HTTP
+                    headers and Basic Authentication.
+                    <div className="mt-2">
+                      <strong>Body Content Type</strong>: application/json
+                      <br />
+                      <strong>Body Fields</strong>: http_status_code, reason,
+                      response_time
+                    </div>
+                  </span>
+                </li>
+              </ul>
             </Col>
           </Row>
         </Card.Body>
@@ -821,6 +861,19 @@ const PongScreen = (props) => {
                   id="api-url"
                 />
               </Col>
+            </Row>
+            <Row className="mt-3">
+              <Col xs={12} lg={6}>
+                <InputText
+                  label={`Fail Endpoint`}
+                  value={`${API_URL}pongme/fail/${pongKey}`}
+                  helperText={`Use this endpoint when one of your tasks fails`}
+                  disabled={true}
+                  copy={true}
+                  id="api-url"
+                />
+              </Col>
+              <Col xs={12} lg={6}></Col>
             </Row>
             <Row className="mt-3">
               <Col>

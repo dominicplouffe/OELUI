@@ -9,7 +9,6 @@ import {
   Button,
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import useAuth from "../../auth/useAuth";
 import Actions from "../components/Actions";
 
 const AlertCard = ({
@@ -22,7 +21,6 @@ const AlertCard = ({
 }) => {
   const [statusItem, setStatusItem] = useState(null);
   const [statusOverride, setStatusOverride] = useState(false);
-  const { user } = useAuth();
 
   useEffect(() => {
     // eslint-disable-next-line
@@ -76,7 +74,7 @@ const AlertCard = ({
   const renderResponseView = () => {
     return (
       <>
-        <Col className="text-center" xs={12} sm={12} xl={3}>
+        <Col className="text-center" xs={6} sm={6} xl={3}>
           <small>Downtime</small>
           <h2>{m.downtime_s}</h2>
         </Col>
@@ -182,12 +180,8 @@ const AlertCard = ({
                       Summary
                     </Link>
                   )}
-                  {user.role.role === "admin" && showEdit && showSummary ? (
-                    <span> | </span>
-                  ) : (
-                    ``
-                  )}
-                  {user.role.role === "admin" && showEdit && (
+                  {showEdit && showSummary ? <span> | </span> : ``}
+                  {showEdit && (
                     <Link
                       className="btn btn-link btn-small"
                       to={`/${otherPath}/${m.object.id}`}
@@ -195,11 +189,7 @@ const AlertCard = ({
                       Edit
                     </Link>
                   )}
-                  {user.role.role === "admin" || showEdit || showSummary ? (
-                    <span> | </span>
-                  ) : (
-                    ``
-                  )}
+                  {showResponseView ? <span> | </span> : ``}
                   {showResponseView && (
                     <Button
                       variant="link"
@@ -228,7 +218,7 @@ const AlertCard = ({
         </Card.Title>
         {m.object.active && (
           <Row>
-            <Col className="text-center" xs={12} sm={12} xl={3}>
+            <Col className="text-center hide-small" xs={12} sm={12} xl={3}>
               <small>&nbsp;</small>
               {m.object.alert.failure_count === 0 ? (
                 <h1 className="text-success">✔</h1>

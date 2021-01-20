@@ -30,13 +30,13 @@ const Ping = (props) => {
   };
 
   const fetchSummary = async (skip = false) => {
-    setLoading(false);
     if (!skip) {
       const { data = null, error = null } = await api(
         `alert_summary/ping/?hours=24`
       );
 
       if (data) {
+        setLoading(false);
         setTotals(data.totals);
         setPings(data.objects);
         setFetchDate(new Date());
@@ -73,7 +73,7 @@ const Ping = (props) => {
               <Col xs={12} lg={3} className="text-center">
                 <h3>Uptime Monitor Summary</h3>
               </Col>
-              <Col className="right-align-small-center">
+              <Col className="right-align-small-center hide-small">
                 <Link to="/newping" className="btn btn-warning btn-rounded">
                   New Uptime Monitor
                 </Link>
@@ -81,7 +81,7 @@ const Ping = (props) => {
             </Row>
           </Card.Title>
           <Row>
-            <Col className="text-center" xs={12} lg={3}>
+            <Col className="text-center hide-small" xs={12} lg={3}>
               <small>&nbsp;</small>
               {totals.down === 0 ? (
                 <h1 className="text-success">✔</h1>
@@ -137,12 +137,13 @@ const Ping = (props) => {
             <Row>
               <Col className="text-center">
                 <img
-                  src="https://dplouffe.ca/static/img/domlogo.png"
+                  src="https://onerrorlog.s3.amazonaws.com/images/oel-logo.png"
                   alt="Oops"
                   className="mb-3 list-logo"
                 />
                 <h2 className="pt-3">
-                  You have not added any Pings to your account yet.
+                  You have not added any REST Uptime Monitors to your account
+                  yet.
                 </h2>
                 <div className="pt-5">
                   <Link
@@ -150,7 +151,7 @@ const Ping = (props) => {
                     className="btn btn-warning btn-rounded mb-2 mr-2"
                     style={{ fontSize: "20px" }}
                   >
-                    Add Your First Ping
+                    Add Your First REST Uptime Monitor
                   </Link>
                 </div>
               </Col>

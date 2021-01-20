@@ -216,8 +216,8 @@ const PingSummary = (props) => {
                     <Area
                       type="monotone"
                       dataKey="response_ms"
-                      stroke="#184b99"
-                      fill="#184b99"
+                      stroke="#1e3e70"
+                      fill="#1e3e70"
                     />
                   </AreaChart>
                 </ResponsiveContainer>
@@ -343,7 +343,7 @@ const PingSummary = (props) => {
                         <td>
                           <FailureStatus failure={f} />
                         </td>
-                        <td className="text-right hide-small">
+                        <td className="text-right">
                           <Link
                             to={`/failure/${f.id}/ping/${props.match.params.id}`}
                           >

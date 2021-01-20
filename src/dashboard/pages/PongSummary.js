@@ -147,20 +147,11 @@ const PongSummary = (props) => {
   const getCalendarCellColor = (c) => {
     if (c.status === "warning") {
       return "#dba222";
-    } else if (c.status === "danger") {
-      return "#991840";
-    }
-    if (!summary || !c) {
-      return "#efefef";
-    }
-
-    const thisDate = moment(c.date);
-    const createdOn = moment(summary.object.created_on);
-
-    if (thisDate >= createdOn) {
+    } else if (c.status === "success") {
       return "#409918";
+    } else if (c.status === "danger") {
+      return "#bb1d4e";
     }
-
     return "#efefef";
   };
 
@@ -219,8 +210,8 @@ const PongSummary = (props) => {
                     <Area
                       type="monotone"
                       dataKey="response_ms"
-                      stroke="#184b99"
-                      fill="#184b99"
+                      stroke="#1e3e70"
+                      fill="#1e3e70"
                     />
                   </AreaChart>
                 </ResponsiveContainer>
@@ -259,7 +250,8 @@ const PongSummary = (props) => {
                         <div className="mt-2">
                           <strong>{moment(c.date).format("LL")}</strong> -
                           <em>
-                            {c.text} (failures: {c.failure})
+                            {c.text} (success: {c.success} - failure:{" "}
+                            {c.failure} - {(c.success_rate * 100).toFixed(0)}%)
                           </em>
                         </div>
                       );

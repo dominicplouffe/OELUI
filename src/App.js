@@ -32,6 +32,7 @@ import MetricConditionScreen from "./dashboard/pages/MetricConditionScreen";
 import MetricConditionSummary from "./dashboard/pages/MetricConditionSummary";
 
 import Dashboard from "./dashboard/pages/Dashboard";
+import NewMonitor from "./dashboard/pages/NewMonitor";
 
 function App() {
   return (
@@ -49,6 +50,13 @@ const AppRoutes = () => {
       </Route>
 
       <DashboardRoute path="/dashboard" component={Dashboard} exact={true} />
+
+      <DashboardRoute
+        path="/newmonitor"
+        component={NewMonitor}
+        exact={true}
+        admin
+      />
 
       <DashboardRoute path="/profile" component={Profile} exact={true} />
       <DashboardRoute path="/pings" component={Ping} />

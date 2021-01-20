@@ -212,32 +212,37 @@ const Failure = (props) => {
             </Card.Body>
           </Card>
 
-          {ping && (
-            <Card>
-              <Card.Body>
-                <Card.Title>
+          <Card>
+            <Card.Body>
+              <Card.Title>
+                {ping && (
                   <Row>
                     <Col>
                       Content returned from:{" "}
                       <span className="text-primary">{ping.endpoint}</span>
                     </Col>
                   </Row>
-                </Card.Title>
-                <Row>
-                  {failure.content && (
-                    <Col className="pl-3 pr-3">
-                      <pre>{failure.content}</pre>
-                    </Col>
-                  )}
-                  {!failure.content && (
-                    <Col className="pl-3 pr-3">
-                      The content was empty or not returned from {ping.endpoint}
-                    </Col>
-                  )}
-                </Row>
-              </Card.Body>
-            </Card>
-          )}
+                )}
+                {!ping && (
+                  <Row>
+                    <Col>Details of your failure</Col>
+                  </Row>
+                )}
+              </Card.Title>
+              <Row>
+                {failure.content && (
+                  <Col className="pl-3 pr-3">
+                    <pre>{failure.content}</pre>
+                  </Col>
+                )}
+                {!failure.content && (
+                  <Col className="pl-3 pr-3">
+                    The content was empty or not returned from {ping.endpoint}
+                  </Col>
+                )}
+              </Row>
+            </Card.Body>
+          </Card>
         </>
       )}
     </Body>

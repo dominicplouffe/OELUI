@@ -308,7 +308,7 @@ const PongScreen = (props) => {
     }
     return (
       <Row key={i} className="pt-2">
-        <Col xs={7}>
+        <Col xs={12} lg={7}>
           <Row>
             <Col xs={10}>
               <label className="form-label">Select your trigger</label>
@@ -354,7 +354,7 @@ const PongScreen = (props) => {
             onChange={(e) => setTriggerValue("trigger_type", e.target.value, i)}
           />
         </Col>
-        <Col xs={2}>
+        <Col xs={6} lg={2}>
           {t.trigger_type !== "heartbeat_triggered" && (
             <InputText
               id="triggerinterval"
@@ -367,7 +367,7 @@ const PongScreen = (props) => {
             />
           )}
         </Col>
-        <Col xs={3} className="text-right">
+        <Col xs={6} lg={3} className="text-right">
           {t.trigger_type !== "heartbeat_triggered" && (
             <InputSelect
               id="triggertype"
@@ -631,7 +631,7 @@ const PongScreen = (props) => {
                 </Col>
               </Row>
               <Row>
-                <Col>
+                <Col xs={12} lg={6}>
                   <InputSelect
                     id="incidentmethod"
                     label="How would you like to be contacted"
@@ -652,7 +652,7 @@ const PongScreen = (props) => {
                     isInvalid={formErrors.indexOf("incidentmethod") > -1}
                   />
                 </Col>
-                <Col>
+                <Col xs={12} lg={6}>
                   <InputSelect
                     id="incidentinternal"
                     label="Minimum Incident Count"

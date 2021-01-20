@@ -73,7 +73,7 @@ const Ping = (props) => {
               <Col xs={12} lg={3} className="text-center">
                 <h3>Uptime Monitor Summary</h3>
               </Col>
-              <Col className="right-align-small-center">
+              <Col className="right-align-small-center hide-small">
                 <Link to="/newping" className="btn btn-warning btn-rounded">
                   New Uptime Monitor
                 </Link>
@@ -81,7 +81,7 @@ const Ping = (props) => {
             </Row>
           </Card.Title>
           <Row>
-            <Col className="text-center" xs={12} lg={3}>
+            <Col className="text-center hide-small" xs={12} lg={3}>
               <small>&nbsp;</small>
               {totals.down === 0 ? (
                 <h1 className="text-success">✔</h1>

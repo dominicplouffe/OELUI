@@ -98,7 +98,6 @@ const Dashboard = (props) => {
   };
 
   useEffect(() => {
-    console.log("loading");
     setLoading(true);
     fetchAll();
     // eslint-disable-next-line
@@ -207,7 +206,7 @@ const Dashboard = (props) => {
             </Card.Title>
 
             <Row>
-              <Col className="text-center" xs={12} lg={3}>
+              <Col className="text-center hide-small" xs={12} lg={3}>
                 <small>&nbsp;</small>
                 {getTotals().down === 0 ? (
                   <h1 className="text-success">✔</h1>
@@ -252,7 +251,10 @@ const Dashboard = (props) => {
                 </Col>
 
                 <Col className="text-center pt-1 pb-3" xs={12}>
-                  <Link to="/newping" className="btn btn-warning btn-rounded">
+                  <Link
+                    to="/newping"
+                    className="btn btn-warning btn-rounded hide-small"
+                  >
                     New Uptime Monitor
                   </Link>
                 </Col>
@@ -265,7 +267,7 @@ const Dashboard = (props) => {
 
                 {pings.map((p, i) => (
                   <Row key={i}>
-                    <Col className="pt-3">
+                    <Col className="pt-1">
                       <AlertCardSmall
                         m={p}
                         key={i}
@@ -282,7 +284,7 @@ const Dashboard = (props) => {
           </Card.Body>
         </Card>
       </div>
-      <div className="dashboard-box">
+      {/* <div className="dashboard-box">
         <Card>
           <Card.Body>
             <Card.Title>
@@ -329,7 +331,7 @@ const Dashboard = (props) => {
             )}
           </Card.Body>
         </Card>
-      </div>
+      </div> */}
       <div className="dashboard-box">
         <Card>
           <Card.Body>
@@ -353,7 +355,10 @@ const Dashboard = (props) => {
                   You have no Heartbeat Monitors setup.
                 </Col>
                 <Col className="text-center pt-1 pb-3" xs={12}>
-                  <Link to="/newpong" className="btn btn-warning btn-rounded">
+                  <Link
+                    to="/newpong"
+                    className="btn btn-warning btn-rounded hide-small"
+                  >
                     New Heartbeat Monitor
                   </Link>
                 </Col>

@@ -44,9 +44,8 @@ const Body = ({
             style={{ maxWidth: "80px", margin: "auto", float: "left" }}
           />
           <span
-            className="pl-3 h3 mt-3 hide-small"
+            className="pl-3 h3 mt-3"
             style={{
-              color: "#000",
               float: "left",
               lineHeight: "10px",
               verticalAlign: "middle",

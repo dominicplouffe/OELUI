@@ -76,7 +76,7 @@ const AlertCard = ({
   const renderResponseView = () => {
     return (
       <>
-        <Col className="text-center" xs={12} sm={12} xl={3}>
+        <Col className="text-center" xs={6} sm={6} xl={3}>
           <small>Downtime</small>
           <h2>{m.downtime_s}</h2>
         </Col>
@@ -220,7 +220,7 @@ const AlertCard = ({
         </Card.Title>
         {m.object.active && (
           <Row>
-            <Col className="text-center" xs={12} sm={12} xl={3}>
+            <Col className="text-center hide-small" xs={12} sm={12} xl={3}>
               <small>&nbsp;</small>
               {m.object.alert.failure_count === 0 ? (
                 <h1 className="text-success">✔</h1>

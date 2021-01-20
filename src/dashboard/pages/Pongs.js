@@ -80,14 +80,17 @@ const Pong = (props) => {
                 <h3>Heartbeat Monitor Summary</h3>
               </Col>
               <Col className="right-align-small-center">
-                <Link to="/newpong" className="btn btn-warning btn-rounded">
+                <Link
+                  to="/newpong"
+                  className="btn btn-warning btn-rounded hide-small"
+                >
                   New Heartbeat Monitor
                 </Link>
               </Col>
             </Row>
           </Card.Title>
           <Row>
-            <Col className="text-center" xs={12} lg={3}>
+            <Col className="text-center hide-small" xs={12} lg={3}>
               <small>&nbsp;</small>
               {totals.down === 0 ? (
                 <h1 className="text-success">✔</h1>

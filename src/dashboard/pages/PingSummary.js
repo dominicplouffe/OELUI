@@ -343,7 +343,7 @@ const PingSummary = (props) => {
                         <td>
                           <FailureStatus failure={f} />
                         </td>
-                        <td className="text-right hide-small">
+                        <td className="text-right">
                           <Link
                             to={`/failure/${f.id}/ping/${props.match.params.id}`}
                           >

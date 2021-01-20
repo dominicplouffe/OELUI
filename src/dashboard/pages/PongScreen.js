@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Body from "../components/Body";
 import { API_URL } from "../../utils/globals";
 import api from "../../utils/api";
@@ -38,6 +38,7 @@ const PongScreen = (props) => {
   const [loading, setLoading] = useState(true);
   const [saved, setSaved] = useState(false);
   const [exampleTab, setExampleTab] = useState("python");
+  const headersRef = useRef(null);
 
   const [showCallbackBasic, setShowCallbackBasic] = useState(false);
 
@@ -166,6 +167,7 @@ const PongScreen = (props) => {
       }
 
       if (data) {
+        await headersRef.current.saveHeaders(data.id);
         history.push(`/pong/${data.id}/`);
         setSaved(true);
       }
@@ -957,6 +959,7 @@ const PongScreen = (props) => {
       </Row>
 
       <Headers
+        ref={headersRef}
         showModal={showHeaderModal}
         setShowModal={setShowHeaderModal}
         headerType={headerType}

@@ -54,7 +54,7 @@ const Schedule = (props) => {
           : 0
       );
 
-      setOnCallUser(users[currentUser.role.org.week - 1]);
+      getOnCallUser();
 
       setUsers(users);
       setLoading(false);
@@ -64,6 +64,11 @@ const Schedule = (props) => {
     if (error) {
       alert("Something went wrong!");
     }
+  };
+
+  const getOnCallUser = async () => {
+    const { data = null } = await api("/api/org_user/get_on_call_user");
+    setOnCallUser(data);
   };
 
   const getOverrides = async (users) => {
@@ -200,7 +205,7 @@ const Schedule = (props) => {
     let sendNotifications = false;
     if (newOnCallUser.id !== onCallUser.id) {
       doUpdate = window.confirm(
-        `Your new schedule will result in having a different on-call user this week.\n\nPrevious User: ${onCallUser.first_name} ${onCallUser.last_name}\n\nNew User:  ${newOnCallUser.first_name} ${newOnCallUser.last_name}\n\nDo you wish to continue?`
+        `Your new schedule may result in having a different on-call user this week.\n\nDo you wish to continue?`
       );
       sendNotifications = true;
     }
@@ -217,9 +222,13 @@ const Schedule = (props) => {
       setShowSave(false);
 
       if (sendNotifications) {
+        const { data = null } = await api("/api/org_user/get_on_call_user");
+
+        setOnCallUser(data);
+
         await api("/api/org_user/send_notification_update", "POST", {
           offcall_id: onCallUser.id,
-          oncall_id: newOnCallUser.id,
+          oncall_id: data.id,
         });
       }
     }

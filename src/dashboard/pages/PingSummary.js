@@ -313,24 +313,22 @@ const PingSummary = (props) => {
                 <Table striped borderless hover>
                   <thead>
                     <tr>
-                      <th>Reason</th>
-                      <th>When</th>
-                      <th className="hide-small">Who</th>
+                      <th>Received On</th>
+                      <th>Who</th>
                       <th>Status</th>
                     </tr>
                   </thead>
                   <tbody>
                     {failures.map((f, i) => (
                       <tr key={i}>
-                        <td>{REASONS[f.reason]}</td>
-
                         <td className="hide-small">
                           {moment(f.created_on).format("LLLL")}
                         </td>
                         <td className="show-small">
                           {moment(f.created_on).format("MM/DD")}
                         </td>
-                        <td className="hide-small">
+                        <td>
+                          {" "}
                           {f.notify_org_user && (
                             <>
                               <div>
@@ -340,12 +338,13 @@ const PingSummary = (props) => {
                             </>
                           )}
                         </td>
+                        <td>{REASONS[f.reason]}</td>
                         <td>
                           <FailureStatus failure={f} />
                         </td>
-                        <td className="text-right">
+                        <td className="text-righ" width="1%" nowrap="nowrap">
                           <Link
-                            to={`/failure/${f.id}/ping/${props.match.params.id}`}
+                            to={`/failure/${f.id}/pong/${props.match.params.id}`}
                           >
                             <img
                               src="https://onerrorlog.s3.amazonaws.com/images/details.png"

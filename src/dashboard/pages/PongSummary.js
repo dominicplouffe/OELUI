@@ -15,12 +15,22 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import { REASONS } from "../../utils/globals";
+
+const trigger_desc = {
+  complete_not_triggered_in: "Complete endpoint has not been requested in",
+  start_not_triggered_in: "Start endpoint has not been requested in",
+  runs_less_than: "Task runs in less than",
+  runs_more_than: "Task runs for more than",
+  heartbeat_triggered: "Your heartbeat fail was triggered",
+};
 
 const PongSummary = (props) => {
   const [calendarData, setCalendarData] = useState([]);
   const [calendarStart, setCalendarStart] = useState("2019-06-02");
   const [calendarEnd, setCalendarEnd] = useState("2020-06-02");
   const [summary, setSummary] = useState(null);
+  const [pong, setPong] = useState(null);
   const [calendarHelp, setCalendarHelp] = useState(
     <div className="mt-2">&nbsp;</div>
   );
@@ -44,6 +54,19 @@ const PongSummary = (props) => {
       };
     }, [delay, setDoFetch]);
     return doFetch;
+  };
+
+  const fetchPong = async (id) => {
+    const { data = null, error = null } = await api(`pong/${id}/`);
+
+    if (data) {
+      console.log(data);
+      setPong(data);
+    }
+
+    if (error) {
+      alert("Something went wrong, we cannot find your pong");
+    }
   };
 
   const fetchSummary = async (id) => {
@@ -115,11 +138,12 @@ const PongSummary = (props) => {
   };
 
   // Fetch content every 5 mins
-  useFetchInterval(1000 * 60 * 5);
+  useFetchInterval(1000 * 60 * 1);
 
   const fetchAll = async () => {
     const id = props.match.params.id;
 
+    fetchPong(id);
     fetchSummary(id);
     fetchDetails(id);
     getOtherPongs();
@@ -184,15 +208,121 @@ const PongSummary = (props) => {
 
       <Card>
         <Card.Body>
-          <Card.Title>
-            <Row>
-              <Col>
-                <h3>Average Task Time (ms)</h3>
-              </Col>
-            </Row>
-          </Card.Title>
           <Row>
-            <Col>
+            <Col xs={12} xl={6}>
+              <Row>
+                <Col xs={12} xl={6}>
+                  <Card.Title>
+                    <Row>
+                      <Col>
+                        <h3>Pong Details</h3>
+                      </Col>
+                    </Row>
+                  </Card.Title>
+                  {pong && (
+                    <Table borderless size="sm" striped>
+                      <thead>
+                        <tr>
+                          <th>Info</th>
+                          <th>Value</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td width="1%" nowrap="nowrap">
+                            <label className="form-label mb-0">
+                              Cron Desc:
+                            </label>
+                          </td>
+                          <td>{pong.cron_desc ? pong.cron_desc : "n/a"}</td>
+                        </tr>
+                        <tr>
+                          <td width="1%" nowrap="nowrap">
+                            <label className="form-label mb-0">
+                              Last Start:
+                            </label>
+                          </td>
+                          <td>
+                            {pong.last_start_on
+                              ? moment(pong.last_start_on).format(
+                                  "YYYY-MM-DD HH:mm:ss"
+                                )
+                              : "n/a"}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td width="1%" nowrap="nowrap">
+                            <label className="form-label mb-0">Last End:</label>
+                          </td>
+                          <td>
+                            {pong.last_complete_on
+                              ? moment(pong.last_complete_on).format(
+                                  "YYYY-MM-DD HH:mm:ss"
+                                )
+                              : "n/a"}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td width="1%" nowrap="nowrap">
+                            <label className="form-label mb-0">
+                              Task Last Run:
+                            </label>
+                          </td>
+                          <td>
+                            {pong.task.last_run_at
+                              ? moment(pong.task.last_run_at).format(
+                                  "YYYY-MM-DD HH:mm:ss"
+                                )
+                              : "n/a"}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </Table>
+                  )}
+                </Col>
+                <Col xs={12} xl={6}>
+                  <Card.Title>
+                    <Row>
+                      <Col>
+                        <h3>Notification Rules</h3>
+                      </Col>
+                    </Row>
+                  </Card.Title>
+                  {pong && (
+                    <Table borderless size="sm" striped>
+                      <thead>
+                        <tr>
+                          <th>Trigger</th>
+                          <th>Dur</th>
+                          <th>Unit</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {pong.triggers.map((t, i) => (
+                          <tr key={i}>
+                            <td>
+                              <label className="form-label mb-0">
+                                {trigger_desc[t.trigger_type]}
+                              </label>
+                            </td>
+                            <td>{t.interval_value}</td>
+                            <td>{t.unit}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </Table>
+                  )}
+                </Col>
+              </Row>
+            </Col>
+            <Col xs={12} xl={6}>
+              <Card.Title>
+                <Row>
+                  <Col>
+                    <h3>Average Task Time (ms)</h3>
+                  </Col>
+                </Row>
+              </Card.Title>
               {responseTimeData && (
                 <ResponsiveContainer width="100%" height={200}>
                   <AreaChart
@@ -309,7 +439,7 @@ const PongSummary = (props) => {
                   <thead>
                     <tr>
                       <th>Received On</th>
-                      <th className="hide-small">Who</th>
+                      <th>Who</th>
                       <th>Status</th>
                     </tr>
                   </thead>
@@ -322,7 +452,8 @@ const PongSummary = (props) => {
                         <td className="show-small">
                           {moment(f.created_on).format("MM/DD")}
                         </td>
-                        <td className="hide-small">
+                        <td>
+                          {" "}
                           {f.notify_org_user && (
                             <>
                               <div>
@@ -332,10 +463,11 @@ const PongSummary = (props) => {
                             </>
                           )}
                         </td>
+                        <td>{REASONS[f.reason]}</td>
                         <td>
                           <FailureStatus failure={f} />
                         </td>
-                        <td className="text-right hide-small">
+                        <td className="text-righ" width="1%" nowrap="nowrap">
                           <Link
                             to={`/failure/${f.id}/pong/${props.match.params.id}`}
                           >

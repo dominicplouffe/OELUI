@@ -524,7 +524,7 @@ span.doc-text {
         width: 50%;
     }
     .show-small {
-        display: node;
+        display: none;
     }
 
     .sidebar-nav ul {

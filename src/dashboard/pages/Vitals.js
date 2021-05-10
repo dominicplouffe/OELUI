@@ -36,7 +36,7 @@ const Vitals = (props) => {
   };
 
   // Fetch content every 5 mins
-  useFetchInterval(1000 * 60);
+  useFetchInterval(60000 * 60);
 
   useEffect(() => {
     fetchInstances();

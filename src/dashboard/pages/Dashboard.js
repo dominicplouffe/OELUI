@@ -17,8 +17,6 @@ const Dashboard = (props) => {
   const [pingTotals, setPingTotals] = useState({});
   const [pongs, setPongs] = useState([]);
   const [pongTotals, setPongTotals] = useState({});
-  // const [metricConditions, setMetricConditions] = useState([]);
-  // const [metricTotals, setMetricTotals] = useState({});
   const [hours, setHours] = useState(168);
 
   const useFetchInterval = (delay) => {
@@ -72,28 +70,10 @@ const Dashboard = (props) => {
     }
   };
 
-  // const fetchMetricConditions = async (skip = false) => {
-  //   if (!skip) {
-  //     const { data = null, error = null } = await api(
-  //       `alert_summary/metric_condition/?hours=${hours}`
-  //     );
-
-  //     if (data) {
-  //       setMetricTotals(data.totals);
-  //       setMetricConditions(data.objects);
-  //       setFetchDate(new Date());
-  //     }
-
-  //     if (error) {
-  //       alert("Something went wrong, we cannot find your ping");
-  //     }
-  //   }
-  // };
-
   const fetchAll = async () => {
     await fetchPings();
     await fetchPongs();
-    // await fetchMetricConditions();
+
     setLoading(false);
   };
 
@@ -284,54 +264,7 @@ const Dashboard = (props) => {
           </Card.Body>
         </Card>
       </div>
-      {/* <div className="dashboard-box">
-        <Card>
-          <Card.Body>
-            <Card.Title>
-              <Row>
-                <Col xs={12} className="text-left">
-                  <h3>Your Vital Monitors</h3>
-                </Col>
-              </Row>
-            </Card.Title>
 
-            {loading && (
-              <Row>
-                <Col className="text-center pt-4 pb-4">Loading...</Col>
-              </Row>
-            )}
-
-            {!loading && metricConditions.length === 0 && (
-              <Row>
-                <Col className="text-center pt-1 pb-3">
-                  You have no Vital Monitors setup.
-                </Col>
-              </Row>
-            )}
-
-            {!loading && (
-              <>
-                <TotaslRow totals={pongTotals} />
-
-                {metricConditions.map((p, i) => (
-                  <Row key={i}>
-                    <Col className="pt-3">
-                      <AlertCardSmall
-                        m={p}
-                        key={i}
-                        showSummary={true}
-                        showEdit={true}
-                        otherPath={`vital/${p.object.instance}/condition`}
-                        showResponseView={false}
-                      />
-                    </Col>
-                  </Row>
-                ))}
-              </>
-            )}
-          </Card.Body>
-        </Card>
-      </div> */}
       <div className="dashboard-box">
         <Card>
           <Card.Body>

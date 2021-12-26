@@ -18,18 +18,12 @@ import Pong from "./dashboard/pages/Pongs";
 import PongScreen from "./dashboard/pages/PongScreen";
 import PongSummary from "./dashboard/pages/PongSummary";
 
-import Vitals from "./dashboard/pages/Vitals";
-import VitalSummary from "./dashboard/pages/VitalSummary";
-
 import Team from "./dashboard/pages/Team";
 import Schedule from "./dashboard/pages/Schedule";
 
 import { NewPing, NewPong } from "./dashboard/pages/NewPing";
 import Profile from "./dashboard/pages/Profile";
 import Failure from "./dashboard/pages/Failure";
-
-import MetricConditionScreen from "./dashboard/pages/MetricConditionScreen";
-import MetricConditionSummary from "./dashboard/pages/MetricConditionSummary";
 
 import Dashboard from "./dashboard/pages/Dashboard";
 import NewMonitor from "./dashboard/pages/NewMonitor";
@@ -94,23 +88,6 @@ const AppRoutes = () => {
       <DashboardRoute
         path="/pong/summary/:id"
         component={PongSummary}
-        exact={true}
-      />
-
-      <DashboardRoute path="/vitals" component={Vitals} exact={true} />
-      <DashboardRoute
-        path="/vitals/:id"
-        component={VitalSummary}
-        exact={true}
-      />
-      <DashboardRoute
-        path="/vital/:instanceId/condition/:id"
-        component={MetricConditionScreen}
-        exact={true}
-      />
-      <DashboardRoute
-        path="/vital/:instanceId/condition/summary/:id"
-        component={MetricConditionSummary}
         exact={true}
       />
 

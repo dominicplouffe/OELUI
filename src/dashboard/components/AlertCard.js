@@ -189,7 +189,11 @@ const AlertCard = ({
                       Edit
                     </Link>
                   )}
-                  {showResponseView ? <span> | </span> : ``}
+                  {showResponseView && (showEdit || showSummary) ? (
+                    <span> | </span>
+                  ) : (
+                    ``
+                  )}
                   {showResponseView && (
                     <Button
                       variant="link"

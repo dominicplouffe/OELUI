@@ -36,6 +36,7 @@ const Ping = (props) => {
       );
 
       if (data) {
+        console.log(data.totals);
         setLoading(false);
         setTotals(data.totals);
         setPings(data.objects);

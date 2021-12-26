@@ -420,19 +420,20 @@ const PongSummary = (props) => {
               </Col>
             </Row>
           </Card.Title>
-          {failures.length > 0 && (
+          {failures && failures.length > 0 && (
             <Row>
               <Col xs={12} lg={3}>
-                {failureCounts.map((f, i) => (
-                  <Row key={i} className="mt-2">
-                    <Col xs={4} lg={12}>
-                      {f.reason}
-                    </Col>
-                    <Col>
-                      <ProgressBar label={f.count} now={f.percentage * 100} />
-                    </Col>
-                  </Row>
-                ))}
+                {failureCounts &&
+                  failureCounts.map((f, i) => (
+                    <Row key={i} className="mt-2">
+                      <Col xs={4} lg={12}>
+                        {f.reason}
+                      </Col>
+                      <Col>
+                        <ProgressBar label={f.count} now={f.percentage * 100} />
+                      </Col>
+                    </Row>
+                  ))}
               </Col>
               <Col xs={12} lg={9}>
                 <Table striped borderless hover>
@@ -485,13 +486,14 @@ const PongSummary = (props) => {
               </Col>
             </Row>
           )}
-          {failures.length === 0 && (
-            <Row>
-              <Col className="text-center pb-3">
-                <h2>This pong has not yet experienced any incidents. Yay!</h2>
-              </Col>
-            </Row>
-          )}
+          {!failures ||
+            (failures.length === 0 && (
+              <Row>
+                <Col className="text-center pb-3">
+                  <h2>This pong has not yet experienced any incidents. Yay!</h2>
+                </Col>
+              </Row>
+            ))}
         </Card.Body>
       </Card>
     </Body>

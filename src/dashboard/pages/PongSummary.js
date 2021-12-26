@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Body from "../components/Body";
-import { Card, Row, Col, ProgressBar, Table } from "react-bootstrap";
+import { Card, Row, Col, ProgressBar, Table, Button } from "react-bootstrap";
 import moment from "moment";
 import api from "../../utils/api";
 import AlertCard from "../components/AlertCard";
@@ -31,6 +31,7 @@ const PongSummary = (props) => {
   const [calendarEnd, setCalendarEnd] = useState("2020-06-02");
   const [summary, setSummary] = useState(null);
   const [pong, setPong] = useState(null);
+  const [hours, setHours] = useState(24);
   const [calendarHelp, setCalendarHelp] = useState(
     <div className="mt-2">&nbsp;</div>
   );
@@ -71,7 +72,7 @@ const PongSummary = (props) => {
 
   const fetchSummary = async (id) => {
     const { data = null, error = null } = await api(
-      `alert_summary/pong/${id}/?direction=push&hours=24`
+      `alert_summary/pong/${id}/?direction=push&hours=${hours}`
     );
 
     if (data) {
@@ -81,8 +82,13 @@ const PongSummary = (props) => {
 
       for (let i = 0; i < data.objects[0].snapshot.length; i++) {
         const ss = data.objects[0].snapshot[i];
+        let name = `${moment(ss.date).format("H")}:00`;
+
+        if (data.objects[0].snapshot.length > 24) {
+          name = `${moment(ss.date).format("MM-DD")}`;
+        }
         const row = {
-          name: `${moment(ss.date).format("H")}:00`,
+          name: name,
           response_ms: null,
         };
         if (ss.status) {
@@ -157,6 +163,15 @@ const PongSummary = (props) => {
     // eslint-disable-next-line
   }, [refresh]);
 
+  useEffect(() => {
+    if (!loading) {
+      const id = props.match.params.id;
+      fetchSummary(id);
+    }
+
+    // eslint-disable-next-line
+  }, [hours]);
+
   const getOtherPongs = async () => {
     const { data = null, error = null } = await api(`pong/`);
 
@@ -176,7 +191,7 @@ const PongSummary = (props) => {
     } else if (c.status === "danger") {
       return "#bb1d4e";
     }
-    return "#efefef";
+    return "#d1f5c0";
   };
 
   const CustomTooltip = ({ active, payload, label }) => {
@@ -320,6 +335,61 @@ const PongSummary = (props) => {
                 <Row>
                   <Col>
                     <h3>Average Task Time (ms)</h3>
+                  </Col>
+                  <Col className="text-right">
+                    <Button
+                      variant="link"
+                      className="p-0 m-0"
+                      onClick={() => setHours(24)}
+                      style={{ color: hours === 24 ? "red" : "" }}
+                    >
+                      <small>24h</small>
+                    </Button>
+                    <small> | </small>
+                    <Button
+                      variant="link"
+                      className="p-0 m-0"
+                      onClick={() => setHours(48)}
+                      style={{ color: hours === 48 ? "red" : "" }}
+                    >
+                      <small>48h</small>
+                    </Button>
+                    <small> | </small>
+                    <Button
+                      variant="link"
+                      className="p-0 m-0"
+                      onClick={() => setHours(72)}
+                      style={{ color: hours === 72 ? "red" : "" }}
+                    >
+                      <small>72h</small>
+                    </Button>
+                    <small> | </small>
+                    <Button
+                      variant="link"
+                      className="p-0 m-0"
+                      onClick={() => setHours(168)}
+                      style={{ color: hours === 168 ? "red" : "" }}
+                    >
+                      <small>7d</small>
+                    </Button>
+                    <small> | </small>
+                    <Button
+                      variant="link"
+                      className="p-0 m-0"
+                      onClick={() => setHours(336)}
+                      style={{ color: hours === 336 ? "red" : "" }}
+                    >
+                      <small>14d</small>
+                    </Button>
+                    <small> | </small>
+                    <Button
+                      variant="link"
+                      className="p-0 m-0"
+                      onClick={() => setHours(720)}
+                      style={{ color: hours === 720 ? "red" : "" }}
+                    >
+                      <small>30d</small>
+                    </Button>
                   </Col>
                 </Row>
               </Card.Title>

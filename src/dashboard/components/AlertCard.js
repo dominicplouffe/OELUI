@@ -256,7 +256,7 @@ const AlertCard = ({
               </Row>
 
               <div className={`status-row`}>
-                {m.snapshot.map((s, i) => (
+                {m.snapshot.slice(-24).map((s, i) => (
                   <div
                     style={{
                       backgroundColor: getSnapshotBackground(s),

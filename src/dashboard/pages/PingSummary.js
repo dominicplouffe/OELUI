@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Body from "../components/Body";
-import { Card, Row, Col, ProgressBar, Table } from "react-bootstrap";
+import { Card, Row, Col, ProgressBar, Table, Button } from "react-bootstrap";
 import moment from "moment";
 import api from "../../utils/api";
 import AlertCard from "../components/AlertCard";
@@ -25,6 +25,7 @@ const PingSummary = (props) => {
   const [calendarHelp, setCalendarHelp] = useState(
     <div className="mt-2">&nbsp;</div>
   );
+  const [hours, setHours] = useState(24);
   const [responseTimeData, setResponseTimeData] = useState(null);
   const [failureCounts, setFailureCounts] = useState([]);
   const [failures, setFailures] = useState([]);
@@ -49,7 +50,7 @@ const PingSummary = (props) => {
 
   const fetchSummary = async (id) => {
     const { data = null, error = null } = await api(
-      `alert_summary/ping/${id}/`
+      `alert_summary/ping/${id}/?hours=${hours}`
     );
 
     if (data) {
@@ -59,8 +60,13 @@ const PingSummary = (props) => {
 
       for (let i = 0; i < data.objects[0].snapshot.length; i++) {
         const ss = data.objects[0].snapshot[i];
+        let name = `${moment(ss.date).format("H")}:00`;
+
+        if (data.objects[0].snapshot.length > 24) {
+          name = `${moment(ss.date).format("MM-DD")}`;
+        }
         const row = {
-          name: `${moment(ss.date).format("H")}:00`,
+          name: name,
           response_ms: null,
         };
         if (ss.status) {
@@ -142,6 +148,15 @@ const PingSummary = (props) => {
     fetchAll();
 
     // eslint-disable-next-line
+  }, [hours]);
+
+  useEffect(() => {
+    if (!loading) {
+      const id = props.match.params.id;
+      fetchSummary(id);
+    }
+
+    // eslint-disable-next-line
   }, [refresh]);
 
   const getCalendarCellColor = (c) => {
@@ -152,7 +167,7 @@ const PingSummary = (props) => {
     } else if (c.status === "danger") {
       return "#bb1d4e";
     }
-    return "#efefef";
+    return "#d1f5c0";
   };
 
   const CustomTooltip = ({ active, payload, label }) => {
@@ -195,32 +210,89 @@ const PingSummary = (props) => {
               <Col>
                 <h3>Average Response Time (ms)</h3>
               </Col>
+              <Col className="text-right">
+                <Button
+                  variant="link"
+                  className="p-0 m-0"
+                  onClick={() => setHours(24)}
+                  style={{ color: hours === 24 ? "red" : "" }}
+                >
+                  <small>24h</small>
+                </Button>
+                <small> | </small>
+                <Button
+                  variant="link"
+                  className="p-0 m-0"
+                  onClick={() => setHours(48)}
+                  style={{ color: hours === 48 ? "red" : "" }}
+                >
+                  <small>48h</small>
+                </Button>
+                <small> | </small>
+                <Button
+                  variant="link"
+                  className="p-0 m-0"
+                  onClick={() => setHours(72)}
+                  style={{ color: hours === 72 ? "red" : "" }}
+                >
+                  <small>72h</small>
+                </Button>
+                <small> | </small>
+                <Button
+                  variant="link"
+                  className="p-0 m-0"
+                  onClick={() => setHours(168)}
+                  style={{ color: hours === 168 ? "red" : "" }}
+                >
+                  <small>7d</small>
+                </Button>
+                <small> | </small>
+                <Button
+                  variant="link"
+                  className="p-0 m-0"
+                  onClick={() => setHours(336)}
+                  style={{ color: hours === 336 ? "red" : "" }}
+                >
+                  <small>14d</small>
+                </Button>
+                <small> | </small>
+                <Button
+                  variant="link"
+                  className="p-0 m-0"
+                  onClick={() => setHours(720)}
+                  style={{ color: hours === 720 ? "red" : "" }}
+                >
+                  <small>30d</small>
+                </Button>
+              </Col>
             </Row>
           </Card.Title>
           <Row>
             <Col>
               {responseTimeData && (
-                <ResponsiveContainer width="100%" height={200}>
-                  <AreaChart
-                    data={responseTimeData}
-                    margin={{
-                      top: 10,
-                      right: 30,
-                      left: 0,
-                      bottom: 0,
-                    }}
-                  >
-                    <XAxis dataKey="name" tick={true} />
-                    <YAxis />
-                    <Tooltip content={<CustomTooltip />} />
-                    <Area
-                      type="monotone"
-                      dataKey="response_ms"
-                      stroke="#1e3e70"
-                      fill="#1e3e70"
-                    />
-                  </AreaChart>
-                </ResponsiveContainer>
+                <>
+                  <ResponsiveContainer width="100%" height={200}>
+                    <AreaChart
+                      data={responseTimeData}
+                      margin={{
+                        top: 10,
+                        right: 30,
+                        left: 0,
+                        bottom: 0,
+                      }}
+                    >
+                      <XAxis dataKey="name" tick={true} />
+                      <YAxis />
+                      <Tooltip content={<CustomTooltip />} />
+                      <Area
+                        type="monotone"
+                        dataKey="response_ms"
+                        stroke="#1e3e70"
+                        fill="#1e3e70"
+                      />
+                    </AreaChart>
+                  </ResponsiveContainer>
+                </>
               )}
               <div className="pt-1 text-center">
                 <small>Hour of day (UTC)</small>

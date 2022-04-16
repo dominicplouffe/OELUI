@@ -61,16 +61,16 @@ const Body = ({
               <Col className="pr-2">
                 <Link className="nav-link" to="/newmonitor">
                   <div className="top-link text-center">
-                    <Badge variant="success" className="p-0 mr-1">
+                    <Badge bg="success" className="p-0 ms-1">
                       &nbsp;&nbsp;
                     </Badge>
-                    <Badge variant="primary" className="p-0 mr-1">
+                    <Badge bg="primary" className="p-0 ms-1">
                       &nbsp;&nbsp;
                     </Badge>
-                    <Badge variant="danger" className="p-0 mr-1">
+                    <Badge bg="danger" className="p-0 ms-1">
                       &nbsp;&nbsp;
                     </Badge>
-                    <Badge variant="warning" className="p-0 mr-1">
+                    <Badge bg="warning" className="p-0 ms-1">
                       &nbsp;&nbsp;
                     </Badge>
                     <div className="p-0 m-0" style={{ lineHeight: "10px" }}>
@@ -211,7 +211,7 @@ const Body = ({
                     <span
                       role="img"
                       aria-label="Mising Phone Number"
-                      className="ml-1 hide-menu"
+                      className="me-1 hide-menu"
                     >
                       ☎️
                     </span>
@@ -294,7 +294,7 @@ const Body = ({
       <div className="bottom-menu">
         <Row className="pb-3">
           <Col
-            className={`text-center pt-3 pb-3 ml-2 ${getActiveMenuClass(
+            className={`text-center pt-3 pb-3 me-2 ${getActiveMenuClass(
               "dashboard"
             )}`}
           >
@@ -353,7 +353,7 @@ const Body = ({
             </Link>
           </Col>
           <Col
-            className={`text-center pt-3 pb-3 mr-2 ${getActiveMenuClass(
+            className={`text-center pt-3 pb-3 ms-2 ${getActiveMenuClass(
               "profile"
             )}`}
           >

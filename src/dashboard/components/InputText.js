@@ -48,15 +48,13 @@ const InputText = ({
         />
 
         {copy && (
-          <InputGroup.Append>
-            <InputGroup.Text>
+          <InputGroup.Text>
               <CopyToClipboard text={value} onCopy={() => handleCopyText()}>
                 <Button variant="link" className="p-0 m-0">
-                  ✇
+                  <span role="img" aria-label="copy">📄</span>
                 </Button>
               </CopyToClipboard>
             </InputGroup.Text>
-          </InputGroup.Append>
         )}
       </InputGroup>
       {isInvalid && invalidText ? (

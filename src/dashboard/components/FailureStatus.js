@@ -8,22 +8,22 @@ const FailureStatus = ({ failure }) => {
     }
 
     if (failure.recovered_on) {
-      return <Badge variant="warning">Recovered</Badge>;
+      return <Badge bg="warning">Recovered</Badge>;
     }
 
     if (failure.acknowledged_on && !failure.ignored_on && !failure.fixed_on) {
-      return <Badge variant="success">Acknowledged</Badge>;
+      return <Badge bg="success">Acknowledged</Badge>;
     }
 
     if (failure.ignored_on && !failure.fixed_on) {
-      return <Badge variant="danger">Ignored</Badge>;
+      return <Badge bg="danger">Ignored</Badge>;
     }
 
     if (failure.fixed_on) {
-      return <Badge variant="primary">Fixed</Badge>;
+      return <Badge bg="primary">Fixed</Badge>;
     }
 
-    return <Badge variant="danger">Unknown Status</Badge>;
+    return <Badge bg="danger">Unknown Status</Badge>;
   };
 
   return getStatus(failure);

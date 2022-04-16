@@ -1,24 +1,9 @@
 import React, { useEffect, useState } from "react";
-import {
-  Card,
-  Row,
-  Col,
-  Badge,
-  Dropdown,
-  SplitButton,
-  Button,
-} from "react-bootstrap";
+import { Card, Row, Col, Badge, Dropdown, SplitButton, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Actions from "../components/Actions";
 
-const AlertCard = ({
-  m,
-  showSummary,
-  showEdit,
-  otherObjects,
-  otherPath,
-  showResponseView,
-}) => {
+const AlertCard = ({ m, showSummary, showEdit, otherObjects, otherPath, showResponseView }) => {
   const [statusItem, setStatusItem] = useState(null);
   const [statusOverride, setStatusOverride] = useState(false);
 
@@ -29,40 +14,30 @@ const AlertCard = ({
   const renderStatusView = () => {
     return (
       <>
-        <Col className="text-center" xs={6} sm={12} xl={3}>
-          <small>Downtime</small>
-          <h2>{m.downtime_s}</h2>
-        </Col>
-        <Col className="text-center text-nowrap" xs={12} sm={12} xl={3}>
+        <Col className="text-center text-nowrap" xs={12} sm={12} xl={9}>
           <Row>
             <Col xs={6} lg={3}>
-              <small>Acknowledged</small>
+              <small>Ack</small>
               <h2>
-                <Badge variant="success">
-                  {m.stats ? m.stats.acknowledged : `0`}
-                </Badge>
+                <Badge bg="success">{m.stats ? m.stats.acknowledged : `0`}</Badge>
               </h2>
             </Col>
             <Col xs={6} lg={3}>
               <small>Fixed</small>
               <h2>
-                <Badge variant="primary">{m.stats ? m.stats.fixed : `0`}</Badge>
+                <Badge bg="primary">{m.stats ? m.stats.fixed : `0`}</Badge>
               </h2>
             </Col>
             <Col xs={6} lg={3}>
-              <small>Auto-Resolved</small>
+              <small>Auto</small>
               <h2>
-                <Badge variant="warning">
-                  {m.stats ? m.stats.resolved : `0`}
-                </Badge>
+                <Badge bg="warning">{m.stats ? m.stats.resolved : `0`}</Badge>
               </h2>
             </Col>
             <Col xs={6} lg={3}>
-              <small>Ignored</small>
+              <small>Ign</small>
               <h2>
-                <Badge variant="danger">
-                  {m.stats ? m.stats.ignored : `0`}
-                </Badge>
+                <Badge bg="danger">{m.stats ? m.stats.ignored : `0`}</Badge>
               </h2>
             </Col>
           </Row>
@@ -74,11 +49,11 @@ const AlertCard = ({
   const renderResponseView = () => {
     return (
       <>
-        <Col className="text-center" xs={6} sm={6} xl={3}>
+        <Col className="text-center" xs={6} sm={12} md={4} xl={3}>
           <small>Downtime</small>
           <h2>{m.downtime_s}</h2>
         </Col>
-        <Col className="text-center" xs={12} sm={12} xl={3}>
+        <Col className="text-center" xs={12} sm={12} md={4} xl={3}>
           <small>Avg. Response Time</small>
           <h2>
             {(m.avg_resp * 1000).toFixed(2)}
@@ -144,22 +119,12 @@ const AlertCard = ({
       <Card.Body>
         <Card.Title>
           <Row>
-            <Col className="text-center" xl={3} md={12}>
-              {(!otherObjects || otherObjects.length <= 1) && (
-                <h3>{m.object.name}</h3>
-              )}
+            <Col className="text-start" xl={6} md={12}>
+              {(!otherObjects || otherObjects.length <= 1) && <h3>{m.object.name}</h3>}
               {otherObjects && otherObjects.length > 1 && (
-                <SplitButton
-                  title={m.object.name}
-                  id="dropdown-menu-align-responsive-2"
-                  variant="custom"
-                >
+                <SplitButton title={m.object.name} id="dropdown-menu-align-responsive-2" variant="custom">
                   {otherObjects.map((e, i) => (
-                    <Dropdown.Item
-                      eventKey={i}
-                      key={i}
-                      href={`/${otherPath}/summary/${e.id}/`}
-                    >
+                    <Dropdown.Item eventKey={i} key={i} href={`/${otherPath}/summary/${e.id}/`}>
                       {e.name}
                     </Dropdown.Item>
                   ))}
@@ -167,33 +132,20 @@ const AlertCard = ({
               )}
             </Col>
             <Col className="text-center" xl={6} md={12}>
-              <small>{m.object.endpoint}</small>
-            </Col>
-            <Col className="text-center" xl={3} md={12}>
               <Row>
-                <Col className="text-center text-md-right">
+                <Col className="text-end">
                   {showSummary && (
-                    <Link
-                      className="btn btn-link btn-small"
-                      to={`/${otherPath}/summary/${m.object.id}`}
-                    >
+                    <Link className="btn btn-link btn-small" to={`/${otherPath}/summary/${m.object.id}`}>
                       Summary
                     </Link>
                   )}
                   {showEdit && showSummary ? <span> | </span> : ``}
                   {showEdit && (
-                    <Link
-                      className="btn btn-link btn-small"
-                      to={`/${otherPath}/${m.object.id}`}
-                    >
+                    <Link className="btn btn-link btn-small" to={`/${otherPath}/${m.object.id}`}>
                       Edit
                     </Link>
                   )}
-                  {showResponseView && (showEdit || showSummary) ? (
-                    <span> | </span>
-                  ) : (
-                    ``
-                  )}
+                  {showResponseView && (showEdit || showSummary) ? <span> | </span> : ``}
                   {showResponseView && (
                     <Button
                       variant="link"
@@ -201,16 +153,16 @@ const AlertCard = ({
                         setStatusOverride(!statusOverride);
                       }}
                     >
-                      <Badge variant="success" className="p-0 mr-1">
+                      <Badge bg="success" className="p-0 ms-1">
                         &nbsp;&nbsp;
                       </Badge>
-                      <Badge variant="primary" className="p-0 mr-1">
+                      <Badge bg="primary" className="p-0 ms-1">
                         &nbsp;&nbsp;
                       </Badge>
-                      <Badge variant="danger" className="p-0 mr-1">
+                      <Badge bg="danger" className="p-0 ms-1">
                         &nbsp;&nbsp;
                       </Badge>
-                      <Badge variant="warning" className="p-0 mr-1">
+                      <Badge bg="warning" className="p-0 ms-1">
                         &nbsp;&nbsp;
                       </Badge>
                     </Button>
@@ -224,16 +176,14 @@ const AlertCard = ({
           <Row>
             <Col className="text-center hide-small" xs={12} sm={12} xl={3}>
               <small>&nbsp;</small>
-              {m.object.alert.failure_count === 0 ? (
-                <h1 className="text-success">✔</h1>
-              ) : (
-                <h1 className="text-danger">✖</h1>
-              )}
+              {m.object.alert.failure_count === 0 ? <h1 className="text-success">✔</h1> : <h1 className="text-danger">✖</h1>}
             </Col>
-            <Col className="text-center" xs={6} sm={12} xl={3}>
-              <small>Failures</small>
-              <h1>{m.failure}</h1>
-            </Col>
+            {!statusOverride && otherPath !== "pong" && (
+              <Col className="text-center" xs={6} sm={12} md={4} xl={3}>
+                <small>Failures</small>
+                <h1>{m.failure}</h1>
+              </Col>
+            )}
             {m.object.alert.failure_count === 0 ? (
               renderCardData()
             ) : (
@@ -245,32 +195,39 @@ const AlertCard = ({
         )}
         {showResponseView && (
           <Row>
-            <Col xs={12} sm={12} xl={12}>
-              <Row className="pt-2">
-                <Col xs={12} lg={6}>
-                  <small>24h Status Snapshot</small>
-                </Col>
-                <Col className="text-right" xs={12} lg={6}>
-                  {renderStatusItem()}
-                </Col>
-              </Row>
+            {!statusOverride && (
+              <Col xs={12} sm={12} xl={12}>
+                <Row className="pt-2">
+                  <Col xs={12} lg={6}>
+                    <small>24h Status Snapshot</small>
+                  </Col>
+                  <Col className="text-end" xs={12} lg={6}>
+                    {renderStatusItem()}
+                  </Col>
+                </Row>
 
-              <div className={`status-row`}>
-                {m.snapshot.slice(-24).map((s, i) => (
-                  <div
-                    style={{
-                      backgroundColor: getSnapshotBackground(s),
-                    }}
-                    key={i}
-                    className={`status-cell`}
-                    onMouseOver={() => setStatusItem(s)}
-                    onMouseOut={() => setStatusItem(null)}
-                  >
-                    {getSuccessRate(s)}
-                  </div>
-                ))}
-              </div>
-            </Col>
+                <div className={`status-row`}>
+                  {m.snapshot.slice(-24).map((s, i) => (
+                    <div
+                      style={{
+                        backgroundColor: getSnapshotBackground(s),
+                      }}
+                      key={i}
+                      className={`status-cell`}
+                      onMouseOver={() => setStatusItem(s)}
+                      onMouseOut={() => setStatusItem(null)}
+                    >
+                      {getSuccessRate(s)}
+                    </div>
+                  ))}
+                </div>
+              </Col>
+            )}
+            {statusOverride && (
+              <Col xs={12} className="text-center pt-4 pb-1">
+                <small>{m.object.endpoint}</small>
+              </Col>
+            )}
           </Row>
         )}
         {!m.object.active && (

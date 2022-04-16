@@ -231,7 +231,7 @@ const Headers = forwardRef(
             </tbody>
           </Table>
           <Row>
-            <Col className="text-right">
+            <Col className="text-end">
               <Button
                 variant="primary"
                 onClick={() => setShowModal(false)}

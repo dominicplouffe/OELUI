@@ -10,25 +10,25 @@ const TotalRow = ({ totals }) => {
       <Col className="text-center" xs={6} lg={3}>
         <small>Total</small>
         <h2>
-          <Badge variant="primary">{totals.total}</Badge>
+          <Badge bg="primary">{totals.total}</Badge>
         </h2>
       </Col>
       <Col className="text-center" xs={6} lg={3}>
         <small>Up</small>
         <h2>
-          <Badge variant="success">{totals.up}</Badge>
+          <Badge bg="success">{totals.up}</Badge>
         </h2>
       </Col>
       <Col className="text-center" xs={6} lg={3}>
         <small>Down</small>
         <h2>
-          <Badge variant="danger">{totals.down}</Badge>
+          <Badge bg="danger">{totals.down}</Badge>
         </h2>
       </Col>
       <Col className="text-center" xs={6} lg={3}>
         <small>Paused</small>
         <h2>
-          <Badge variant="warning">{totals.paused}</Badge>
+          <Badge bg="warning">{totals.paused}</Badge>
         </h2>
       </Col>
     </Row>

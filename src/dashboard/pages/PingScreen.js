@@ -412,7 +412,7 @@ const PingScreen = (props) => {
                           </small>
                         </Button>
                       </Col>
-                      <Col className="text-right">
+                      <Col className="text-end">
                         <Button
                           variant="link"
                           className="p-2 m-0 btn-link"
@@ -595,7 +595,7 @@ const PingScreen = (props) => {
             </Row>
           )}
           <Row>
-            <Col className="text-right">
+            <Col className="text-end">
               <>
                 <Button
                   variant={getTestButtonVariant()}
@@ -607,7 +607,7 @@ const PingScreen = (props) => {
                 {testResults && (
                   <Button
                     variant="primary"
-                    className="ml-2 btn-rounded"
+                    className="me-2 btn-rounded"
                     onClick={() => setShowResultModal(true)}
                   >
                     View Results
@@ -696,7 +696,7 @@ const PingScreen = (props) => {
                             </small>
                           </Button>
                         </Col>
-                        <Col className="text-right">
+                        <Col className="text-end">
                           <Button
                             variant="link"
                             className="p-2 m-0 btn-link"
@@ -777,7 +777,7 @@ const PingScreen = (props) => {
         </Card.Body>
       </Card>
       <Row>
-        <Col className="text-left pl-3" xs={12} lg={6}>
+        <Col className="text-start pl-3" xs={12} lg={6}>
           <DeleteButton
             pingId={pingId}
             active={active}
@@ -788,7 +788,7 @@ const PingScreen = (props) => {
             <strong className="text-success">Your ping has been saved.</strong>
           )}
         </Col>
-        <Col className="text-right" xs={12} lg={6}>
+        <Col className="text-end" xs={12} lg={6}>
           <EnableButton
             objectId={pingId}
             active={active}

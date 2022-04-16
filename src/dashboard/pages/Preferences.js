@@ -40,7 +40,7 @@
 //         <Col className="pl-4 mb-5 text-success" xs={12} lg={6}>
 //           {updated && <strong>Your profile has been updated.</strong>}
 //         </Col>
-//         <Col className="text-right" xs={12} lg={6}>
+//         <Col className="text-end" xs={12} lg={6}>
 //           <span className="pr-2">
 //             <PasswordModal />
 //           </span>

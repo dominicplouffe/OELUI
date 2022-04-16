@@ -16,7 +16,7 @@ const AlertCardSmall = ({ m, showSummary, otherPath }) => {
             <Col xs={3} lg={3}>
               <small>Ack</small>
               <h5>
-                <Badge variant="success" className="pt-1">
+                <Badge bg="success" className="pt-1">
                   {m.stats ? m.stats.acknowledged : `0`}
                 </Badge>
               </h5>
@@ -24,7 +24,7 @@ const AlertCardSmall = ({ m, showSummary, otherPath }) => {
             <Col xs={3} lg={3}>
               <small>Fix</small>
               <h5>
-                <Badge variant="primary" className="pt-1">
+                <Badge bg="primary" className="pt-1">
                   {m.stats ? m.stats.fixed : `0`}
                 </Badge>
               </h5>
@@ -32,7 +32,7 @@ const AlertCardSmall = ({ m, showSummary, otherPath }) => {
             <Col xs={3} lg={3}>
               <small>Auto</small>
               <h5>
-                <Badge variant="warning" className="pt-1">
+                <Badge bg="warning" className="pt-1">
                   {m.stats ? m.stats.resolved : `0`}
                 </Badge>
               </h5>
@@ -40,7 +40,7 @@ const AlertCardSmall = ({ m, showSummary, otherPath }) => {
             <Col xs={3} lg={3}>
               <small>Ign</small>
               <h5>
-                <Badge variant="danger" className="pt-1">
+                <Badge bg="danger" className="pt-1">
                   {m.stats ? m.stats.ignored : `0`}
                 </Badge>
               </h5>
@@ -60,39 +60,43 @@ const AlertCardSmall = ({ m, showSummary, otherPath }) => {
   }
 
   return (
-    <Row style={{ borderTop: "1px solid #e7e7e7" }}>
-      <Col xs={12} sm={12} xl={5}>
-        <Row>
-          <Col className="text-left" xs={9}>
-            <small>&nbsp;</small>
-            <h6>{m.object.name}</h6>
-          </Col>
-          <Col className="text-center" xs={3} sm={3} xl={3}>
-            <small>Fail</small>
-            <h5>
-              <Badge variant="secondary" className="pt-1">
-                {m.failure}
-              </Badge>
-            </h5>
+    <>
+      <Row style={{ borderTop: "1px solid #e7e7e7" }}>
+        <Col xs={12} sm={12} xl={5}>
+          <Row>
+            <Col className="text-start" xs={9}>
+              <small>&nbsp;</small>
+              <h6>{m.object.name}</h6>
+            </Col>
+            <Col className="text-center" xs={3} sm={3} xl={3}>
+              <small>Fail</small>
+              <h5>
+                <Badge bg="secondary" className="pt-1">
+                  {m.failure}
+                </Badge>
+              </h5>
+            </Col>
+          </Row>
+        </Col>
+        {renderCardData()}
+        {/*  ? (
+        
+      ) : (
+        
+      )} */}
+        <Col className="text-center">
+          <div className="pt-4 hide-small"></div>
+          <small>{showSummary && <Link to={`/${otherPath}/summary/${m.object.id}`}>summary</Link>}</small>
+        </Col>
+      </Row>
+      {m.object.alert.failure_count !== 0 && (
+        <Row>aaaa
+          <Col className="text-center  pb-2" xs={12}>
+            <Actions fail={m.fail} small={true} />
           </Col>
         </Row>
-      </Col>
-      {m.object.alert.failure_count === 0 ? (
-        renderCardData()
-      ) : (
-        <Col className="text-center" xs={12} sm={12} xl={5}>
-          <Actions fail={m.fail} small={true} />
-        </Col>
       )}
-      <Col className="text-center">
-        <div className="pt-4 hide-small"></div>
-        <small>
-          {showSummary && (
-            <Link to={`/${otherPath}/summary/${m.object.id}`}>summary</Link>
-          )}
-        </small>
-      </Col>
-    </Row>
+    </>
   );
 };
 

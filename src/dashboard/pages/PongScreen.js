@@ -326,11 +326,11 @@ const PongScreen = (props) => {
             <Col xs={10}>
               <label className="form-label">Select your trigger</label>
             </Col>
-            <Col className="text-right">
+            <Col className="text-end">
               {showDelete() && (
                 <Button
                   variant="link"
-                  className="pt-1 mr-0 pr-0"
+                  className="pt-1 ms-0 pr-0"
                   onClick={() => deleteTrigger(i)}
                 >
                   <small>delete</small>
@@ -380,7 +380,7 @@ const PongScreen = (props) => {
             />
           )}
         </Col>
-        <Col xs={6} lg={3} className="text-right">
+        <Col xs={6} lg={3} className="text-end">
           {t.trigger_type !== "heartbeat_triggered" && (
             <InputSelect
               id="triggertype"
@@ -537,7 +537,7 @@ const PongScreen = (props) => {
               </Row>
               {triggers.map((t, i) => renderTrigger(t, i))}
               <Row className="pt-4">
-                <Col className="text-right">
+                <Col className="text-end">
                   <Button
                     variant="primary"
                     onClick={() => addTrigger()}
@@ -734,7 +734,7 @@ const PongScreen = (props) => {
                                 </small>
                               </Button>
                             </Col>
-                            <Col className="text-right">
+                            <Col className="text-end">
                               {pongId !== null && (
                                 <Button
                                   variant="link"
@@ -844,13 +844,15 @@ const PongScreen = (props) => {
             </Card.Subtitle>
             <Row className="mt-3">
               <Col xs={12} lg={6}>
+                
                 <InputText
                   label={`Start Endpoint`}
+                  placeholder=""
                   value={`${API_URL}pongme/start/${pongKey}`}
                   helperText={`Use this endpoint when you start your task`}
                   disabled={true}
                   copy={true}
-                  id="api-url"
+                  id="api-url-start"
                 />
               </Col>
               <Col xs={12} lg={6}>
@@ -860,7 +862,7 @@ const PongScreen = (props) => {
                   helperText={`Use this endpoint when you complete your task`}
                   disabled={true}
                   copy={true}
-                  id="api-url"
+                  id="api-url-end"
                 />
               </Col>
             </Row>
@@ -872,7 +874,7 @@ const PongScreen = (props) => {
                   helperText={`Use this endpoint when one of your tasks fails`}
                   disabled={true}
                   copy={true}
-                  id="api-url"
+                  id="api-url-fail"
                 />
               </Col>
               <Col xs={12} lg={6}></Col>
@@ -916,7 +918,7 @@ const PongScreen = (props) => {
       )}
 
       <Row>
-        <Col className="text-left" xs={12} lg={6}>
+        <Col className="text-start" xs={12} lg={6}>
           <DeleteButton
             pongId={pongId}
             active={active}
@@ -929,7 +931,7 @@ const PongScreen = (props) => {
             </strong>
           )}
         </Col>
-        <Col className="text-right" xs={12} lg={6}>
+        <Col className="text-end" xs={12} lg={6}>
           <EnableButton
             objectId={pongId}
             active={active}

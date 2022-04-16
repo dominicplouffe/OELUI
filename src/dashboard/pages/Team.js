@@ -79,7 +79,7 @@ const Team = (props) => {
 
       {!showInvite && (
         <Row className="mb-3">
-          <Col className="text-right">
+          <Col className="text-end">
             <Button
               variant="primary"
               onClick={() => setShowInvite(true)}

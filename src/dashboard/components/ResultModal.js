@@ -14,9 +14,9 @@ const ResultModal = ({ result, setShowModal, showModal, title }) => {
               <td style={{ width: `200px` }}>Status</td>
               <td>
                 {result.check_status ? (
-                  <Badge variant="success">No Issues Found</Badge>
+                  <Badge bg="success">No Issues Found</Badge>
                 ) : (
-                  <Badge variant="danger">Failure</Badge>
+                  <Badge bg="danger">Failure</Badge>
                 )}
               </td>
             </tr>

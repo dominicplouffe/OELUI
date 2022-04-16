@@ -336,7 +336,7 @@ const PongSummary = (props) => {
                   <Col>
                     <h3>Average Task Time (ms)</h3>
                   </Col>
-                  <Col className="text-right">
+                  <Col className="text-end">
                     <Button
                       variant="link"
                       className="p-0 m-0"

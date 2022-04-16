@@ -23,7 +23,7 @@ const NewMonitor = (props) => {
                 <Col xs={12} lg={1}></Col>
                 <Col className="text-center pt-2" xs={12} lg={2}>
                   <Link to="/newping">
-                    <Badge variant="warning p-3" style={{ minWidth: "150px" }}>
+                    <Badge bg="warning p-3" style={{ minWidth: "150px" }}>
                       <img
                         src="https://onerrorlog.s3.amazonaws.com/images/website-white.png"
                         alt="pings"
@@ -38,7 +38,7 @@ const NewMonitor = (props) => {
                 </Col>
                 <Col className="text-center pt-2" xs={12} lg={2}>
                   <Link to="/newping">
-                    <Badge variant="warning p-3" style={{ minWidth: "150px" }}>
+                    <Badge bg="warning p-3" style={{ minWidth: "150px" }}>
                       <img
                         src="https://onerrorlog.s3.amazonaws.com/images/api-white.png"
                         alt="pings"
@@ -54,7 +54,7 @@ const NewMonitor = (props) => {
 
                 <Col className="text-center pt-2" xs={12} lg={2}>
                   <Link to="/newpong">
-                    <Badge variant="primary p-3" style={{ minWidth: "150px" }}>
+                    <Badge bg="primary p-3" style={{ minWidth: "150px" }}>
                       <img
                         src="https://onerrorlog.s3.amazonaws.com/images/data-pipeline-white.png"
                         alt="pings"
@@ -70,7 +70,7 @@ const NewMonitor = (props) => {
 
                 <Col className="text-center pt-2" xs={12} lg={2}>
                   <Link to="/newpong">
-                    <Badge variant="primary p-3" style={{ minWidth: "150px" }}>
+                    <Badge bg="primary p-3" style={{ minWidth: "150px" }}>
                       <img
                         src="https://onerrorlog.s3.amazonaws.com/images/scheduled-task-white.png"
                         alt="pings"
@@ -85,7 +85,7 @@ const NewMonitor = (props) => {
                 </Col>
                 <Col className="text-center pt-2" xs={12} lg={2}>
                   <Link to="/newpong">
-                    <Badge variant="primary p-3" style={{ minWidth: "150px" }}>
+                    <Badge bg="primary p-3" style={{ minWidth: "150px" }}>
                       <img
                         src="https://onerrorlog.s3.amazonaws.com/images/heartbeat-white.png"
                         alt="pings"

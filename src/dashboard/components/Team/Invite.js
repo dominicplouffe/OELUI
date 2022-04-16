@@ -66,7 +66,7 @@ const Invite = ({ close, callback }) => {
         <Card.Title>
           <Row>
             <Col>Invite a New User</Col>
-            <Col className="text-right">
+            <Col className="text-end">
               <Button
                 variant="custom"
                 className="close"
@@ -129,7 +129,7 @@ const Invite = ({ close, callback }) => {
               </span>
             )}
           </Col>
-          <Col className="text-right">
+          <Col className="text-end">
             <Button
               variant="primary"
               onClick={() => inviteUser()}

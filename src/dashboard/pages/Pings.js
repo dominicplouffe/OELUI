@@ -31,9 +31,7 @@ const Ping = (props) => {
 
   const fetchSummary = async (skip = false) => {
     if (!skip) {
-      const { data = null, error = null } = await api(
-        `alert_summary/ping/?hours=24`
-      );
+      const { data = null, error = null } = await api(`alert_summary/ping/?hours=24`);
 
       if (data) {
         console.log(data.totals);
@@ -84,36 +82,32 @@ const Ping = (props) => {
           <Row>
             <Col className="text-center hide-small" xs={12} lg={3}>
               <small>&nbsp;</small>
-              {totals.down === 0 ? (
-                <h1 className="text-success">✔</h1>
-              ) : (
-                <h1 className="text-danger">✖</h1>
-              )}
+              {totals.down === 0 ? <h1 className="text-success">✔</h1> : <h1 className="text-danger">✖</h1>}
             </Col>
             <Col xs={12} lg={9}>
               <Row>
                 <Col className="text-center" xs={6} lg={3}>
                   <small>Total</small>
                   <h2>
-                    <Badge variant="primary">{totals.total}</Badge>
+                    <Badge bg="primary">{totals.total}</Badge>
                   </h2>
                 </Col>
                 <Col className="text-center" xs={6} lg={3}>
                   <small>Up</small>
                   <h2>
-                    <Badge variant="success">{totals.up}</Badge>
+                    <Badge bg="success">{totals.up}</Badge>
                   </h2>
                 </Col>
                 <Col className="text-center" xs={6} lg={3}>
                   <small>Down</small>
                   <h2>
-                    <Badge variant="danger">{totals.down}</Badge>
+                    <Badge bg="danger">{totals.down}</Badge>
                   </h2>
                 </Col>
                 <Col className="text-center" xs={6} lg={3}>
                   <small>Paused</small>
                   <h2>
-                    <Badge variant="warning">{totals.paused}</Badge>
+                    <Badge bg="warning">{totals.paused}</Badge>
                   </h2>
                 </Col>
               </Row>
@@ -121,37 +115,23 @@ const Ping = (props) => {
           </Row>
         </Card.Body>
       </Card>
-      {pings.map((m, i) => (
-        <AlertCard
-          m={m}
-          key={i}
-          showSummary={true}
-          showEdit={true}
-          otherPath="ping"
-          showResponseView={true}
-        />
-      ))}
+      <Row>
+        {pings.map((m, i) => (
+          <Col xxl={12} key={i} className="col-xxxl-6">
+            <AlertCard m={m} showSummary={true} showEdit={true} otherPath="ping" showResponseView={true} />
+          </Col>
+        ))}
+      </Row>
 
       {pings.length === 0 && !loading && (
         <Card>
           <Card.Body className="p-5">
             <Row>
               <Col className="text-center">
-                <img
-                  src="https://onerrorlog.s3.amazonaws.com/images/oel-logo.png"
-                  alt="Oops"
-                  className="mb-3 list-logo"
-                />
-                <h2 className="pt-3">
-                  You have not added any REST Uptime Monitors to your account
-                  yet.
-                </h2>
+                <img src="https://onerrorlog.s3.amazonaws.com/images/oel-logo.png" alt="Oops" className="mb-3 list-logo" />
+                <h2 className="pt-3">You have not added any REST Uptime Monitors to your account yet.</h2>
                 <div className="pt-5">
-                  <Link
-                    to="/ping/0"
-                    className="btn btn-warning btn-rounded mb-2 mr-2"
-                    style={{ fontSize: "20px" }}
-                  >
+                  <Link to="/ping/0" className="btn btn-warning btn-rounded mb-2 ms-2" style={{ fontSize: "20px" }}>
                     Add Your First REST Uptime Monitor
                   </Link>
                 </div>

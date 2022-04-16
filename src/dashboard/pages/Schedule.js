@@ -362,7 +362,7 @@ const Schedule = (props) => {
               <Card.Title>
                 <Row>
                   <Col>On Call Schedule</Col>
-                  <Col className="text-right">
+                  <Col className="text-end">
                     <Badge pill variant="light">
                       <>
                         <span>Current Week </span>
@@ -544,10 +544,10 @@ const Schedule = (props) => {
           </div>
           <Row noGutters>
             <Col xs={12} lg={6}>
-              <p className="mb-0 ml-0">Start Date</p>
+              <p className="mb-0 me-0">Start Date</p>
             </Col>
             <Col xs={12} lg={6}>
-              <p className="mb-0  ml-2">End Date</p>
+              <p className="mb-0  me-2">End Date</p>
             </Col>
           </Row>
           <Row>
@@ -567,7 +567,7 @@ const Schedule = (props) => {
             </Col>
           </Row>
           <Row>
-            <Col className="ml-1">
+            <Col className="me-1">
               <span className="text-danger">
                 <small>{overrideDateError}</small>
               </span>

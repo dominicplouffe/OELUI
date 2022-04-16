@@ -36,9 +36,7 @@ const Dashboard = (props) => {
 
   const fetchPings = async (skip = false) => {
     if (!skip) {
-      const { data = null, error = null } = await api(
-        `alert_summary/ping/?hours=${hours}`
-      );
+      const { data = null, error = null } = await api(`alert_summary/ping/?hours=${hours}`);
 
       if (data) {
         setPingTotals(data.totals);
@@ -54,9 +52,7 @@ const Dashboard = (props) => {
 
   const fetchPongs = async (skip = false) => {
     if (!skip) {
-      const { data = null, error = null } = await api(
-        `alert_summary/pong/?hours=${hours}`
-      );
+      const { data = null, error = null } = await api(`alert_summary/pong/?hours=${hours}`);
 
       if (data) {
         setPongTotals(data.totals);
@@ -113,57 +109,27 @@ const Dashboard = (props) => {
     <Body title="Dashboard" selectedMenu="dashboard" {...props}>
       <Row>
         <Col className="text-left">
-          <Button
-            variant="link"
-            className="p-0 m-0"
-            onClick={() => setHours(24)}
-            style={{ color: hours === 24 ? "red" : "" }}
-          >
+          <Button variant="link" className="p-0 m-0" onClick={() => setHours(24)} style={{ color: hours === 24 ? "red" : "" }}>
             <small>24h</small>
           </Button>
           <small> | </small>
-          <Button
-            variant="link"
-            className="p-0 m-0"
-            onClick={() => setHours(48)}
-            style={{ color: hours === 48 ? "red" : "" }}
-          >
+          <Button variant="link" className="p-0 m-0" onClick={() => setHours(48)} style={{ color: hours === 48 ? "red" : "" }}>
             <small>48h</small>
           </Button>
           <small> | </small>
-          <Button
-            variant="link"
-            className="p-0 m-0"
-            onClick={() => setHours(72)}
-            style={{ color: hours === 72 ? "red" : "" }}
-          >
+          <Button variant="link" className="p-0 m-0" onClick={() => setHours(72)} style={{ color: hours === 72 ? "red" : "" }}>
             <small>72h</small>
           </Button>
           <small> | </small>
-          <Button
-            variant="link"
-            className="p-0 m-0"
-            onClick={() => setHours(168)}
-            style={{ color: hours === 168 ? "red" : "" }}
-          >
+          <Button variant="link" className="p-0 m-0" onClick={() => setHours(168)} style={{ color: hours === 168 ? "red" : "" }}>
             <small>7d</small>
           </Button>
           <small> | </small>
-          <Button
-            variant="link"
-            className="p-0 m-0"
-            onClick={() => setHours(336)}
-            style={{ color: hours === 336 ? "red" : "" }}
-          >
+          <Button variant="link" className="p-0 m-0" onClick={() => setHours(336)} style={{ color: hours === 336 ? "red" : "" }}>
             <small>14d</small>
           </Button>
           <small> | </small>
-          <Button
-            variant="link"
-            className="p-0 m-0"
-            onClick={() => setHours(720)}
-            style={{ color: hours === 720 ? "red" : "" }}
-          >
+          <Button variant="link" className="p-0 m-0" onClick={() => setHours(720)} style={{ color: hours === 720 ? "red" : "" }}>
             <small>30d</small>
           </Button>
         </Col>
@@ -185,24 +151,22 @@ const Dashboard = (props) => {
               </Row>
             </Card.Title>
 
-            <Row>
-              <Col className="text-center hide-small" xs={12} lg={3}>
-                <small>&nbsp;</small>
-                {getTotals().down === 0 ? (
-                  <h1 className="text-success">✔</h1>
-                ) : (
-                  <h1 className="text-danger">✖</h1>
-                )}
-              </Col>
-              <Col xs={12} lg={9}>
-                {loading && (
-                  <Row>
-                    <Col className="text-center pt-4 pb-4">Loading...</Col>
-                  </Row>
-                )}
-                {!loading && <TotaslRow totals={getTotals()} />}
-              </Col>
-            </Row>
+            {loading && (
+              <Row>
+                <Col className="text-center pt-4 pb-4">Loading...</Col>
+              </Row>
+            )}
+            {!loading && (
+              <Row>
+                <Col className="text-center hide-small" xs={12} lg={3}>
+                  <small>&nbsp;</small>
+                  {getTotals().down === 0 ? <h1 className="text-success">✔</h1> : <h1 className="text-danger">✖</h1>}
+                </Col>
+                <Col xs={12} lg={9}>
+                  <TotaslRow totals={getTotals()} />
+                </Col>
+              </Row>
+            )}
           </Card.Body>
         </Card>
       </div>
@@ -231,10 +195,7 @@ const Dashboard = (props) => {
                 </Col>
 
                 <Col className="text-center pt-1 pb-3" xs={12}>
-                  <Link
-                    to="/newping"
-                    className="btn btn-warning btn-rounded hide-small"
-                  >
+                  <Link to="/newping" className="btn btn-warning btn-rounded hide-small">
                     New Uptime Monitor
                   </Link>
                 </Col>
@@ -248,14 +209,7 @@ const Dashboard = (props) => {
                 {pings.map((p, i) => (
                   <Row key={i}>
                     <Col className="pt-1">
-                      <AlertCardSmall
-                        m={p}
-                        key={i}
-                        showSummary={true}
-                        showEdit={true}
-                        otherPath="ping"
-                        showResponseView={false}
-                      />
+                      <AlertCardSmall m={p} key={i} showSummary={true} showEdit={true} otherPath="ping" showResponseView={false} />
                     </Col>
                   </Row>
                 ))}
@@ -288,10 +242,7 @@ const Dashboard = (props) => {
                   You have no Heartbeat Monitors setup.
                 </Col>
                 <Col className="text-center pt-1 pb-3" xs={12}>
-                  <Link
-                    to="/newpong"
-                    className="btn btn-warning btn-rounded hide-small"
-                  >
+                  <Link to="/newpong" className="btn btn-warning btn-rounded hide-small">
                     New Heartbeat Monitor
                   </Link>
                 </Col>
@@ -304,15 +255,8 @@ const Dashboard = (props) => {
 
                 {pongs.map((p, i) => (
                   <Row key={i}>
-                    <Col className="pt-3">
-                      <AlertCardSmall
-                        m={p}
-                        key={i}
-                        showSummary={true}
-                        showEdit={true}
-                        otherPath="pong"
-                        showResponseView={false}
-                      />
+                    <Col className="pt-1">
+                      <AlertCardSmall m={p} key={i} showSummary={true} showEdit={true} otherPath="pong" showResponseView={false} />
                     </Col>
                   </Row>
                 ))}

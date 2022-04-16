@@ -11,7 +11,7 @@ const InstanceCard = ({ instance, showSummary }) => {
       <Card.Body>
         <Card.Title>
           <Row>
-            <Col className="text-left" xs={8}>
+            <Col className="text-start" xs={8}>
               {instance.name} - Current Values
             </Col>
             <Col className="right-align-small-center" xs={4}>

@@ -27,7 +27,7 @@ const Action = ({ fail, small = false }) => {
           style={{ width: "100%" }}
           disabled={fail.acknowledged_by}
         >
-          {small ? `Ack` : `Acknowledge`}
+          Ack
         </Button>
       </Col>
       <Col xs={12} lg={4} className="pt-2">

@@ -499,17 +499,19 @@ h3 {
     margin-top: 10px;
   }
 
-  
   .right-align-small-center {
     text-align: center !important;
+  }
+
+  .logo-name {
+    display: none;
   }
 }
 
 @media (max-width: 767px) {
-    .bottom-menu {
-        display: block;
-        margin-bottom: 5px;
-      }
+  .bottom-menu {
+    display: block;
+  }
 }
 
 @media (min-width: 481px) {
@@ -526,6 +528,9 @@ h3 {
 }
 @media (min-width: 1281px) {
   .hide-small {
+    display: block;
+  }
+  .logo-name {
     display: block;
   }
   .dashboard-box {

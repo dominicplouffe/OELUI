@@ -8,23 +8,14 @@ import useAuth from "../../auth/useAuth";
 import { REASONS } from "../../utils/globals";
 import { Link } from "react-router-dom";
 import FailureStatus from "../components/FailureStatus";
-import {
-  AreaChart,
-  Area,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-} from "recharts";
+import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 
 const PingSummary = (props) => {
   const [calendarData, setCalendarData] = useState([]);
   const [calendarStart, setCalendarStart] = useState("2019-06-02");
   const [calendarEnd, setCalendarEnd] = useState("2020-06-02");
   const [summary, setSummary] = useState(null);
-  const [calendarHelp, setCalendarHelp] = useState(
-    <div className="mt-2">&nbsp;</div>
-  );
+  const [calendarHelp, setCalendarHelp] = useState(<div className="mt-2">&nbsp;</div>);
   const [hours, setHours] = useState(24);
   const [responseTimeData, setResponseTimeData] = useState(null);
   const [failureCounts, setFailureCounts] = useState([]);
@@ -49,9 +40,7 @@ const PingSummary = (props) => {
   };
 
   const fetchSummary = async (id) => {
-    const { data = null, error = null } = await api(
-      `alert_summary/ping/${id}/?hours=${hours}`
-    );
+    const { data = null, error = null } = await api(`alert_summary/ping/${id}/?hours=${hours}`);
 
     if (data) {
       setSummary(data.objects[0]);
@@ -110,9 +99,7 @@ const PingSummary = (props) => {
   };
 
   const fetchFailures = async (id) => {
-    const { data = null, error = null } = await api(
-      `failure/?alert=${id}&ordering=-created_on&offset=0&limit=20`
-    );
+    const { data = null, error = null } = await api(`failure/?alert=${id}&ordering=-created_on&offset=0&limit=20`);
 
     setFailures(data.results);
 
@@ -175,9 +162,7 @@ const PingSummary = (props) => {
       return (
         <div className="custom-tooltip">
           <p className="label">{`Hour of day (UTC)${label} : ${payload[0].value} ms`}</p>
-          <p className="desc">
-            {`The average response time was ${payload[0].value} ms`}
-          </p>
+          <p className="desc">{`The average response time was ${payload[0].value} ms`}</p>
         </div>
       );
     }
@@ -186,23 +171,8 @@ const PingSummary = (props) => {
   };
 
   return (
-    <Body
-      title="Uptime Monitor Summary"
-      selectedMenu="ping"
-      {...props}
-      loading={loading}
-    >
-      {summary && (
-        <AlertCard
-          m={summary}
-          showEdit={true}
-          showSummary={false}
-          showOther={true}
-          otherPath="ping"
-          otherObjects={otherPings}
-          showResponseView={true}
-        />
-      )}
+    <Body title="Uptime Monitor Summary" selectedMenu="ping" {...props} loading={loading}>
+      {summary && <AlertCard m={summary} showEdit={true} showSummary={false} showOther={true} otherPath="ping" otherObjects={otherPings} showResponseView={true} />}
       <Card>
         <Card.Body>
           <Card.Title>
@@ -211,57 +181,27 @@ const PingSummary = (props) => {
                 <h3>Average Response Time (ms)</h3>
               </Col>
               <Col className="text-end">
-                <Button
-                  variant="link"
-                  className="p-0 m-0"
-                  onClick={() => setHours(24)}
-                  style={{ color: hours === 24 ? "red" : "" }}
-                >
+                <Button variant="link" className="p-0 m-0" onClick={() => setHours(24)} style={{ color: hours === 24 ? "red" : "" }}>
                   <small>24h</small>
                 </Button>
                 <small> | </small>
-                <Button
-                  variant="link"
-                  className="p-0 m-0"
-                  onClick={() => setHours(48)}
-                  style={{ color: hours === 48 ? "red" : "" }}
-                >
+                <Button variant="link" className="p-0 m-0" onClick={() => setHours(48)} style={{ color: hours === 48 ? "red" : "" }}>
                   <small>48h</small>
                 </Button>
                 <small> | </small>
-                <Button
-                  variant="link"
-                  className="p-0 m-0"
-                  onClick={() => setHours(72)}
-                  style={{ color: hours === 72 ? "red" : "" }}
-                >
+                <Button variant="link" className="p-0 m-0" onClick={() => setHours(72)} style={{ color: hours === 72 ? "red" : "" }}>
                   <small>72h</small>
                 </Button>
                 <small> | </small>
-                <Button
-                  variant="link"
-                  className="p-0 m-0"
-                  onClick={() => setHours(168)}
-                  style={{ color: hours === 168 ? "red" : "" }}
-                >
+                <Button variant="link" className="p-0 m-0" onClick={() => setHours(168)} style={{ color: hours === 168 ? "red" : "" }}>
                   <small>7d</small>
                 </Button>
                 <small> | </small>
-                <Button
-                  variant="link"
-                  className="p-0 m-0"
-                  onClick={() => setHours(336)}
-                  style={{ color: hours === 336 ? "red" : "" }}
-                >
+                <Button variant="link" className="p-0 m-0" onClick={() => setHours(336)} style={{ color: hours === 336 ? "red" : "" }}>
                   <small>14d</small>
                 </Button>
                 <small> | </small>
-                <Button
-                  variant="link"
-                  className="p-0 m-0"
-                  onClick={() => setHours(720)}
-                  style={{ color: hours === 720 ? "red" : "" }}
-                >
+                <Button variant="link" className="p-0 m-0" onClick={() => setHours(720)} style={{ color: hours === 720 ? "red" : "" }}>
                   <small>30d</small>
                 </Button>
               </Col>
@@ -284,12 +224,7 @@ const PingSummary = (props) => {
                       <XAxis dataKey="name" tick={true} />
                       <YAxis />
                       <Tooltip content={<CustomTooltip />} />
-                      <Area
-                        type="monotone"
-                        dataKey="response_ms"
-                        stroke="#1e3e70"
-                        fill="#1e3e70"
-                      />
+                      <Area type="monotone" dataKey="response_ms" stroke="#1e3e70" fill="#1e3e70" />
                     </AreaChart>
                   </ResponsiveContainer>
                 </>
@@ -309,8 +244,7 @@ const PingSummary = (props) => {
           <Row>
             <Col className="text-center">
               <small>
-                {moment(calendarStart).format("LL")} to{" "}
-                {moment(calendarEnd).format("LL")}
+                {moment(calendarStart).format("LL")} to {moment(calendarEnd).format("LL")}
               </small>
             </Col>
           </Row>
@@ -327,23 +261,19 @@ const PingSummary = (props) => {
                         <div className="mt-2">
                           <strong>{moment(c.date).format("LL")}</strong> -
                           <em>
-                            {c.text} (success: {c.success} - failure:{" "}
-                            {c.failure} - {(c.success_rate * 100).toFixed(0)}%)
+                            {c.text} (success: {c.success} - failure: {c.failure} - {(c.success_rate * 100).toFixed(0)}%)
                           </em>
                         </div>
                       );
                     } else {
                       setCalendarHelp(
                         <div className="mt-2">
-                          <strong>{moment(c.date).format("LL")}</strong> -
-                          <em>No pings tracked on this day</em>
+                          <strong>{moment(c.date).format("LL")}</strong> -<em>No pings tracked on this day</em>
                         </div>
                       );
                     }
                   }}
-                  onMouseOut={() =>
-                    setCalendarHelp(<div className="mt-2">&nbsp;</div>)
-                  }
+                  onMouseOut={() => setCalendarHelp(<div className="mt-2">&nbsp;</div>)}
                 >
                   &nbsp;
                 </div>
@@ -357,7 +287,6 @@ const PingSummary = (props) => {
           </Row>
         </Card.Body>
       </Card>
-
       <Card>
         <Card.Body>
           <Card.Title>
@@ -368,7 +297,7 @@ const PingSummary = (props) => {
             </Row>
           </Card.Title>
           {failures.length > 0 && (
-            <Row>
+            <Row style={{width: "100%"}}>
               <Col xs={12} lg={3}>
                 {failureCounts.map((f, i) => (
                   <Row key={i} className="mt-2">
@@ -382,53 +311,44 @@ const PingSummary = (props) => {
                 ))}
               </Col>
               <Col xs={12} lg={9}>
-                <Table striped borderless hover>
-                  <thead>
-                    <tr>
-                      <th>Received On</th>
-                      <th>Who</th>
-                      <th>Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {failures.map((f, i) => (
-                      <tr key={i}>
-                        <td className="hide-small">
-                          {moment(f.created_on).format("LLLL")}
-                        </td>
-                        <td className="show-small">
-                          {moment(f.created_on).format("MM/DD")}
-                        </td>
-                        <td>
-                          {" "}
-                          {f.notify_org_user && (
-                            <>
-                              <div>
-                                {f.notify_org_user.first_name}{" "}
-                                {f.notify_org_user.last_name}
-                              </div>
-                            </>
-                          )}
-                        </td>
-                        <td>{REASONS[f.reason]}</td>
-                        <td>
-                          <FailureStatus failure={f} />
-                        </td>
-                        <td className="text-righ" width="1%" nowrap="nowrap">
-                          <Link
-                            to={`/failure/${f.id}/pong/${props.match.params.id}`}
-                          >
-                            <img
-                              src="https://onerrorlog.s3.amazonaws.com/images/details.png"
-                              alt={`Failure Details for ${f.id}`}
-                              className="icon"
-                            />
-                          </Link>
-                        </td>
+                <div className="table-responsive">
+                  <Table striped borderless hover>
+                    <thead>
+                      <tr>
+                        <th>Received On</th>
+                        <th>Who</th>
+                        <th>Status</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </Table>
+                    </thead>
+                    <tbody>
+                      {failures.map((f, i) => (
+                        <tr key={i}>
+                          <td className="hide-small">{moment(f.created_on).format("LLLL")}</td>
+                          <td className="show-small">{moment(f.created_on).format("MM/DD")}</td>
+                          <td>
+                            {" "}
+                            {f.notify_org_user && (
+                              <>
+                                <div>
+                                  {f.notify_org_user.first_name} {f.notify_org_user.last_name}
+                                </div>
+                              </>
+                            )}
+                          </td>
+                          <td>{REASONS[f.reason]}</td>
+                          <td>
+                            <FailureStatus failure={f} />
+                          </td>
+                          <td className="text-righ" width="1%" nowrap="nowrap">
+                            <Link to={`/failure/${f.id}/pong/${props.match.params.id}`}>
+                              <img src="https://onerrorlog.s3.amazonaws.com/images/details.png" alt={`Failure Details for ${f.id}`} className="icon" />
+                            </Link>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </Table>
+                </div>
               </Col>
             </Row>
           )}

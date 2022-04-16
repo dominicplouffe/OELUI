@@ -403,7 +403,7 @@ const Schedule = (props) => {
                               {item.first_name} {item.last_name}
                               {item.schedule.order === item.org.week ? (
                                 <span
-                                  className="pl-2"
+                                  className="ps-2"
                                   role="img"
                                   aria-label="is-on-call"
                                 >

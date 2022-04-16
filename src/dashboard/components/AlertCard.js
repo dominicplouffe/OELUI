@@ -119,7 +119,7 @@ const AlertCard = ({ m, showSummary, showEdit, otherObjects, otherPath, showResp
       <Card.Body>
         <Card.Title>
           <Row>
-            <Col className="text-start" xl={6} md={12}>
+            <Col className="text-center text-xl-start" xl={6} md={12}>
               {(!otherObjects || otherObjects.length <= 1) && <h3>{m.object.name}</h3>}
               {otherObjects && otherObjects.length > 1 && (
                 <SplitButton title={m.object.name} id="dropdown-menu-align-responsive-2" variant="custom">
@@ -131,9 +131,9 @@ const AlertCard = ({ m, showSummary, showEdit, otherObjects, otherPath, showResp
                 </SplitButton>
               )}
             </Col>
-            <Col className="text-center" xl={6} md={12}>
+            <Col xl={6} md={12}>
               <Row>
-                <Col className="text-end">
+                <Col className="text-center text-xl-end">
                   {showSummary && (
                     <Link className="btn btn-link btn-small" to={`/${otherPath}/summary/${m.object.id}`}>
                       Summary

@@ -7,14 +7,7 @@ import AlertCard from "../components/AlertCard";
 import useAuth from "../../auth/useAuth";
 import { Link } from "react-router-dom";
 import FailureStatus from "../components/FailureStatus";
-import {
-  AreaChart,
-  Area,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-} from "recharts";
+import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 import { REASONS } from "../../utils/globals";
 
 const trigger_desc = {
@@ -32,9 +25,7 @@ const PongSummary = (props) => {
   const [summary, setSummary] = useState(null);
   const [pong, setPong] = useState(null);
   const [hours, setHours] = useState(24);
-  const [calendarHelp, setCalendarHelp] = useState(
-    <div className="mt-2">&nbsp;</div>
-  );
+  const [calendarHelp, setCalendarHelp] = useState(<div className="mt-2">&nbsp;</div>);
   const [responseTimeData, setResponseTimeData] = useState(null);
   const [failureCounts, setFailureCounts] = useState([]);
   const [failures, setFailures] = useState([]);
@@ -71,9 +62,7 @@ const PongSummary = (props) => {
   };
 
   const fetchSummary = async (id) => {
-    const { data = null, error = null } = await api(
-      `alert_summary/pong/${id}/?direction=push&hours=${hours}`
-    );
+    const { data = null, error = null } = await api(`alert_summary/pong/${id}/?direction=push&hours=${hours}`);
 
     if (data) {
       setSummary(data.objects[0]);
@@ -132,9 +121,7 @@ const PongSummary = (props) => {
   };
 
   const fetchFailures = async (id) => {
-    const { data = null, error = null } = await api(
-      `failure/?alert=${id}&ordering=-created_on&offset=0&limit=100`
-    );
+    const { data = null, error = null } = await api(`failure/?alert=${id}&ordering=-created_on&offset=0&limit=100`);
 
     setFailures(data.results);
 
@@ -199,9 +186,7 @@ const PongSummary = (props) => {
       return (
         <div className="custom-tooltip">
           <p className="label">{`Hour of day (UTC)${label} : ${payload[0].value} ms`}</p>
-          <p className="desc">
-            {`The task time time was ${payload[0].value} ms`}
-          </p>
+          <p className="desc">{`The task time time was ${payload[0].value} ms`}</p>
         </div>
       );
     }
@@ -211,15 +196,7 @@ const PongSummary = (props) => {
 
   return (
     <Body title="Pong Summary" selectedMenu="pong" {...props} loading={loading}>
-      {summary && (
-        <AlertCard
-          m={summary}
-          showEdit={true}
-          showSummary={false}
-          otherObjects={otherPongs}
-          otherPath="pong"
-        />
-      )}
+      {summary && <AlertCard m={summary} showEdit={true} showSummary={false} otherObjects={otherPongs} otherPath="pong" />}
 
       <Card>
         <Card.Body>
@@ -245,51 +222,27 @@ const PongSummary = (props) => {
                       <tbody>
                         <tr>
                           <td width="1%" nowrap="nowrap">
-                            <label className="form-label mb-0">
-                              Cron Desc:
-                            </label>
+                            <label className="form-label mb-0">Cron Desc:</label>
                           </td>
                           <td>{pong.cron_desc ? pong.cron_desc : "n/a"}</td>
                         </tr>
                         <tr>
                           <td width="1%" nowrap="nowrap">
-                            <label className="form-label mb-0">
-                              Last Start:
-                            </label>
+                            <label className="form-label mb-0">Last Start:</label>
                           </td>
-                          <td>
-                            {pong.last_start_on
-                              ? moment(pong.last_start_on).format(
-                                  "YYYY-MM-DD HH:mm:ss"
-                                )
-                              : "n/a"}
-                          </td>
+                          <td>{pong.last_start_on ? moment(pong.last_start_on).format("YYYY-MM-DD HH:mm:ss") : "n/a"}</td>
                         </tr>
                         <tr>
                           <td width="1%" nowrap="nowrap">
                             <label className="form-label mb-0">Last End:</label>
                           </td>
-                          <td>
-                            {pong.last_complete_on
-                              ? moment(pong.last_complete_on).format(
-                                  "YYYY-MM-DD HH:mm:ss"
-                                )
-                              : "n/a"}
-                          </td>
+                          <td>{pong.last_complete_on ? moment(pong.last_complete_on).format("YYYY-MM-DD HH:mm:ss") : "n/a"}</td>
                         </tr>
                         <tr>
                           <td width="1%" nowrap="nowrap">
-                            <label className="form-label mb-0">
-                              Task Last Run:
-                            </label>
+                            <label className="form-label mb-0">Task Last Run:</label>
                           </td>
-                          <td>
-                            {pong.task.last_run_at
-                              ? moment(pong.task.last_run_at).format(
-                                  "YYYY-MM-DD HH:mm:ss"
-                                )
-                              : "n/a"}
-                          </td>
+                          <td>{pong.task.last_run_at ? moment(pong.task.last_run_at).format("YYYY-MM-DD HH:mm:ss") : "n/a"}</td>
                         </tr>
                       </tbody>
                     </Table>
@@ -316,9 +269,7 @@ const PongSummary = (props) => {
                         {pong.triggers.map((t, i) => (
                           <tr key={i}>
                             <td>
-                              <label className="form-label mb-0">
-                                {trigger_desc[t.trigger_type]}
-                              </label>
+                              <label className="form-label mb-0">{trigger_desc[t.trigger_type]}</label>
                             </td>
                             <td>{t.interval_value}</td>
                             <td>{t.unit}</td>
@@ -337,57 +288,27 @@ const PongSummary = (props) => {
                     <h3>Average Task Time (ms)</h3>
                   </Col>
                   <Col className="text-end">
-                    <Button
-                      variant="link"
-                      className="p-0 m-0"
-                      onClick={() => setHours(24)}
-                      style={{ color: hours === 24 ? "red" : "" }}
-                    >
+                    <Button variant="link" className="p-0 m-0" onClick={() => setHours(24)} style={{ color: hours === 24 ? "red" : "" }}>
                       <small>24h</small>
                     </Button>
                     <small> | </small>
-                    <Button
-                      variant="link"
-                      className="p-0 m-0"
-                      onClick={() => setHours(48)}
-                      style={{ color: hours === 48 ? "red" : "" }}
-                    >
+                    <Button variant="link" className="p-0 m-0" onClick={() => setHours(48)} style={{ color: hours === 48 ? "red" : "" }}>
                       <small>48h</small>
                     </Button>
                     <small> | </small>
-                    <Button
-                      variant="link"
-                      className="p-0 m-0"
-                      onClick={() => setHours(72)}
-                      style={{ color: hours === 72 ? "red" : "" }}
-                    >
+                    <Button variant="link" className="p-0 m-0" onClick={() => setHours(72)} style={{ color: hours === 72 ? "red" : "" }}>
                       <small>72h</small>
                     </Button>
                     <small> | </small>
-                    <Button
-                      variant="link"
-                      className="p-0 m-0"
-                      onClick={() => setHours(168)}
-                      style={{ color: hours === 168 ? "red" : "" }}
-                    >
+                    <Button variant="link" className="p-0 m-0" onClick={() => setHours(168)} style={{ color: hours === 168 ? "red" : "" }}>
                       <small>7d</small>
                     </Button>
                     <small> | </small>
-                    <Button
-                      variant="link"
-                      className="p-0 m-0"
-                      onClick={() => setHours(336)}
-                      style={{ color: hours === 336 ? "red" : "" }}
-                    >
+                    <Button variant="link" className="p-0 m-0" onClick={() => setHours(336)} style={{ color: hours === 336 ? "red" : "" }}>
                       <small>14d</small>
                     </Button>
                     <small> | </small>
-                    <Button
-                      variant="link"
-                      className="p-0 m-0"
-                      onClick={() => setHours(720)}
-                      style={{ color: hours === 720 ? "red" : "" }}
-                    >
+                    <Button variant="link" className="p-0 m-0" onClick={() => setHours(720)} style={{ color: hours === 720 ? "red" : "" }}>
                       <small>30d</small>
                     </Button>
                   </Col>
@@ -407,12 +328,7 @@ const PongSummary = (props) => {
                     <XAxis dataKey="name" tick={true} />
                     <YAxis />
                     <Tooltip content={<CustomTooltip />} />
-                    <Area
-                      type="monotone"
-                      dataKey="response_ms"
-                      stroke="#1e3e70"
-                      fill="#1e3e70"
-                    />
+                    <Area type="monotone" dataKey="response_ms" stroke="#1e3e70" fill="#1e3e70" />
                   </AreaChart>
                 </ResponsiveContainer>
               )}
@@ -432,8 +348,7 @@ const PongSummary = (props) => {
           <Row>
             <Col className="text-center">
               <small>
-                {moment(calendarStart).format("LL")} to{" "}
-                {moment(calendarEnd).format("LL")}
+                {moment(calendarStart).format("LL")} to {moment(calendarEnd).format("LL")}
               </small>
             </Col>
           </Row>
@@ -450,23 +365,19 @@ const PongSummary = (props) => {
                         <div className="mt-2">
                           <strong>{moment(c.date).format("LL")}</strong> -
                           <em>
-                            {c.text} (success: {c.success} - failure:{" "}
-                            {c.failure} - {(c.success_rate * 100).toFixed(0)}%)
+                            {c.text} (success: {c.success} - failure: {c.failure} - {(c.success_rate * 100).toFixed(0)}%)
                           </em>
                         </div>
                       );
                     } else {
                       setCalendarHelp(
                         <div className="mt-2">
-                          <strong>{moment(c.date).format("LL")}</strong> -
-                          <em>No pongs were triggered on this day</em>
+                          <strong>{moment(c.date).format("LL")}</strong> -<em>No pongs were triggered on this day</em>
                         </div>
                       );
                     }
                   }}
-                  onMouseOut={() =>
-                    setCalendarHelp(<div className="mt-2">&nbsp;</div>)
-                  }
+                  onMouseOut={() => setCalendarHelp(<div className="mt-2">&nbsp;</div>)}
                 >
                   &nbsp;
                 </div>
@@ -506,53 +417,44 @@ const PongSummary = (props) => {
                   ))}
               </Col>
               <Col xs={12} lg={9}>
-                <Table striped borderless hover>
-                  <thead>
-                    <tr>
-                      <th>Received On</th>
-                      <th>Who</th>
-                      <th>Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {failures.map((f, i) => (
-                      <tr key={i}>
-                        <td className="hide-small">
-                          {moment(f.created_on).format("LLLL")}
-                        </td>
-                        <td className="show-small">
-                          {moment(f.created_on).format("MM/DD")}
-                        </td>
-                        <td>
-                          {" "}
-                          {f.notify_org_user && (
-                            <>
-                              <div>
-                                {f.notify_org_user.first_name}{" "}
-                                {f.notify_org_user.last_name}
-                              </div>
-                            </>
-                          )}
-                        </td>
-                        <td>{REASONS[f.reason]}</td>
-                        <td>
-                          <FailureStatus failure={f} />
-                        </td>
-                        <td className="text-righ" width="1%" nowrap="nowrap">
-                          <Link
-                            to={`/failure/${f.id}/pong/${props.match.params.id}`}
-                          >
-                            <img
-                              src="https://onerrorlog.s3.amazonaws.com/images/details.png"
-                              alt={`Failure Details for ${f.id}`}
-                              className="icon"
-                            />
-                          </Link>
-                        </td>
+                <div className="table-responsive">
+                  <Table striped borderless hover>
+                    <thead>
+                      <tr>
+                        <th>Received On</th>
+                        <th>Who</th>
+                        <th>Status</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </Table>
+                    </thead>
+                    <tbody>
+                      {failures.map((f, i) => (
+                        <tr key={i}>
+                          <td className="hide-small">{moment(f.created_on).format("LLLL")}</td>
+                          <td className="show-small">{moment(f.created_on).format("MM/DD")}</td>
+                          <td>
+                            {" "}
+                            {f.notify_org_user && (
+                              <>
+                                <div>
+                                  {f.notify_org_user.first_name} {f.notify_org_user.last_name}
+                                </div>
+                              </>
+                            )}
+                          </td>
+                          <td>{REASONS[f.reason]}</td>
+                          <td>
+                            <FailureStatus failure={f} />
+                          </td>
+                          <td className="text-righ" width="1%" nowrap="nowrap">
+                            <Link to={`/failure/${f.id}/pong/${props.match.params.id}`}>
+                              <img src="https://onerrorlog.s3.amazonaws.com/images/details.png" alt={`Failure Details for ${f.id}`} className="icon" />
+                            </Link>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </Table>
+                </div>
               </Col>
             </Row>
           )}

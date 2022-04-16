@@ -74,7 +74,7 @@ const Pong = (props) => {
               </Col>
               <Col className="right-align-small-center  hide-small">
                 <Link to="/newpong" className="btn btn-warning btn-rounded">
-                  aaa New Heartbeat Monitor
+                  New Heartbeat Monitor
                 </Link>
               </Col>
             </Row>

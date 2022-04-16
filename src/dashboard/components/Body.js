@@ -44,7 +44,7 @@ const Body = ({
             style={{ maxWidth: "80px", margin: "auto", float: "left" }}
           />
           <span
-            className="pl-3 h3 mt-3"
+            className="pl-3 h3 mt-3 logo-name"
             style={{
               float: "left",
               lineHeight: "10px",
@@ -57,7 +57,7 @@ const Body = ({
 
         <ul className="navbar-nav px-3">
           <li className="nav-item text-nowrap">
-            <Row noGutters>
+            <Row noGutters className="p-0 m-0">
               <Col className="pr-2">
                 <Link className="nav-link" to="/newmonitor">
                   <div className="top-link text-center">
@@ -99,7 +99,7 @@ const Body = ({
       </header>
 
       <div className="container-fluid">
-        <Row>
+        <Row className="p-0 m-0">
           <nav
             id="sidebarMenu"
             className="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse mt-3 sidebar-nav"
@@ -221,9 +221,9 @@ const Body = ({
             </ul>
           </nav>
 
-          <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-            <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
-              <Row className="w-100" noGutters>
+          <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4 p-0 m-0">
+            <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center">
+              <Row className="w-100 p-0 m-0" noGutters>
                 <Col>
                   {currentUser &&
                     currentUser.role.phone_number_verified_on === null && (

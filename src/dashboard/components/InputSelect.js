@@ -41,7 +41,7 @@ const InputSelect = ({
         {invalidText}
       </Form.Control.Feedback>
     ) : (
-      <Form.Text className="text-muted pl-2">{helperText}</Form.Text>
+      <Form.Text className="text-muted ps-2">{helperText}</Form.Text>
     )}
   </Form.Group>
 );

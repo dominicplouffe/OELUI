@@ -685,7 +685,7 @@ const PongScreen = (props) => {
               </Row>
 
               {incidentMethod === "email" && (
-                <Row className="pt-3 pl-2">
+                <Row className="pt-3 ps-2">
                   <Col xs={12} sm={12} lg={6}>
                     <InputText
                       id="incidentemail"
@@ -760,7 +760,7 @@ const PongScreen = (props) => {
                 </Row>
               )}
               {showCallbackBasic && (
-                <Row className="pt-2 pl-2">
+                <Row className="pt-2 ps-2">
                   <Col xs={12} sm={12} lg={6}>
                     <InputText
                       id="callbackusenrame"
@@ -882,7 +882,7 @@ const PongScreen = (props) => {
             <Row className="mt-3">
               <Col>
                 <div className="card-title h5 pb-0 mb-0">Examples</div>
-                <div className="pl-1 pb-3">
+                <div className="ps-1 pb-3">
                   <small>
                     Show examples of how to trigger your monitor with your
                     programming language.
@@ -893,7 +893,7 @@ const PongScreen = (props) => {
                   id="example-code-tabs"
                   activeKey={exampleTab}
                   onSelect={(k) => setExampleTab(k)}
-                  className="pl-3 pr-3"
+                  className="ps-3 pr-3"
                 >
                   <Tab eventKey="python" title="Python">
                     <Python pongKey={pongKey} api_url={API_URL} />

@@ -453,7 +453,7 @@ const PingScreen = (props) => {
             </Col>
           </Row>
           {showBasic && (
-            <Row className="pt-2 pl-2">
+            <Row className="pt-2 ps-2">
               <Col xs={12} sm={12} lg={6}>
                 <InputText
                   id="endpointusenrame"
@@ -539,7 +539,7 @@ const PingScreen = (props) => {
                   <Form.Control
                     as="textarea"
                     rows="3"
-                    className={`text-muted pl-2 ${
+                    className={`text-muted ps-2 ${
                       formErrors.indexOf("validationText") > -1
                         ? `is-invalid`
                         : ``
@@ -549,7 +549,7 @@ const PingScreen = (props) => {
                     }}
                     value={validationText}
                   />
-                  <Form.Text className={`text-muted pl-2`}>
+                  <Form.Text className={`text-muted ps-2`}>
                     The text in this above text box will need to be in your
                     response
                   </Form.Text>
@@ -558,7 +558,7 @@ const PingScreen = (props) => {
             </Row>
           )}
           {contentType === "application/json" && (
-            <Row className="pt-3 pl-2">
+            <Row className="pt-3 ps-2">
               <Col xs={12} sm={12} lg={6}>
                 <InputText
                   id="jsonkey"
@@ -744,7 +744,7 @@ const PingScreen = (props) => {
             </Row>
           )}
           {showCallbackBasic && (
-            <Row className="pt-2 pl-2">
+            <Row className="pt-2 ps-2">
               <Col xs={12} sm={12} lg={6}>
                 <InputText
                   id="callbackusenrame"
@@ -777,7 +777,7 @@ const PingScreen = (props) => {
         </Card.Body>
       </Card>
       <Row>
-        <Col className="text-start pl-3" xs={12} lg={6}>
+        <Col className="text-start ps-3" xs={12} lg={6}>
           <DeleteButton
             pingId={pingId}
             active={active}

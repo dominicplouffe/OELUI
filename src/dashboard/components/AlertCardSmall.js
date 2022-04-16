@@ -79,11 +79,6 @@ const AlertCardSmall = ({ m, showSummary, otherPath }) => {
           </Row>
         </Col>
         {renderCardData()}
-        {/*  ? (
-        
-      ) : (
-        
-      )} */}
         <Col className="text-center">
           <div className="pt-4 hide-small"></div>
           <small>{showSummary && <Link to={`/${otherPath}/summary/${m.object.id}`}>summary</Link>}</small>

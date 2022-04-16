@@ -145,7 +145,7 @@ const Failure = (props) => {
                           <div className="d-inline-flex">
                             {moment(failure.acknowledged_on).format("LLLL")}
                           </div>
-                          <div className="d-inline-flex smaller pl-2">
+                          <div className="d-inline-flex smaller ps-2">
                             by:{" "}
                             {`${failure.acknowledged_by.first_name} ${failure.acknowledged_by.last_name}`}
                           </div>
@@ -179,7 +179,7 @@ const Failure = (props) => {
                           <div className="d-inline-flex">
                             {moment(failure.fixed_on).format("LLLL")}
                           </div>
-                          <div className="d-inline-flex smaller pl-2">
+                          <div className="d-inline-flex smaller ps-2">
                             by:{" "}
                             {`${failure.fixed_by.first_name} ${failure.fixed_by.last_name}`}
                           </div>
@@ -198,7 +198,7 @@ const Failure = (props) => {
                           <div className="d-inline-flex">
                             {moment(failure.ignored_on).format("LLLL")}
                           </div>
-                          <div className="d-inline-flex smaller pl-2">
+                          <div className="d-inline-flex smaller ps-2">
                             by:{" "}
                             {`${failure.ignored_by.first_name} ${failure.ignored_by.last_name}`}
                           </div>
@@ -231,12 +231,12 @@ const Failure = (props) => {
               </Card.Title>
               <Row>
                 {failure.content && (
-                  <Col className="pl-3 pr-3">
+                  <Col className="ps-3 pr-3">
                     <pre>{failure.content}</pre>
                   </Col>
                 )}
                 {!failure.content && (
-                  <Col className="pl-3 pr-3">
+                  <Col className="ps-3 pr-3">
                     The content was empty or not returned from {ping.endpoint}
                   </Col>
                 )}

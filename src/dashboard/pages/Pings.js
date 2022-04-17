@@ -13,6 +13,7 @@ const Ping = (props) => {
   const [pings, setPings] = useState([]);
   const [fetchDate, setFetchDate] = useState(null);
   const { refresh } = useAuth();
+  const { currentUser } = props;
 
   const useFetchInterval = (delay) => {
     const [doFetch, setDoFetch] = useState(true);
@@ -118,7 +119,7 @@ const Ping = (props) => {
       <Row>
         {pings.map((m, i) => (
           <Col xxl={12} key={i} className="col-xxxl-6">
-            <AlertCard m={m} showSummary={true} showEdit={true} otherPath="ping" showResponseView={true} />
+            <AlertCard m={m} showSummary={true} showEdit={true && currentUser.role.role === "admin"} otherPath="ping" showResponseView={true} />
           </Col>
         ))}
       </Row>

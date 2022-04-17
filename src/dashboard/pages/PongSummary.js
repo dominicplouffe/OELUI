@@ -27,6 +27,7 @@ const PongSummary = (props) => {
   const [failures, setFailures] = useState([]);
   const [otherPongs, setOtherPongs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { currentUser } = props;
 
   const { refresh } = useAuth();
 
@@ -92,8 +93,6 @@ const PongSummary = (props) => {
       alert("Something went wrong, we cannot find your pong");
     }
   };
-
-
 
   const fetchFailreCounts = async (id) => {
     const { data = null, error = null } = await api(`failure/counts/${id}/`);
@@ -169,7 +168,7 @@ const PongSummary = (props) => {
 
   return (
     <Body title="Pong Summary" selectedMenu="pong" {...props} loading={loading}>
-      {summary && <AlertCard m={summary} showEdit={true} showSummary={false} otherObjects={otherPongs} otherPath="pong" />}
+      {summary && <AlertCard m={summary} showEdit={true && currentUser.role.role === "admin"} showSummary={false} otherObjects={otherPongs} otherPath="pong" />}
 
       <Card>
         <Card.Body>

@@ -110,7 +110,7 @@ const Headers = forwardRef(
           <td>{h.key}</td>
           <td>{h.value}</td>
           <td style={{ width: "100px" }} className="text-center">
-            <Row className="mt-1" noGutters>
+            <Row className="mt-1">
               <Col>
                 <Button
                   variant="custom"
@@ -178,7 +178,7 @@ const Headers = forwardRef(
                   />
                 </td>
                 <td style={{ width: "100px" }} className="text-center">
-                  <Row className="mt-1" noGutters>
+                  <Row className="mt-1">
                     <Col>
                       <Button
                         variant="custom"

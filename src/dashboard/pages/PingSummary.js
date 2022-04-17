@@ -18,6 +18,7 @@ const PingSummary = (props) => {
   const [failures, setFailures] = useState([]);
   const [otherPings, setOtherPings] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { currentUser } = props;
 
   const { refresh } = useAuth();
 
@@ -143,7 +144,9 @@ const PingSummary = (props) => {
 
   return (
     <Body title="Uptime Monitor Summary" selectedMenu="ping" {...props} loading={loading}>
-      {summary && <AlertCard m={summary} showEdit={true} showSummary={false} showOther={true} otherPath="ping" otherObjects={otherPings} showResponseView={true} />}
+      {summary && (
+        <AlertCard m={summary} showEdit={true && currentUser.role.role === "admin"} showSummary={false} showOther={true} otherPath="ping" otherObjects={otherPings} showResponseView={true} />
+      )}
       <Card>
         <Card.Body>
           <Card.Title>

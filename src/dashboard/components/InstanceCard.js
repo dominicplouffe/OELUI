@@ -24,7 +24,7 @@ const InstanceCard = ({ instance, showSummary }) => {
           </Row>
         </Card.Title>
 
-        <Row className="pt-2 pb-2" noGutters>
+        <Row className="pt-2 pb-2">
           <Col xs={4} className="p-1">
             <Badge
               style={{

@@ -12,6 +12,7 @@ const Pong = (props) => {
   const [totals, setTotals] = useState({});
   const [pongs, setPongs] = useState([]);
   const [fetchDate, setFetchDate] = useState(null);
+  const { currentUser } = props;
   const hours = 168;
 
   const { refresh } = useAuth();
@@ -119,7 +120,7 @@ const Pong = (props) => {
       <Row>
         {pongs.map((m, i) => (
           <Col xxl={12} key={i} className="col-xxxl-6">
-            <AlertCard m={m} showSummary={true} showEdit={true} otherPath="pong" />
+            <AlertCard m={m} showSummary={true} showEdit={true && currentUser.role.role === "admin"} otherPath="pong" />
           </Col>
         ))}
       </Row>

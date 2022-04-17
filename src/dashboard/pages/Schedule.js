@@ -542,7 +542,7 @@ const Schedule = (props) => {
               Which dates do you want to override?
             </label>
           </div>
-          <Row noGutters>
+          <Row>
             <Col xs={12} lg={6}>
               <p className="mb-0 me-0">Start Date</p>
             </Col>

@@ -57,7 +57,7 @@ const Body = ({
 
         <ul className="navbar-nav px-3">
           <li className="nav-item text-nowrap">
-            <Row noGutters className="p-0 m-0">
+            <Row className="p-0 m-0">
               <Col className="pr-2">
                 <Link className="nav-link" to="/newmonitor">
                   <div className="top-link text-center">
@@ -223,7 +223,7 @@ const Body = ({
 
           <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4 p-0 m-0">
             <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center">
-              <Row className="w-100 p-0 m-0" noGutters>
+              <Row className="w-100 p-0 m-0">
                 <Col>
                   {currentUser &&
                     currentUser.role.phone_number_verified_on === null && (
@@ -242,7 +242,7 @@ const Body = ({
                       </Alert>
                     )}
                   {loading ? (
-                    <Row className="w-100" noGutters>
+                    <Row className="w-100">
                       <Col>
                         <Card>
                           <Card.Body className="p-5 text-center">

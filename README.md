@@ -16,8 +16,10 @@ onErrorLog is a monitoring service for your startup and your side projects.  The
 - Postgres
 - React
 
-## Project Design
-Want to try is out?  Signup for a free account here: https://app.onerrorlog.com.
+## Want to try is out?
+Signup for a free account here: 
+
+https://app.onerrorlog.com.
 
 ## Why did you create another Cron and Website monitoring application
 It's pretty simple actually.  I wanted to learn React! I always tell the entry level developers that I hire to start creating projects if you want to learn something new, so I preach what I teach.

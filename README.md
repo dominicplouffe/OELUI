@@ -1,68 +1,33 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# What is onErrorLog
 
-## Available Scripts
+onErrorLog is a monitoring service for your startup and your side projects.  The source code is created with Python/Django (API) and React (Dashboard/Admin).
 
-In the project directory, you can run:
+## Key Features
+- Monitor your cron jobs
+- Monitor your pipeline workflows
+- Monitor your background jobs and daemons
+- Monitor your API uptime
+- Monitor your website uptime
 
-### `npm start`
+## Technolgies and Platforms
+- Python 3 
+- Django
+- Celery
+- Postgres
+- React
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Project Design
+Want to try is out?  Signup for a free account here: https://app.onerrorlog.com.
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+## Why did you create another Cron and Website monitoring application
+It's pretty simple actually.  I wanted to learn React! I always tell the entry level developers that I hire to start creating projects if you want to learn something new, so I preach what I teach.
 
-### `npm test`
+In many of my personal or professional projects I have needed the ability to monitor REST endpoints or jobs that run at a regular interval.  So this is a common problem that I understand very well... so I decided to create a working version of a tool that I often rely on.
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Project Design
+onErrorLog is made of up 2 different projects:
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+Project | Technology | Description
+--------|------------|------------
+API | Python 3 / Django / Celery / Postgres | The API, which is located in the api folder is a Django project.  It is a REST API that is used by the Dashboard project.  There are also some tasks that use Celery. https://github.com/dominicplouffe/OEL
+Dashboard | React | The Dashboard, which is located in the dasbhoard folder, is a React project.  It is the main UI that the user interacts with. https://github.com/dominicplouffe/OELUI

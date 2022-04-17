@@ -55,6 +55,14 @@ const AlertCardSmall = ({ m, showSummary, otherPath }) => {
     return renderStatusView();
   };
 
+  const getAvailability = (m) => {
+    if (m.availability > 0) {
+      return m.availability.toFixed(2);
+    }
+
+    return ((1 - (m.failure / m.count)) * 100).toFixed(2);
+  };
+
   if (!m || !m.object.active) {
     return null;
   }
@@ -66,7 +74,9 @@ const AlertCardSmall = ({ m, showSummary, otherPath }) => {
           <Row>
             <Col className="text-start" xs={9}>
               <small>&nbsp;</small>
-              <h6>{m.object.name}</h6>
+              <h6>
+                <Link to={`/${otherPath}/summary/${m.object.id}`}>{m.object.name}</Link>
+              </h6>
             </Col>
             <Col className="text-center" xs={3} sm={3} xl={3}>
               <small>Fail</small>
@@ -81,11 +91,11 @@ const AlertCardSmall = ({ m, showSummary, otherPath }) => {
         {renderCardData()}
         <Col className="text-center">
           <div className="pt-4 hide-small"></div>
-          <small>{showSummary && <Link to={`/${otherPath}/summary/${m.object.id}`}>summary</Link>}</small>
+          <small>{getAvailability(m)}%</small>
         </Col>
       </Row>
       {m.object.alert.failure_count !== 0 && (
-        <Row>aaaa
+        <Row>
           <Col className="text-center  pb-2" xs={12}>
             <Actions fail={m.fail} small={true} />
           </Col>

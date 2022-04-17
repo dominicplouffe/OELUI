@@ -54,15 +54,23 @@ const AlertCard = ({ m, showSummary, showEdit, otherObjects, otherPath, showResp
           <h2>{m.downtime_s}</h2>
         </Col>
         <Col className="text-center" xs={12} sm={12} md={4} xl={3}>
-          <small>Avg. Response Time</small>
+          <small>Availability</small>
           <h2>
-            {(m.avg_resp * 1000).toFixed(2)}
-            <small>ms</small>
+            {m && getAvailability(m)}%
           </h2>
-        </Col>
+        </Col> 
       </>
     );
   };
+
+  const getAvailability = (m) => {
+    if (m.availability > 0) {
+      return m.availability.toFixed(2);
+    }
+
+    return ((1 - (m.failure / m.count)) * 100).toFixed(2);
+  };
+
 
   const renderCardData = () => {
     if (showResponseView && !statusOverride) {

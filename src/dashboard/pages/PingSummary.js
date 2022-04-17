@@ -148,10 +148,13 @@ const PingSummary = (props) => {
         <Card.Body>
           <Card.Title>
             <Row>
-              <Col>
+              <Col xs={12} xl={4}>
                 <h3>Average Response Time (ms)</h3>
               </Col>
-              <Col className="text-end">
+              <Col className="text-center" xs={12} xl={4}>
+                {summary && `${(summary.avg_resp * 1000).toFixed(0)}ms`}
+              </Col>
+              <Col className="text-center text-xl-end text-xxl-end" xs={12} xl={4}>
                 <Button variant="link" className="p-0 m-0" onClick={() => setHours(24)} style={{ color: hours === 24 ? "red" : "" }}>
                   <small>24h</small>
                 </Button>

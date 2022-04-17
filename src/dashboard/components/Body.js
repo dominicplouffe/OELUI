@@ -44,7 +44,7 @@ const Body = ({
             style={{ maxWidth: "80px", margin: "auto", float: "left" }}
           />
           <span
-            className="pl-3 h3 mt-3 logo-name"
+            className="ps-3 h3 mt-3 logo-name"
             style={{
               float: "left",
               lineHeight: "10px",
@@ -271,7 +271,7 @@ const Body = ({
               </a>
               . All rights reserved.
               <br />
-              <a
+              {/* <a
                 href="https://www.dplouffe.ca"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -285,7 +285,7 @@ const Body = ({
                 rel="noopener noreferrer"
               >
                 Terms of Use
-              </a>
+              </a> */}
             </div>
           </main>
         </Row>

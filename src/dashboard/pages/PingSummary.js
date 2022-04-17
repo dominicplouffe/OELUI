@@ -11,11 +11,7 @@ import FailureStatus from "../components/FailureStatus";
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 
 const PingSummary = (props) => {
-  const [calendarData, setCalendarData] = useState([]);
-  const [calendarStart, setCalendarStart] = useState("2019-06-02");
-  const [calendarEnd, setCalendarEnd] = useState("2020-06-02");
   const [summary, setSummary] = useState(null);
-  const [calendarHelp, setCalendarHelp] = useState(<div className="mt-2">&nbsp;</div>);
   const [hours, setHours] = useState(24);
   const [responseTimeData, setResponseTimeData] = useState(null);
   const [failureCounts, setFailureCounts] = useState([]);
@@ -75,19 +71,6 @@ const PingSummary = (props) => {
     }
   };
 
-  const fetchDetails = async (id) => {
-    const { data = null, error = null } = await api(`ping/details/${id}/`);
-
-    if (data) {
-      setCalendarData(data.calendar.data);
-      setCalendarStart(data.calendar.start);
-      setCalendarEnd(data.calendar.end);
-    }
-    if (error) {
-      alert("Something went wrong, we cannot find your ping");
-    }
-  };
-
   const fetchFailreCounts = async (id) => {
     const { data = null, error = null } = await api(`failure/counts/${id}/`);
 
@@ -122,7 +105,6 @@ const PingSummary = (props) => {
   const fetchAll = async () => {
     const id = props.match.params.id;
     fetchSummary(id);
-    fetchDetails(id);
     getOtherPings();
 
     setLoading(false);
@@ -145,17 +127,6 @@ const PingSummary = (props) => {
 
     // eslint-disable-next-line
   }, [refresh]);
-
-  const getCalendarCellColor = (c) => {
-    if (c.status === "warning") {
-      return "#dba222";
-    } else if (c.status === "success") {
-      return "#409918";
-    } else if (c.status === "danger") {
-      return "#bb1d4e";
-    }
-    return "#d1f5c0";
-  };
 
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload[0]) {
@@ -239,57 +210,6 @@ const PingSummary = (props) => {
       <Card>
         <Card.Body>
           <Card.Title>
-            <h3>Status of Last 365 Days</h3>
-          </Card.Title>
-          <Row>
-            <Col className="text-center">
-              <small>
-                {moment(calendarStart).format("LL")} to {moment(calendarEnd).format("LL")}
-              </small>
-            </Col>
-          </Row>
-          <Row>
-            <Col>
-              {calendarData.map((c, i) => (
-                <div
-                  key={i}
-                  className={`calender-cell`}
-                  style={{ backgroundColor: getCalendarCellColor(c) }}
-                  onMouseOver={() => {
-                    if (c.text) {
-                      setCalendarHelp(
-                        <div className="mt-2">
-                          <strong>{moment(c.date).format("LL")}</strong> -
-                          <em>
-                            {c.text} (success: {c.success} - failure: {c.failure} - {(c.success_rate * 100).toFixed(0)}%)
-                          </em>
-                        </div>
-                      );
-                    } else {
-                      setCalendarHelp(
-                        <div className="mt-2">
-                          <strong>{moment(c.date).format("LL")}</strong> -<em>No pings tracked on this day</em>
-                        </div>
-                      );
-                    }
-                  }}
-                  onMouseOut={() => setCalendarHelp(<div className="mt-2">&nbsp;</div>)}
-                >
-                  &nbsp;
-                </div>
-              ))}
-            </Col>
-          </Row>
-          <Row>
-            <Col className="text-center">
-              <small>{calendarHelp}</small>
-            </Col>
-          </Row>
-        </Card.Body>
-      </Card>
-      <Card>
-        <Card.Body>
-          <Card.Title>
             <Row>
               <Col>
                 <h3>Incidents</h3>
@@ -297,7 +217,7 @@ const PingSummary = (props) => {
             </Row>
           </Card.Title>
           {failures.length > 0 && (
-            <Row style={{width: "100%"}}>
+            <Row style={{ width: "100%" }}>
               <Col xs={12} lg={3}>
                 {failureCounts.map((f, i) => (
                   <Row key={i} className="mt-2">

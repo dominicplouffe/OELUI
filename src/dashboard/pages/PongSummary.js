@@ -19,13 +19,9 @@ const trigger_desc = {
 };
 
 const PongSummary = (props) => {
-  const [calendarData, setCalendarData] = useState([]);
-  const [calendarStart, setCalendarStart] = useState("2019-06-02");
-  const [calendarEnd, setCalendarEnd] = useState("2020-06-02");
   const [summary, setSummary] = useState(null);
   const [pong, setPong] = useState(null);
   const [hours, setHours] = useState(24);
-  const [calendarHelp, setCalendarHelp] = useState(<div className="mt-2">&nbsp;</div>);
   const [responseTimeData, setResponseTimeData] = useState(null);
   const [failureCounts, setFailureCounts] = useState([]);
   const [failures, setFailures] = useState([]);
@@ -97,18 +93,7 @@ const PongSummary = (props) => {
     }
   };
 
-  const fetchDetails = async (id) => {
-    const { data = null, error = null } = await api(`pong/details/${id}/`);
 
-    if (data) {
-      setCalendarData(data.calendar.data);
-      setCalendarStart(data.calendar.start);
-      setCalendarEnd(data.calendar.end);
-    }
-    if (error) {
-      alert("Something went wrong, we cannot find your pong");
-    }
-  };
 
   const fetchFailreCounts = async (id) => {
     const { data = null, error = null } = await api(`failure/counts/${id}/`);
@@ -138,7 +123,6 @@ const PongSummary = (props) => {
 
     fetchPong(id);
     fetchSummary(id);
-    fetchDetails(id);
     getOtherPongs();
 
     setLoading(false);
@@ -168,17 +152,6 @@ const PongSummary = (props) => {
     if (error) {
       alert("Someting went wrong");
     }
-  };
-
-  const getCalendarCellColor = (c) => {
-    if (c.status === "warning") {
-      return "#dba222";
-    } else if (c.status === "success") {
-      return "#409918";
-    } else if (c.status === "danger") {
-      return "#bb1d4e";
-    }
-    return "#d1f5c0";
   };
 
   const CustomTooltip = ({ active, payload, label }) => {
@@ -335,58 +308,6 @@ const PongSummary = (props) => {
               <div className="pt-1 text-center">
                 <small>Hour of day (UTC)</small>
               </div>
-            </Col>
-          </Row>
-        </Card.Body>
-      </Card>
-
-      <Card>
-        <Card.Body>
-          <Card.Title>
-            <h3>Status of Last 365 Days</h3>
-          </Card.Title>
-          <Row>
-            <Col className="text-center">
-              <small>
-                {moment(calendarStart).format("LL")} to {moment(calendarEnd).format("LL")}
-              </small>
-            </Col>
-          </Row>
-          <Row>
-            <Col>
-              {calendarData.map((c, i) => (
-                <div
-                  key={i}
-                  className={`calender-cell`}
-                  style={{ backgroundColor: getCalendarCellColor(c) }}
-                  onMouseOver={() => {
-                    if (c.text) {
-                      setCalendarHelp(
-                        <div className="mt-2">
-                          <strong>{moment(c.date).format("LL")}</strong> -
-                          <em>
-                            {c.text} (success: {c.success} - failure: {c.failure} - {(c.success_rate * 100).toFixed(0)}%)
-                          </em>
-                        </div>
-                      );
-                    } else {
-                      setCalendarHelp(
-                        <div className="mt-2">
-                          <strong>{moment(c.date).format("LL")}</strong> -<em>No pongs were triggered on this day</em>
-                        </div>
-                      );
-                    }
-                  }}
-                  onMouseOut={() => setCalendarHelp(<div className="mt-2">&nbsp;</div>)}
-                >
-                  &nbsp;
-                </div>
-              ))}
-            </Col>
-          </Row>
-          <Row>
-            <Col className="text-center">
-              <small>{calendarHelp}</small>
             </Col>
           </Row>
         </Card.Body>

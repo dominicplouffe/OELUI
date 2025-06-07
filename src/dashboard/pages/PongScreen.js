@@ -17,6 +17,7 @@ import EnableButton from "../components/Ping/EnableButton";
 import DeleteButton from "../components/Ping/DeleteButton";
 import AlertCard from "../components/AlertCard";
 import useAuth from "../../auth/useAuth";
+import { useParams } from 'react-router-dom';
 
 const generatePongKey = () => {
   let keyParts = [];
@@ -34,7 +35,9 @@ const generatePongKey = () => {
   return key;
 };
 
-const PongScreen = (props) => {
+const PongScreen = ({ currentUser }) => {
+
+  const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const [saved, setSaved] = useState(false);
   const [exampleTab, setExampleTab] = useState("python");
@@ -78,7 +81,6 @@ const PongScreen = (props) => {
 
   const navigate = useNavigate();
   useEffect(() => {
-    const id = props.match.params.id;
 
     if (id !== "0") {
       fetchPong(parseInt(id));
@@ -88,7 +90,7 @@ const PongScreen = (props) => {
       setLoading(false);
     }
     // eslint-disable-next-line
-  }, [props.match.params, refresh]);
+  }, [id, refresh]);
 
   const fetchPong = async (id) => {
     const { data = null, error = null } = await api(`pong/${id}/`);
@@ -413,7 +415,7 @@ const PongScreen = (props) => {
     <Body
       title="Heartbeat Management"
       selectedMenu="pong"
-      {...props}
+      currentUser={currentUser}
       loading={loading}
     >
       {summary && (

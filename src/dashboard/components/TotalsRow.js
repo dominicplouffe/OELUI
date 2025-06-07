@@ -1,10 +1,11 @@
 import React from "react";
 import { Row, Col, Badge } from "react-bootstrap";
 
-const TotalRow = ({ totals }) => {
-  if (!totals.total) {
+const TotalRow = ({ totals, showNoMonitors = true }) => {
+  if (!totals.total && !showNoMonitors) {
     return null;
   }
+
   return (
     <Row>
       <Col className="text-center" xs={6} lg={3}>

@@ -4,7 +4,7 @@ import moment from "moment";
 import { Card, Row, Col, Button } from "react-bootstrap";
 import useAuth from "../../auth/useAuth";
 import api from "../../utils/api";
-import TotaslRow from "../components/TotalsRow";
+import TotalsRow from "../components/TotalsRow";
 import { Link } from "react-router-dom";
 import AlertCardSmall from "../components/AlertCardSmall";
 
@@ -163,7 +163,8 @@ const Dashboard = (props) => {
                   {getTotals().down === 0 ? <h1 className="text-success">✔</h1> : <h1 className="text-danger">✖</h1>}
                 </Col>
                 <Col xs={12} lg={9}>
-                  <TotaslRow totals={getTotals()} />
+
+                  <TotalsRow totals={getTotals()} />
                 </Col>
               </Row>
             )}
@@ -204,7 +205,7 @@ const Dashboard = (props) => {
 
             {!loading && (
               <>
-                <TotaslRow totals={pingTotals} />
+                <TotalsRow totals={pingTotals} showNoMonitors={false} />
 
                 {pings.map((p, i) => (
                   <Row key={i}>
@@ -251,7 +252,7 @@ const Dashboard = (props) => {
 
             {!loading && (
               <>
-                <TotaslRow totals={pongTotals} />
+                <TotalsRow totals={pongTotals} showNoMonitors={false} />
 
                 {pongs.map((p, i) => (
                   <Row key={i}>

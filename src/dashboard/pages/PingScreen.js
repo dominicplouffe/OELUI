@@ -12,8 +12,12 @@ import DisableButton from "../components/Ping/DisableButton";
 import EnableButton from "../components/Ping/EnableButton";
 import DeleteButton from "../components/Ping/DeleteButton";
 import useAuth from "../../auth/useAuth";
+import { useParams } from 'react-router-dom';
 
-const PingScreen = (props) => {
+const PingScreen = ({ currentUser }) => {
+
+  const { id } = useParams();
+  console.log(id)
   const [loading, setLoading] = useState(true);
   const [saved, setSaved] = useState(false);
 
@@ -277,7 +281,6 @@ const PingScreen = (props) => {
   };
 
   useEffect(() => {
-    const id = props.match.params.id;
 
     if (id !== "0") {
       fetchPing(parseInt(id));
@@ -286,7 +289,7 @@ const PingScreen = (props) => {
       setLoading(false);
     }
     // eslint-disable-next-line
-  }, [props.match.params, refresh]);
+  }, [id, refresh]);
 
   const renderTestingLabel = () => {
     if (isTesting) {
@@ -334,7 +337,7 @@ const PingScreen = (props) => {
     <Body
       title="Ping Management"
       selectedMenu="ping"
-      {...props}
+      currentUser={currentUser}
       loading={loading}
     >
       {summary && (

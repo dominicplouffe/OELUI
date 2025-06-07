@@ -7,18 +7,21 @@ import api from "../../utils/api";
 import AlertCard from "../components/AlertCard";
 import FailureStatus from "../components/FailureStatus";
 import moment from "moment";
+import { useParams } from 'react-router-dom';
 
-const Failure = (props) => {
+const Failure = ({ currentUser }) => {
   const [loading, setLoading] = useState(true);
   const [failure, setFailure] = useState(null);
   const [summary, setSummary] = useState(null);
   const [ping, setPing] = useState(null);
 
+  const { id, oid, otype } = useParams();
+
   const useFetchInterval = (delay) => {
     const [doFetch, setDoFetch] = useState(true);
     useEffect(() => {
       const handler = setInterval(() => {
-        fetchFailure(props.match.params.id);
+        fetchFailure(id);
       }, delay);
 
       return () => {
@@ -44,12 +47,12 @@ const Failure = (props) => {
 
   const fetchSummary = async () => {
     const { data = null, error = null } = await api(
-      `alert_summary/${props.match.params.otype}/${props.match.params.oid}/`
+      `alert_summary/${otype}/${oid}/`
     );
     if (data) {
       setSummary(data.objects[0]);
 
-      if (props.match.params.otype === "ping") {
+      if (otype === "ping") {
         fetchPing();
       }
     }
@@ -60,7 +63,7 @@ const Failure = (props) => {
 
   const fetchPing = async () => {
     const { data = null, error = null } = await api(
-      `ping/${props.match.params.oid}/`
+      `ping/${oid}/`
     );
 
     if (data) {
@@ -75,20 +78,20 @@ const Failure = (props) => {
   useFetchInterval(1000 * 60 * 5);
 
   useEffect(() => {
-    fetchFailure(props.match.params.id);
+    fetchFailure(id);
 
     // eslint-disable-next-line
-  }, [props]);
+  }, [id]);
 
   return (
-    <Body title="Failure" selectedMenu="failure" {...props} loading={loading}>
+    <Body title="Failure" selectedMenu="failure" currentUser={currentUser} loading={loading}>
       {summary && (
         <AlertCard
           m={summary}
           showEdit={false}
           showSummary={true}
-          otherPath={props.match.params.otype}
-          showResponseView={props.match.params.otype === "ping"}
+          otherPath={otype}
+          showResponseView={otype === "ping"}
         />
       )}
       {!loading && (

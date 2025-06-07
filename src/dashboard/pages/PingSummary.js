@@ -9,8 +9,9 @@ import { REASONS } from "../../utils/globals";
 import { Link } from "react-router-dom";
 import FailureStatus from "../components/FailureStatus";
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
+import { useParams } from 'react-router-dom';
 
-const PingSummary = (props) => {
+const PingSummary = ({ currentUser }) => {
   const [summary, setSummary] = useState(null);
   const [hours, setHours] = useState(24);
   const [responseTimeData, setResponseTimeData] = useState(null);
@@ -18,7 +19,8 @@ const PingSummary = (props) => {
   const [failures, setFailures] = useState([]);
   const [otherPings, setOtherPings] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { currentUser } = props;
+
+  const { id } = useParams();
 
   const { refresh } = useAuth();
 
@@ -104,7 +106,7 @@ const PingSummary = (props) => {
   };
 
   const fetchAll = async () => {
-    const id = props.match.params.id;
+
     fetchSummary(id);
     getOtherPings();
 
@@ -122,7 +124,7 @@ const PingSummary = (props) => {
 
   useEffect(() => {
     if (!loading) {
-      const id = props.match.params.id;
+
       fetchSummary(id);
     }
 
@@ -143,7 +145,7 @@ const PingSummary = (props) => {
   };
 
   return (
-    <Body title="Uptime Monitor Summary" selectedMenu="ping" {...props} loading={loading}>
+    <Body title="Uptime Monitor Summary" selectedMenu="ping" currentUser={currentUser} loading={loading}>
       {summary && (
         <AlertCard m={summary} showEdit={true && currentUser.role.role === "admin"} showSummary={false} showOther={true} otherPath="ping" otherObjects={otherPings} showResponseView={true} />
       )}
@@ -266,7 +268,7 @@ const PingSummary = (props) => {
                             <FailureStatus failure={f} />
                           </td>
                           <td className="text-righ" width="1%" nowrap="nowrap">
-                            <Link to={`/failure/${f.id}/pong/${props.match.params.id}`}>
+                            <Link to={`/failure/${f.id}/pong/${id}`}>
                               <img src="https://onerrorlog.s3.amazonaws.com/images/details.png" alt={`Failure Details for ${f.id}`} className="icon" />
                             </Link>
                           </td>

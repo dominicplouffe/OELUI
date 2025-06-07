@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Redirect } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { ACCESS, REFRESH, USER_INFO } from "../../utils/globals";
 
 const Logout = () => {
@@ -7,9 +7,9 @@ const Logout = () => {
     localStorage.removeItem(ACCESS);
     localStorage.removeItem(REFRESH);
     localStorage.removeItem(USER_INFO);
-  });
+  }, []);
 
-  return <Redirect to="/auth/login" />;
+  return <Navigate to="/auth/login" replace />;
 };
 
 export default Logout;

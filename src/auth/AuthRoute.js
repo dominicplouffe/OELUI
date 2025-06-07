@@ -1,38 +1,32 @@
 import React from "react";
+import { Navigate, useLocation } from "react-router-dom";
 import useAuth from "./useAuth";
-import { Route, Redirect, useLocation } from "react-router-dom";
 
-export const DashboardRoute = ({ component: Component, admin, ...rest }) => {
+/**
+ * DashboardRoute wraps protected routes, redirecting unauthenticated users to login
+ * and hiding routes requiring admin privileges.
+ *
+ * Usage in React Router v6:
+ * <Route path="/dashboard" element={<DashboardRoute element={<Dashboard />} />} />
+ * <Route path="/newmonitor" element={<DashboardRoute element={<NewMonitor />} admin />} />
+ */
+export const DashboardRoute = ({ element, admin = false }) => {
   const { user } = useAuth();
   const location = useLocation();
 
+  // If not authenticated, redirect to login, preserving intended path
+  if (!user) {
+    const redirectTo = `/auth/login?n=${encodeURIComponent(
+      location.pathname + location.search
+    )}`;
+    return <Navigate to={redirectTo} replace />;
+  }
+
+  // If route requires admin and user is not admin, render nothing (or show a 403)
   if (admin && user.role.role !== "admin") {
     return null;
   }
 
-  return (
-    <Route
-      {...rest}
-      render={(props) =>
-        renderComponentOrLogin(Component, props, user, location)
-      }
-    />
-  );
-};
-
-const renderComponentOrLogin = (Component, props, user, location = null) => {
-  if (user === null) {
-    if (location) {
-      return (
-        <Redirect
-          to={`/auth/login?n=${encodeURIComponent(
-            location.pathname.concat(location.search)
-          )}`}
-        />
-      );
-    }
-    return <Redirect to="/auth/login" />;
-  }
-
-  return <Component {...props} currentUser={user} />;
+  // Clone the provided element to inject currentUser prop
+  return React.cloneElement(element, { currentUser: user });
 };

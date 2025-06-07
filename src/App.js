@@ -1,5 +1,5 @@
 import React from "react";
-import { Redirect, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./styles/nav.css";
 import "./styles/oel.css";
@@ -18,6 +18,9 @@ import Pong from "./dashboard/pages/Pongs";
 import PongScreen from "./dashboard/pages/PongScreen";
 import PongSummary from "./dashboard/pages/PongSummary";
 
+import Vitals from "./dashboard/pages/Vitals";
+import VitalSummary from "./dashboard/pages/VitalSummary";
+
 import Team from "./dashboard/pages/Team";
 import Schedule from "./dashboard/pages/Schedule";
 
@@ -25,98 +28,135 @@ import { NewPing, NewPong } from "./dashboard/pages/NewPing";
 import Profile from "./dashboard/pages/Profile";
 import Failure from "./dashboard/pages/Failure";
 
+import MetricConditionScreen from "./dashboard/pages/MetricConditionScreen";
+import MetricConditionSummary from "./dashboard/pages/MetricConditionSummary";
+
 import Dashboard from "./dashboard/pages/Dashboard";
 import NewMonitor from "./dashboard/pages/NewMonitor";
 
 function App() {
   return (
-    <AuthProvider>
-      <AppRoutes />
-    </AuthProvider>
+    <BrowserRouter>
+      <AuthProvider>
+        <AppRoutes />
+      </AuthProvider>
+    </BrowserRouter>
   );
 }
 
-const AppRoutes = () => {
+function AppRoutes() {
   return (
-    <Switch>
-      <Route path="/auth">
-        <AuthRoutes />
-      </Route>
+    <Routes>
+      {/* Auth */}
+      <Route path="auth/*" element={<AuthRoutes />} />
 
-      <DashboardRoute path="/dashboard" component={Dashboard} exact={true} />
-
-      <DashboardRoute
-        path="/newmonitor"
-        component={NewMonitor}
-        exact={true}
-        admin
+      {/* Dashboard & Protected */}
+      <Route
+        path="dashboard"
+        element={<DashboardRoute element={<Dashboard />} />}
+      />
+      <Route
+        path="newmonitor"
+        element={<DashboardRoute element={<NewMonitor />} admin />}
+      />
+      <Route
+        path="profile"
+        element={<DashboardRoute element={<Profile />} />}
+      />
+      <Route path="pings" element={<DashboardRoute element={<Ping />} />} />
+      <Route path="pongs" element={<DashboardRoute element={<Pong />} />} />
+      <Route
+        path="team"
+        element={<DashboardRoute element={<Team />} admin />}
+      />
+      <Route
+        path="schedule"
+        element={<DashboardRoute element={<Schedule />} admin />}
       />
 
-      <DashboardRoute path="/profile" component={Profile} exact={true} />
-      <DashboardRoute path="/pings" component={Ping} />
-      <DashboardRoute path="/pongs" component={Pong} />
-
-      <DashboardRoute path="/team" component={Team} exact={true} admin />
-      <DashboardRoute
-        path="/schedule"
-        component={Schedule}
-        exact={true}
-        admin
+      {/* Pings */}
+      <Route
+        path="ping"
+        element={<DashboardRoute element={<PingScreen />} admin />}
       />
-      <DashboardRoute path="/ping" component={PingScreen} exact={true} admin />
-      <DashboardRoute
-        path="/ping/:id"
-        component={PingScreen}
-        exact={true}
-        admin
+      <Route
+        path="ping/:id"
+        element={<DashboardRoute element={<PingScreen />} admin />}
       />
-      <DashboardRoute path="/newping" component={NewPing} exact={true} admin />
-      <DashboardRoute
-        path="/ping/summary/:id"
-        component={PingSummary}
-        exact={true}
+      <Route
+        path="newping"
+        element={<DashboardRoute element={<NewPing />} admin />}
+      />
+      <Route
+        path="ping/summary/:id"
+        element={<DashboardRoute element={<PingSummary />} />}
       />
 
-      <DashboardRoute path="/newpong" component={NewPong} exact={true} admin />
-      <DashboardRoute path="/pong" component={PongScreen} exact={true} admin />
-      <DashboardRoute
-        path="/pong/:id"
-        component={PongScreen}
-        exact={true}
-        admin
+      {/* Pongs */}
+      <Route
+        path="newpong"
+        element={<DashboardRoute element={<NewPong />} admin />}
       />
-      <DashboardRoute
-        path="/pong/summary/:id"
-        component={PongSummary}
-        exact={true}
+      <Route
+        path="pong"
+        element={<DashboardRoute element={<PongScreen />} admin />}
+      />
+      <Route
+        path="pong/:id"
+        element={<DashboardRoute element={<PongScreen />} admin />}
+      />
+      <Route
+        path="pong/summary/:id"
+        element={<DashboardRoute element={<PongSummary />} />}
       />
 
-      <DashboardRoute exact path="/">
-        <Redirect to="/dashboard" />
-      </DashboardRoute>
-
-      <DashboardRoute
-        exact
-        path="/failure/:id/:otype/:oid"
-        component={Failure}
+      {/* Vitals & Conditions */}
+      <Route
+        path="vitals"
+        element={<DashboardRoute element={<Vitals />} />}
       />
-    </Switch>
+      <Route
+        path="vitals/:id"
+        element={<DashboardRoute element={<VitalSummary />} />}
+      />
+      <Route
+        path="vital/:instanceId/condition/:id"
+        element={
+          <DashboardRoute element={<MetricConditionScreen />} />
+        }
+      />
+      <Route
+        path="vital/:instanceId/condition/summary/:id"
+        element={
+          <DashboardRoute element={<MetricConditionSummary />} />
+        }
+      />
+
+      {/* Failure */}
+      <Route
+        path="failure/:id/:otype/:oid"
+        element={<DashboardRoute element={<Failure />} />}
+      />
+
+      {/* Redirect root */}
+      <Route path="/" element={<Navigate to="/dashboard" replace />} />
+
+      {/* Catch-all could go here if you want a 404 */}
+      {/* <Route path="*" element={<NotFound />} /> */}
+    </Routes>
   );
-};
+}
 
-const AuthRoute = ({ component: Component, ...props }) => {
-  return <Component {...props} />;
-};
-
-const AuthRoutes = () => {
+function AuthRoutes() {
   return (
-    <Switch>
-      <AuthRoute path={`/auth/login`} component={Login} />
-      <AuthRoute path={"/auth/logout"} component={Logout} />
-      <AuthRoute path={"/auth/register"} component={Registration} />
-      <AuthRoute path={`/auth/accept-invite`} component={AcceptInvite} />
-    </Switch>
+    <Routes>
+      <Route path="login" element={<Login />} />
+      <Route path="logout" element={<Logout />} />
+      <Route path="register" element={<Registration />} />
+      <Route path="accept-invite" element={<AcceptInvite />} />
+      {/* Optionally: <Route path="*" element={<Navigate to="login" />} /> */}
+    </Routes>
   );
-};
+}
 
 export default App;

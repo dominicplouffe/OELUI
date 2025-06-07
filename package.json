@@ -1,52 +1,30 @@
 {
   "name": "oelui",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@fullcalendar/daygrid": "^5.3.2",
-    "@fullcalendar/interaction": "^5.3.1",
-    "@fullcalendar/list": "^5.3.1",
-    "@fullcalendar/react": "^5.3.1",
-    "@fullcalendar/timeline": "^5.3.1",
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.5.0",
-    "@testing-library/user-event": "^7.2.1",
-    "bootstrap": "^5.1.3",
-    "env-cmd": "^10.1.0",
-    "eslint": "^6.6.0",
-    "moment": "^2.29.1",
-    "react": "^16.14.0",
-    "react-beautiful-dnd": "^13.0.0",
-    "react-bootstrap": "^2.2.3",
-    "react-copy-to-clipboard": "^5.0.2",
-    "react-datepicker": "^3.4.1",
-    "react-dom": "^16.13.1",
-    "react-phone-number-input": "^3.1.0",
-    "react-router-dom": "^5.2.0",
-    "react-scripts": "3.4.3",
-    "recharts": "^1.8.5"
-  },
+  "version": "1.0.0",
+  "description": "onErrorLog is a monitoring service for your startup and your side projects.  The source code is created with Python/Django (API) and React (Dashboard/Admin).",
+  "main": ".eslintrc.js",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "local": "env-cmd -f .env.local react-scripts start",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "lint": "eslint --ext js src --max-warnings=0"
+    "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
+    "test": "jest"
   },
-  "eslintConfig": {
-    "extends": "react-app",
-    "parser": "babel-eslint",
-    "rules": {
-      "semi": "error",
-      "no-console": "warn",
-      "no-debugger": "warn"
-    },
-    "env": {
-      "jest": true,
-      "browser": true
-    }
+  "dependencies": {
+    "bootstrap": "^5.3.6",
+    "moment": "^2.30.1",
+    "react": "^19.1.0",
+    "react-beautiful-dnd": "^13.1.1",
+    "react-bootstrap": "^2.10.10",
+    "react-copy-to-clipboard": "^5.1.0",
+    "react-dom": "^19.1.0",
+    "react-phone-number-input": "^3.4.12",
+    "react-router-dom": "^7.6.2",
+    "react-scripts": "^5.0.1",
+    "recharts": "^2.15.3"
   },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "browserslist": {
     "production": [
       ">0.2%",

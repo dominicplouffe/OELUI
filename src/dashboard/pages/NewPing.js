@@ -1,17 +1,17 @@
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const NewPing = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
 
-  history.push("/ping/0");
+  navigate("/ping/0", { replace: true });
 
   return null;
 };
 
 const NewPong = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
 
-  history.push("/pong/0");
+  navigate("/pong/0", { replace: true });
 
   return null;
 };

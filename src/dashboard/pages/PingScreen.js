@@ -4,7 +4,7 @@ import InputText from "../components/InputText";
 import InputSelect from "../components/InputSelect";
 import { Card, Row, Col, Button, Form } from "react-bootstrap";
 import api from "../../utils/api";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import AlertCard from "../components/AlertCard";
 import ResultModal from "../components/ResultModal";
 import Headers from "../components/Headers";
@@ -55,7 +55,7 @@ const PingScreen = (props) => {
   const [summary, setSummary] = useState(null);
   const { refresh } = useAuth();
 
-  let history = useHistory();
+  let navigate = useNavigate();
 
   const validateTesterForm = () => {
     const errors = [];
@@ -183,7 +183,7 @@ const PingScreen = (props) => {
 
       if (data) {
         await headersRef.current.saveHeaders(data.id);
-        history.push(`/ping/${data.id}/`);
+        navigate(`/ping/${data.id}/`, { replace: true });
         setSaved(true);
       }
     }
@@ -242,8 +242,7 @@ const PingScreen = (props) => {
 
   const deletePing = async () => {
     await api(`ping/${pingId}/`, "DELETE");
-
-    history.push("/pings");
+    navigate(`/pings/`, { replace: true });
   };
 
   const testPing = async () => {
@@ -539,11 +538,10 @@ const PingScreen = (props) => {
                   <Form.Control
                     as="textarea"
                     rows="3"
-                    className={`text-muted ps-2 ${
-                      formErrors.indexOf("validationText") > -1
-                        ? `is-invalid`
-                        : ``
-                    }`}
+                    className={`text-muted ps-2 ${formErrors.indexOf("validationText") > -1
+                      ? `is-invalid`
+                      : ``
+                      }`}
                     onChange={(e) => {
                       setValue(setValidationText, e.target.value);
                     }}
@@ -651,9 +649,8 @@ const PingScreen = (props) => {
                 label="Minimum Incident Count"
                 defaultValue={incidentInterval}
                 defaultText="Select an incident count"
-                helperText={`onErrorLog will contact you when your monitor has been triggered ${
-                  incidentInterval ? incidentInterval : `1`
-                } time(s)`}
+                helperText={`onErrorLog will contact you when your monitor has been triggered ${incidentInterval ? incidentInterval : `1`
+                  } time(s)`}
                 showDefault={true}
                 values={[
                   { value: "1", text: "Tell us right away" },

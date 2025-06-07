@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Body from "../components/Body";
 import { API_URL } from "../../utils/globals";
 import api from "../../utils/api";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Card, Row, Col, Button, Tabs, Tab } from "react-bootstrap";
 import InputText from "../components/InputText";
 import InputSelect from "../components/InputSelect";
@@ -76,7 +76,7 @@ const PongScreen = (props) => {
     'If this task is running as a cron, let us know the cron schedule (e.g. "5 0 * 8 *"). If no cron schedule is specified, onErrorLog will assume the task is running 24h per day.'
   );
 
-  let history = useHistory();
+  const navigate = useNavigate();
   useEffect(() => {
     const id = props.match.params.id;
 
@@ -131,7 +131,7 @@ const PongScreen = (props) => {
   const deletePong = async () => {
     await api(`pong/${pongId}/`, "DELETE");
 
-    history.push("/pongs");
+    navigate("/pongs", { replace: true });
   };
 
   const savePong = async (pongActive) => {
@@ -168,7 +168,7 @@ const PongScreen = (props) => {
 
       if (data) {
         await headersRef.current.saveHeaders(data.id);
-        history.push(`/pong/${data.id}/`);
+        navigate(`/pong/${data.id}/`, { replace: true });
         setSaved(true);
       }
     }
@@ -666,9 +666,8 @@ const PongScreen = (props) => {
                     label="Minimum Incident Count"
                     defaultValue={incidentInterval}
                     defaultText="Select an incident count"
-                    helperText={`onErrorLog will contact you when your monitor has been triggered ${
-                      incidentInterval ? incidentInterval : `1`
-                    } time(s)`}
+                    helperText={`onErrorLog will contact you when your monitor has been triggered ${incidentInterval ? incidentInterval : `1`
+                      } time(s)`}
                     showDefault={true}
                     values={[
                       { value: "1", text: "Tell us right away" },
@@ -844,7 +843,7 @@ const PongScreen = (props) => {
             </Card.Subtitle>
             <Row className="mt-3">
               <Col xs={12} lg={6}>
-                
+
                 <InputText
                   label={`Start Endpoint`}
                   placeholder=""

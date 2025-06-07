@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import api from "../utils/api";
 import { logout } from "../utils/auth";
 import { USER_INFO, ROLE_INFO } from "../utils/globals";
 import AuthContext from "./AuthContext";
 
 const AuthProvider = ({ children, ...props }) => {
-  const isCancelled = useRef(false);
   const [refresh, setRefresh] = React.useState(0);
   const [loading, setLoading] = useState(true);
 
@@ -14,9 +13,6 @@ const AuthProvider = ({ children, ...props }) => {
   const getRole = async () => {
     const { data = null } = await api("auth/get-role/");
 
-    if (isCancelled.current) {
-      return;
-    }
 
     if (data) {
       localStorage.setItem(ROLE_INFO, JSON.stringify(data));
@@ -28,9 +24,6 @@ const AuthProvider = ({ children, ...props }) => {
   const loginUser = async () => {
     const { data = null } = await api("auth/get-current-user/");
 
-    if (isCancelled.current) {
-      return;
-    }
     if (data) {
       const role = await getRole();
       data.role = role;
@@ -53,9 +46,6 @@ const AuthProvider = ({ children, ...props }) => {
   useEffect(() => {
     loginUser();
 
-    return () => {
-      isCancelled.current = true;
-    };
     // eslint-disable-next-line
   }, []);
 

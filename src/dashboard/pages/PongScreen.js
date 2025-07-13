@@ -17,7 +17,7 @@ import EnableButton from "../components/Ping/EnableButton";
 import DeleteButton from "../components/Ping/DeleteButton";
 import AlertCard from "../components/AlertCard";
 import useAuth from "../../auth/useAuth";
-import { useParams } from 'react-router-dom';
+import { useParams } from "react-router-dom";
 
 const generatePongKey = () => {
   let keyParts = [];
@@ -36,7 +36,6 @@ const generatePongKey = () => {
 };
 
 const PongScreen = ({ currentUser }) => {
-
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const [saved, setSaved] = useState(false);
@@ -81,7 +80,6 @@ const PongScreen = ({ currentUser }) => {
 
   const navigate = useNavigate();
   useEffect(() => {
-
     if (id !== "0") {
       fetchPong(parseInt(id));
       setPongId(parseInt(id));
@@ -192,17 +190,11 @@ const PongScreen = ({ currentUser }) => {
       if (!incidentEndpoint || incidentEndpoint.trim().length === 0) {
         errors.push("incidentendpoint");
       } else {
-        if (
-          incidentEndpointUser.trim().length > 0 &&
-          incidentEndpointPass.trim().length === 0
-        ) {
+        if (incidentEndpointUser.trim().length > 0 && incidentEndpointPass.trim().length === 0) {
           setShowCallbackBasic(true);
           errors.push("callbackpassword");
         }
-        if (
-          incidentEndpointPass.trim().length > 0 &&
-          incidentEndpointUser.trim().length === 0
-        ) {
+        if (incidentEndpointPass.trim().length > 0 && incidentEndpointUser.trim().length === 0) {
           setShowCallbackBasic(true);
           errors.push("callbackusername");
         }
@@ -214,9 +206,7 @@ const PongScreen = ({ currentUser }) => {
   };
 
   const fetchSummary = async (id) => {
-    const { data = null, error = null } = await api(
-      `alert_summary/pong/${id}/`
-    );
+    const { data = null, error = null } = await api(`alert_summary/pong/${id}/`);
 
     if (data) {
       setSummary(data.objects[0]);
@@ -275,13 +265,16 @@ const PongScreen = ({ currentUser }) => {
   };
 
   const checkCron = async (cron) => {
-    const { data = null, error = null } = await api(
-      "pong/cron_check/",
-      "POST",
-      {
-        cron: cron,
-      }
-    );
+    if (cron.trim().length === 0) {
+      setCronError(false);
+      setCronHelper(
+        'If this task is running as a cron, let us know the cron schedule (e.g. "5 0 * 8 *"). If no cron schedule is specified, onErrorLog will assume the task is running 24h per day.'
+      );
+      return;
+    }
+    const { data = null, error = null } = await api("pong/cron_check/", "POST", {
+      cron: cron,
+    });
 
     if (data) {
       setCronError(false);
@@ -290,8 +283,7 @@ const PongScreen = ({ currentUser }) => {
       setCronHelper(
         <>
           <span>
-            onErrorLog will check this heartbeat{" "}
-            <strong className="text-warning">{pretty}</strong>
+            onErrorLog will check this heartbeat <strong className="text-warning">{pretty}</strong>
           </span>
         </>
       );
@@ -330,11 +322,7 @@ const PongScreen = ({ currentUser }) => {
             </Col>
             <Col className="text-end">
               {showDelete() && (
-                <Button
-                  variant="link"
-                  className="pt-1 ms-0 pr-0"
-                  onClick={() => deleteTrigger(i)}
-                >
+                <Button variant="link" className="pt-1 ms-0 pr-0" onClick={() => deleteTrigger(i)}>
                   <small>delete</small>
                 </Button>
               )}
@@ -375,9 +363,7 @@ const PongScreen = ({ currentUser }) => {
               id="triggerinterval"
               label={"Duration"}
               value={t.interval_value}
-              onChange={(e) =>
-                setTriggerValue("interval_value", e.target.value, i)
-              }
+              onChange={(e) => setTriggerValue("interval_value", e.target.value, i)}
               isInvalid={t.interval_error}
             />
           )}
@@ -412,21 +398,8 @@ const PongScreen = ({ currentUser }) => {
   };
 
   return (
-    <Body
-      title="Heartbeat Management"
-      selectedMenu="pong"
-      currentUser={currentUser}
-      loading={loading}
-    >
-      {summary && (
-        <AlertCard
-          m={summary}
-          showSummary={false}
-          showEdit={false}
-          showOther={true}
-          otherPath="pong"
-        />
-      )}
+    <Body title="Heartbeat Management" selectedMenu="pong" currentUser={currentUser} loading={loading}>
+      {summary && <AlertCard m={summary} showSummary={false} showEdit={false} showOther={true} otherPath="pong" />}
       <Card>
         <Card.Body>
           <Row className="pt-3">
@@ -434,9 +407,7 @@ const PongScreen = ({ currentUser }) => {
               <Row>
                 <Col>
                   <Card.Title>Heartbeat</Card.Title>
-                  <Card.Subtitle>
-                    Tell us a bit about your heartbeat
-                  </Card.Subtitle>
+                  <Card.Subtitle>Tell us a bit about your heartbeat</Card.Subtitle>
                 </Col>
               </Row>
 
@@ -476,10 +447,9 @@ const PongScreen = ({ currentUser }) => {
                     helperText={
                       <>
                         <span>
-                          If you want to send a URL to your on-call team with
-                          some documenation on the procedures to confirm and
-                          resolve a failure, you enter it here. The URL will be
-                          sent along with all failure notifications.
+                          If you want to send a URL to your on-call team with some documenation on the procedures to
+                          confirm and resolve a failure, you enter it here. The URL will be sent along with all failure
+                          notifications.
                         </span>
                       </>
                     }
@@ -499,24 +469,20 @@ const PongScreen = ({ currentUser }) => {
                 <strong>Cron Schedule</strong>
                 <br />
                 <span className="doc-text">
-                  If your task has a cron schedule, paste it here. This will
-                  ensure that onErrorLog does not monitor the task when it is{" "}
-                  <em>"not"</em> suppose to be running. For example, if you
-                  enter this cron schedule <em>"5 4-12 * * *"</em>. onErrorLog
-                  will monitor your task between the hours of 4am and 12pm UTC
-                  only.
+                  If your task has a cron schedule, paste it here. This will ensure that onErrorLog does not monitor the
+                  task when it is <em>"not"</em> suppose to be running. For example, if you enter this cron schedule{" "}
+                  <em>"5 4-12 * * *"</em>. onErrorLog will monitor your task between the hours of 4am and 12pm UTC only.
                   <br />
                   <br />
-                  If you do not enter a cron schedule, onErrorLog will assume
-                  that the task is running 24 hours a day, every day.
+                  If you do not enter a cron schedule, onErrorLog will assume that the task is running 24 hours a day,
+                  every day.
                 </span>
               </p>
               <p>
                 <strong>Documentation URL</strong>
                 <span className="doc-text">
-                  <br /> If you have a URL to a wiki page that explains what to
-                  do in case this monitor is triggered, paste it here. It will
-                  be sent along with the notification.
+                  <br /> If you have a URL to a wiki page that explains what to do in case this monitor is triggered,
+                  paste it here. It will be sent along with the notification.
                 </span>
               </p>
             </Col>
@@ -532,19 +498,14 @@ const PongScreen = ({ currentUser }) => {
                 <Col>
                   <Card.Title>Notification Rules</Card.Title>
                   <Card.Subtitle>
-                    Tell us the rules that onErrorLog should apply to know when
-                    to send an alert.
+                    Tell us the rules that onErrorLog should apply to know when to send an alert.
                   </Card.Subtitle>
                 </Col>
               </Row>
               {triggers.map((t, i) => renderTrigger(t, i))}
               <Row className="pt-4">
                 <Col className="text-end">
-                  <Button
-                    variant="primary"
-                    onClick={() => addTrigger()}
-                    className="btn-rounded"
-                  >
+                  <Button variant="primary" onClick={() => addTrigger()} className="btn-rounded">
                     New Rule
                   </Button>
                 </Col>
@@ -558,68 +519,52 @@ const PongScreen = ({ currentUser }) => {
                   <br />
                   This rules tells onErrorLog when to check for an issue.
                   <br />
-                  Once you save your monitor, you will be given two REST
-                  endpoints. A <em>start</em> and an <em>end</em> endpoint. The
-                  start endpoint is to be called at the beginning of your code
-                  block and the end endpoint is to be called at the completion
-                  of your code block. Using both of these endpoints, onErrorLog
-                  can monitor your code to ensure it has completed successfully.
+                  Once you save your monitor, you will be given two REST endpoints. A <em>start</em> and an <em>end</em>{" "}
+                  endpoint. The start endpoint is to be called at the beginning of your code block and the end endpoint
+                  is to be called at the completion of your code block. Using both of these endpoints, onErrorLog can
+                  monitor your code to ensure it has completed successfully.
                 </span>
               </p>
               <ul className="mt-2">
                 <li>
                   <span className="doc-text">
-                    <strong>Start endpoint has not be requested in</strong>: If
-                    onErrorLog does not receive a request from your start
-                    endpoint in x minutes, an alert will be triggered. For
-                    example: The duration/unit is <em>5 minutes</em>. onErrorLog
-                    receives a notification at 11:00am. By 11:05am it has not
-                    yet recieved a notification from your{" "}
-                    <em>start endpoint</em>, an alert will be triggered.
+                    <strong>Start endpoint has not be requested in</strong>: If onErrorLog does not receive a request
+                    from your start endpoint in x minutes, an alert will be triggered. For example: The duration/unit is{" "}
+                    <em>5 minutes</em>. onErrorLog receives a notification at 11:00am. By 11:05am it has not yet
+                    recieved a notification from your <em>start endpoint</em>, an alert will be triggered.
                   </span>
                 </li>
                 <li>
                   <span className="doc-text">
-                    <strong>Complete endpoint has not be requested in</strong>:
-                    If onErrorLog does not receive a request from your end
-                    endpoint in x minutes, an alert will be triggered. For
-                    example: The duration/unit is <em>5 minutes</em>. onErrorLog
-                    receives a notification at 11:00am. By 11:05am it has not
-                    yet recieved a notification from your <em>end endpoint</em>,
-                    an alert will be triggered.
+                    <strong>Complete endpoint has not be requested in</strong>: If onErrorLog does not receive a request
+                    from your end endpoint in x minutes, an alert will be triggered. For example: The duration/unit is{" "}
+                    <em>5 minutes</em>. onErrorLog receives a notification at 11:00am. By 11:05am it has not yet
+                    recieved a notification from your <em>end endpoint</em>, an alert will be triggered.
                   </span>
                 </li>
                 <li>
                   <span className="doc-text">
-                    <strong>Task runs in less than</strong>: If onErrorLog
-                    recieves a request from your end endpoint, but and the
-                    difference from the start and end requests is less than the
-                    specified duration/unit, an alert will be triggered. For
-                    example: The duration/unit is 10 minutes, meaning that the
-                    task should last at least 10 minutes. If onErrorLog recieves
-                    your start endpoint at 11:00am and your end enpoint at
-                    11:05am, an alert will be triggered. The task ran for 5
-                    minutes less than expected.
+                    <strong>Task runs in less than</strong>: If onErrorLog recieves a request from your end endpoint,
+                    but and the difference from the start and end requests is less than the specified duration/unit, an
+                    alert will be triggered. For example: The duration/unit is 10 minutes, meaning that the task should
+                    last at least 10 minutes. If onErrorLog recieves your start endpoint at 11:00am and your end enpoint
+                    at 11:05am, an alert will be triggered. The task ran for 5 minutes less than expected.
                   </span>
                 </li>
                 <li>
                   <span className="doc-text">
-                    <strong>Task runs for more than</strong>: If onErrorLog
-                    recieves a request from your end endpoint, but and the
-                    difference from the start and end requests is more than the
-                    specified duration/unit, an alert will be triggered. For
-                    example: The duration/unit is 10 minutes, meaning that the
-                    task should not run for more than 10 minutes. If onErrorLog
-                    recieves your start endpoint at 11:00am and your end enpoint
-                    at 11:15am, an alert will be triggered. The task ran for 15
-                    minutes, 5 more minutes than expected.
+                    <strong>Task runs for more than</strong>: If onErrorLog recieves a request from your end endpoint,
+                    but and the difference from the start and end requests is more than the specified duration/unit, an
+                    alert will be triggered. For example: The duration/unit is 10 minutes, meaning that the task should
+                    not run for more than 10 minutes. If onErrorLog recieves your start endpoint at 11:00am and your end
+                    enpoint at 11:15am, an alert will be triggered. The task ran for 15 minutes, 5 more minutes than
+                    expected.
                   </span>
                 </li>
                 <li>
                   <span className="doc-text">
-                    <strong>Your heartbeat fail was triggered</strong>: If
-                    onErrorLog receives a request from the fail endpoint, the
-                    monitor will be triggered.
+                    <strong>Your heartbeat fail was triggered</strong>: If onErrorLog receives a request from the fail
+                    endpoint, the monitor will be triggered.
                   </span>
                 </li>
               </ul>
@@ -635,9 +580,7 @@ const PongScreen = ({ currentUser }) => {
               <Row>
                 <Col>
                   <Card.Title>Notification Settings</Card.Title>
-                  <Card.Subtitle>
-                    Tell us what to do when we get trigger from your application
-                  </Card.Subtitle>
+                  <Card.Subtitle>Tell us what to do when we get trigger from your application</Card.Subtitle>
                 </Col>
               </Row>
               <Row>
@@ -656,9 +599,7 @@ const PongScreen = ({ currentUser }) => {
                       },
                       { value: "callback", text: "HTTP Callback" },
                     ]}
-                    onChange={(e) =>
-                      setValue(setIncidentMethod, e.target.value)
-                    }
+                    onChange={(e) => setValue(setIncidentMethod, e.target.value)}
                     isInvalid={formErrors.indexOf("incidentmethod") > -1}
                   />
                 </Col>
@@ -668,8 +609,9 @@ const PongScreen = ({ currentUser }) => {
                     label="Minimum Incident Count"
                     defaultValue={incidentInterval}
                     defaultText="Select an incident count"
-                    helperText={`onErrorLog will contact you when your monitor has been triggered ${incidentInterval ? incidentInterval : `1`
-                      } time(s)`}
+                    helperText={`onErrorLog will contact you when your monitor has been triggered ${
+                      incidentInterval ? incidentInterval : `1`
+                    } time(s)`}
                     showDefault={true}
                     values={[
                       { value: "1", text: "Tell us right away" },
@@ -678,9 +620,7 @@ const PongScreen = ({ currentUser }) => {
                       { value: "10", text: "10 Incidents" },
                     ]}
                     isInvalid={formErrors.indexOf("incidentinterval") > -1}
-                    onChange={(e) =>
-                      setValue(setIncidentInterval, e.target.value)
-                    }
+                    onChange={(e) => setValue(setIncidentInterval, e.target.value)}
                   />
                 </Col>
               </Row>
@@ -713,25 +653,17 @@ const PongScreen = ({ currentUser }) => {
                       helperText={
                         <>
                           <span>
-                            The callback that onErrorLog will hit when it finds
-                            an incident (only POSTs are supported)
+                            The callback that onErrorLog will hit when it finds an incident (only POSTs are supported)
                           </span>
                           <Row>
                             <Col>
                               <Button
                                 variant="link"
                                 className="p-0 m-0 btn-link"
-                                onClick={() =>
-                                  setValue(
-                                    setShowCallbackBasic,
-                                    !showCallbackBasic
-                                  )
-                                }
+                                onClick={() => setValue(setShowCallbackBasic, !showCallbackBasic)}
                               >
                                 <small>
-                                  {showCallbackBasic
-                                    ? ` [-] basic authentication`
-                                    : ` [+] show basic authentication`}
+                                  {showCallbackBasic ? ` [-] basic authentication` : ` [+] show basic authentication`}
                                 </small>
                               </Button>
                             </Col>
@@ -770,9 +702,7 @@ const PongScreen = ({ currentUser }) => {
                       placeholder=""
                       helperText="The username if your BASIC authentication for your callback endpoint."
                       isInvalid={formErrors.indexOf("callbackusername") > -1}
-                      onChange={(e) =>
-                        setValue(setIncidentEndpointUser, e.target.value)
-                      }
+                      onChange={(e) => setValue(setIncidentEndpointUser, e.target.value)}
                     />
                   </Col>
                   <Col xs={12} sm={12} lg={6}>
@@ -784,9 +714,7 @@ const PongScreen = ({ currentUser }) => {
                       helperText="The password if your BASIC authentication for your callback endpoint."
                       type="password"
                       isInvalid={formErrors.indexOf("callbackpassword") > -1}
-                      onChange={(e) =>
-                        setValue(setIncidentEndpointPass, e.target.value)
-                      }
+                      onChange={(e) => setValue(setIncidentEndpointPass, e.target.value)}
                     />
                   </Col>
                 </Row>
@@ -798,34 +726,28 @@ const PongScreen = ({ currentUser }) => {
                 <strong>How would you like to be contacted</strong>
                 <span className="doc-text">
                   <br />
-                  Select how you want your team to be contacted in case your
-                  monitor is triggered
+                  Select how you want your team to be contacted in case your monitor is triggered
                 </span>
               </p>
 
               <ul className="mt-2">
                 <li>
                   <span className="doc-text">
-                    <strong>Notify your team (email or text message)</strong>:
-                    If you choose this option the team member that is on-call
-                    will be alerted. Each team member can choose to receive
-                    their notifications through email or text message from their
-                    profile.
+                    <strong>Notify your team (email or text message)</strong>: If you choose this option the team member
+                    that is on-call will be alerted. Each team member can choose to receive their notifications through
+                    email or text message from their profile.
                   </span>
                 </li>
                 <li>
                   <span className="doc-text">
-                    <strong>HTTP Callback</strong>: If you choose this option
-                    the endpoint callback you specify will be requested by
-                    onErrorLog. onErrorLog will perfor a <em>POST</em>. The body
-                    of the request will contain some information about the
-                    notification. You also have the option of configuring HTTP
+                    <strong>HTTP Callback</strong>: If you choose this option the endpoint callback you specify will be
+                    requested by onErrorLog. onErrorLog will perfor a <em>POST</em>. The body of the request will
+                    contain some information about the notification. You also have the option of configuring HTTP
                     headers and Basic Authentication.
                     <div className="mt-2">
                       <strong>Body Content Type</strong>: application/json
                       <br />
-                      <strong>Body Fields</strong>: http_status_code, reason,
-                      response_time
+                      <strong>Body Fields</strong>: http_status_code, reason, response_time
                     </div>
                   </span>
                 </li>
@@ -839,13 +761,9 @@ const PongScreen = ({ currentUser }) => {
         <Card className="hide-small">
           <Card.Body>
             <Card.Title>Sending Requests to your Monitor</Card.Title>
-            <Card.Subtitle>
-              Below is the information that you'll need to send requests to your
-              monitor
-            </Card.Subtitle>
+            <Card.Subtitle>Below is the information that you'll need to send requests to your monitor</Card.Subtitle>
             <Row className="mt-3">
               <Col xs={12} lg={6}>
-
                 <InputText
                   label={`Start Endpoint`}
                   placeholder=""
@@ -884,10 +802,7 @@ const PongScreen = ({ currentUser }) => {
               <Col>
                 <div className="card-title h5 pb-0 mb-0">Examples</div>
                 <div className="ps-1 pb-3">
-                  <small>
-                    Show examples of how to trigger your monitor with your
-                    programming language.
-                  </small>
+                  <small>Show examples of how to trigger your monitor with your programming language.</small>
                 </div>
 
                 <Tabs
@@ -920,17 +835,8 @@ const PongScreen = ({ currentUser }) => {
 
       <Row>
         <Col className="text-start" xs={12} lg={6}>
-          <DeleteButton
-            pongId={pongId}
-            active={active}
-            deleteAction={() => deletePong()}
-            text="pong"
-          />
-          {saved && (
-            <strong className="text-success">
-              Your monitor has been saved.
-            </strong>
-          )}
+          <DeleteButton pongId={pongId} active={active} deleteAction={() => deletePong()} text="pong" />
+          {saved && <strong className="text-success">Your monitor has been saved.</strong>}
         </Col>
         <Col className="text-end" xs={12} lg={6}>
           <EnableButton
@@ -951,11 +857,7 @@ const PongScreen = ({ currentUser }) => {
               savePong(false);
             }}
           />{" "}
-          <Button
-            variant="primary"
-            onClick={() => savePong(null)}
-            className="btn-rounded"
-          >
+          <Button variant="primary" onClick={() => savePong(null)} className="btn-rounded">
             Save Monitor
           </Button>
         </Col>

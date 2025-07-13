@@ -1,8 +1,16 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Row, Col, Alert, Badge, Card } from "react-bootstrap";
+import api from "../../utils/api";
 
 const Body = ({ currentUser, selectedMenu, title, children, loading = false }) => {
+  const [onCallUser, setOnCallUser] = useState(null);
+  const [refresh, setRefresh] = useState(0);
+  const getOnCallUser = async () => {
+    const { data = null } = await api("/api/org_user/get_on_call_user");
+    setOnCallUser(data);
+  };
+
   const getSelectedMenuClass = (menuName) => {
     if (selectedMenu === menuName) {
       return "selected";
@@ -28,6 +36,19 @@ const Body = ({ currentUser, selectedMenu, title, children, loading = false }) =
     // eslint-disable-next-line
   });
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      console.log("Refreshing on-call user data...");
+      setRefresh((prev) => prev + 1);
+    }, 30000);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    getOnCallUser();
+    // eslint-disable-next-line
+  }, [refresh]);
+
   return (
     <>
       <header className="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
@@ -48,6 +69,18 @@ const Body = ({ currentUser, selectedMenu, title, children, loading = false }) =
             onErrorLog
           </span>
         </a>
+
+        <div className="navbar-nav">
+          <div className="nav-item text-nowrap">
+            <span className="nav-link px-3">
+              {onCallUser && (
+                <span className="text-white">
+                  <strong>On Call</strong>: {onCallUser.first_name} {onCallUser.last_name}
+                </span>
+              )}
+            </span>
+          </div>
+        </div>
 
         <ul className="navbar-nav px-3">
           <li className="nav-item text-nowrap">
@@ -114,13 +147,6 @@ const Body = ({ currentUser, selectedMenu, title, children, loading = false }) =
                 <Link className={`sidebar-link sidebar-link ${getActiveMenuClass("pong")}`} to="/pongs">
                   <img src="https://onerrorlog.s3.amazonaws.com/images/heartbeat.png" alt="pings" className="icon" />
                   <span className="hide-menu">Heartbeat </span>
-                </Link>
-              </li>
-
-              <li className={`sidebar-item ${getSelectedMenuClass("vitals")}`}>
-                <Link className={`sidebar-link sidebar-link ${getActiveMenuClass("vitals")}`} to="/vitals">
-                  <img src="https://onerrorlog.s3.amazonaws.com/images/vitals.png" alt="vitals" className="icon" />
-                  <span className="hide-menu">Vitals</span>
                 </Link>
               </li>
 

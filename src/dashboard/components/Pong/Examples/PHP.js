@@ -1,4 +1,3 @@
-import React from "react";
 import { Row, Col } from "react-bootstrap";
 
 const CSharp = ({ pongKey, api_url }) => {
@@ -7,9 +6,7 @@ const CSharp = ({ pongKey, api_url }) => {
       <Row>
         <Col xs={12}>
           <pre className="code p-4" style={{ lineHeight: "20px" }}>
-            <span className="text-success">
-              # Example to send a start and end request to onErrorLog using PHP
-            </span>
+            <span className="text-success"># Example to send a start and end request to onErrorLog using PHP</span>
             <br />
             $curl = curl_init();
             <br />
@@ -61,8 +58,7 @@ const CSharp = ({ pongKey, api_url }) => {
         </Col>
         <Col xs={12}>
           <small>
-            Note: You need to install the request library:{" "}
-            <strong>pip install requests</strong>
+            Note: You need to install the request library: <strong>pip install requests</strong>
           </small>
         </Col>
       </Row>

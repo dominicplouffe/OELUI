@@ -2,13 +2,7 @@ import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Row, Col, Alert, Badge, Card } from "react-bootstrap";
 
-const Body = ({
-  currentUser,
-  selectedMenu,
-  title,
-  children,
-  loading = false,
-}) => {
+const Body = ({ currentUser, selectedMenu, title, children, loading = false }) => {
   const getSelectedMenuClass = (menuName) => {
     if (selectedMenu === menuName) {
       return "selected";
@@ -23,7 +17,7 @@ const Body = ({
     }
   };
 
-  const windowSize = () => { };
+  const windowSize = () => {};
 
   window.onresize = (e) => {
     windowSize();
@@ -82,11 +76,7 @@ const Body = ({
               <Col>
                 <Link className="nav-link" to="/auth/logout">
                   <div className="top-link text-center">
-                    <img
-                      src="https://onerrorlog.s3.amazonaws.com/images/logout.png"
-                      alt="logout"
-                      className="icon"
-                    />
+                    <img src="https://onerrorlog.s3.amazonaws.com/images/logout.png" alt="logout" className="icon" />
                     <div className="p-0 m-0" style={{ lineHeight: "10px" }}>
                       <small>Logout</small>
                     </div>
@@ -100,20 +90,10 @@ const Body = ({
 
       <div className="container-fluid">
         <Row className="p-0 m-0">
-          <nav
-            id="sidebarMenu"
-            className="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse mt-3 sidebar-nav"
-          >
+          <nav id="sidebarMenu" className="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse mt-3 sidebar-nav">
             <ul id="sidebarnav">
-              <li
-                className={`sidebar-item ${getSelectedMenuClass("dashboard")}`}
-              >
-                <Link
-                  className={`sidebar-link sidebar-link ${getActiveMenuClass(
-                    "dashboard"
-                  )}`}
-                  to="/dashboard"
-                >
+              <li className={`sidebar-item ${getSelectedMenuClass("dashboard")}`}>
+                <Link className={`sidebar-link sidebar-link ${getActiveMenuClass("dashboard")}`} to="/dashboard">
                   <img
                     src="https://onerrorlog.s3.amazonaws.com/images/dashboard.png"
                     alt="dashboard"
@@ -125,81 +105,45 @@ const Body = ({
               <li className="sidebar-title">Monitors</li>
 
               <li className={`sidebar-item ${getSelectedMenuClass("ping")}`}>
-                <Link
-                  className={`sidebar-link sidebar-link ${getActiveMenuClass(
-                    "ping"
-                  )}`}
-                  to="/pings"
-                >
-                  <img
-                    src="https://onerrorlog.s3.amazonaws.com/images/website.png"
-                    alt="pings"
-                    className="icon"
-                  />
+                <Link className={`sidebar-link sidebar-link ${getActiveMenuClass("ping")}`} to="/pings">
+                  <img src="https://onerrorlog.s3.amazonaws.com/images/website.png" alt="pings" className="icon" />
                   <span className="hide-menu">REST Uptime</span>
                 </Link>
               </li>
               <li className={`sidebar-item ${getSelectedMenuClass("pong")}`}>
-                <Link
-                  className={`sidebar-link sidebar-link ${getActiveMenuClass(
-                    "pong"
-                  )}`}
-                  to="/pongs"
-                >
-                  <img
-                    src="https://onerrorlog.s3.amazonaws.com/images/heartbeat.png"
-                    alt="pings"
-                    className="icon"
-                  />
+                <Link className={`sidebar-link sidebar-link ${getActiveMenuClass("pong")}`} to="/pongs">
+                  <img src="https://onerrorlog.s3.amazonaws.com/images/heartbeat.png" alt="pings" className="icon" />
                   <span className="hide-menu">Heartbeat </span>
                 </Link>
               </li>
 
               <li className={`sidebar-item ${getSelectedMenuClass("vitals")}`}>
-                <Link
-                  className={`sidebar-link sidebar-link ${getActiveMenuClass(
-                    "vitals"
-                  )}`}
-                  to="/vitals"
-                >
-                  <img
-                    src="https://onerrorlog.s3.amazonaws.com/images/vitals.png"
-                    alt="vitals"
-                    className="icon"
-                  />
+                <Link className={`sidebar-link sidebar-link ${getActiveMenuClass("vitals")}`} to="/vitals">
+                  <img src="https://onerrorlog.s3.amazonaws.com/images/vitals.png" alt="vitals" className="icon" />
                   <span className="hide-menu">Vitals</span>
+                </Link>
+              </li>
+
+              <li className={`sidebar-item ${getSelectedMenuClass("metrics")}`}>
+                <Link className={`sidebar-link sidebar-link ${getActiveMenuClass("metrics")}`} to="/metrics">
+                  <img src="https://onerrorlog.s3.amazonaws.com/images/vitals.png" alt="metrics" className="icon" />
+                  <span className="hide-menu">Metrics</span>
                 </Link>
               </li>
 
               <li className="sidebar-title">Team &amp; Profile</li>
               {currentUser.role.role === "admin" && (
                 <li className={`sidebar-item ${getSelectedMenuClass("team")}`}>
-                  <Link
-                    className={`sidebar-link sidebar-link ${getActiveMenuClass(
-                      "team"
-                    )}`}
-                    to="/team"
-                  >
-                    <img
-                      src="https://onerrorlog.s3.amazonaws.com/images/teams.png"
-                      alt="team"
-                      className="icon"
-                    />
+                  <Link className={`sidebar-link sidebar-link ${getActiveMenuClass("team")}`} to="/team">
+                    <img src="https://onerrorlog.s3.amazonaws.com/images/teams.png" alt="team" className="icon" />
                     <span className="hide-menu">Team</span>
                   </Link>
                 </li>
               )}
 
               {currentUser.role.role === "admin" && (
-                <li
-                  className={`sidebar-item ${getSelectedMenuClass("schedule")}`}
-                >
-                  <Link
-                    className={`sidebar-link sidebar-link ${getActiveMenuClass(
-                      "schedule"
-                    )}`}
-                    to="/schedule"
-                  >
+                <li className={`sidebar-item ${getSelectedMenuClass("schedule")}`}>
+                  <Link className={`sidebar-link sidebar-link ${getActiveMenuClass("schedule")}`} to="/schedule">
                     <img
                       src="https://onerrorlog.s3.amazonaws.com/images/schedule.png"
                       alt="schedule"
@@ -211,24 +155,11 @@ const Body = ({
               )}
 
               <li className={`sidebar-item ${getSelectedMenuClass("profile")}`}>
-                <Link
-                  className={`sidebar-link sidebar-link ${getActiveMenuClass(
-                    "profile"
-                  )}`}
-                  to="/profile"
-                >
-                  <img
-                    src="https://onerrorlog.s3.amazonaws.com/images/profile.png"
-                    alt="profile"
-                    className="icon"
-                  />
+                <Link className={`sidebar-link sidebar-link ${getActiveMenuClass("profile")}`} to="/profile">
+                  <img src="https://onerrorlog.s3.amazonaws.com/images/profile.png" alt="profile" className="icon" />
                   <span className="hide-menu">Profile</span>
                   {currentUser && currentUser.role.phone_number === null && (
-                    <span
-                      role="img"
-                      aria-label="Mising Phone Number"
-                      className="me-1 hide-menu"
-                    >
+                    <span role="img" aria-label="Mising Phone Number" className="me-1 hide-menu">
                       ☎️
                     </span>
                   )}
@@ -241,31 +172,26 @@ const Body = ({
             <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center">
               <Row className="w-100 p-0 m-0">
                 <Col>
-                  {currentUser &&
-                    currentUser.role.phone_number_verified_on === null && (
-                      <Alert variant="info" dismissible>
-                        <Alert.Heading>
-                          <strong>Confirm Your Phone Number</strong>
-                        </Alert.Heading>
-                        <p>
-                          It looks like you have not yet confirmed your phone
-                          number. If you want to receive alerts with a text
-                          message, please confirm your phone number in your{" "}
-                          <Link to="/profile">
-                            <strong>profile</strong>
-                          </Link>
-                        </p>
-                      </Alert>
-                    )}
+                  {currentUser && currentUser.role.phone_number_verified_on === null && (
+                    <Alert variant="info" dismissible>
+                      <Alert.Heading>
+                        <strong>Confirm Your Phone Number</strong>
+                      </Alert.Heading>
+                      <p>
+                        It looks like you have not yet confirmed your phone number. If you want to receive alerts with a
+                        text message, please confirm your phone number in your{" "}
+                        <Link to="/profile">
+                          <strong>profile</strong>
+                        </Link>
+                      </p>
+                    </Alert>
+                  )}
                   {loading ? (
                     <Row className="w-100">
                       <Col>
                         <Card>
                           <Card.Body className="p-5 text-center">
-                            <h4>
-                              Your data is being loaded... In the meantime,
-                              please be safe!
-                            </h4>
+                            <h4>Your data is being loaded... In the meantime, please be safe!</h4>
                           </Card.Body>
                         </Card>
                       </Col>
@@ -278,11 +204,7 @@ const Body = ({
             </div>
             <div className="footer text-center">
               &copy; Copyright{" "}
-              <a
-                href="https://www.dplouffe.ca"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+              <a href="https://www.dplouffe.ca" target="_blank" rel="noopener noreferrer">
                 dplouffe Analytics
               </a>
               . All rights reserved.
@@ -309,76 +231,34 @@ const Body = ({
 
       <div className="bottom-menu">
         <Row className="pb-3">
-          <Col
-            className={`text-center pt-3 pb-3 me-2 ${getActiveMenuClass(
-              "dashboard"
-            )}`}
-          >
+          <Col className={`text-center pt-3 pb-3 me-2 ${getActiveMenuClass("dashboard")}`}>
             <Link to="/dashboard">
-              <img
-                src="https://onerrorlog.s3.amazonaws.com/images/dashboard.png"
-                alt="dashboard"
-                className="icon-30"
-              />
+              <img src="https://onerrorlog.s3.amazonaws.com/images/dashboard.png" alt="dashboard" className="icon-30" />
             </Link>
           </Col>
-          <Col
-            className={`text-center pt-3 pb-3 ${getActiveMenuClass("ping")}`}
-          >
+          <Col className={`text-center pt-3 pb-3 ${getActiveMenuClass("ping")}`}>
             <Link to="/pings">
-              <img
-                src="https://onerrorlog.s3.amazonaws.com/images/website.png"
-                alt="pings"
-                className="icon-30"
-              />
+              <img src="https://onerrorlog.s3.amazonaws.com/images/website.png" alt="pings" className="icon-30" />
             </Link>
           </Col>
-          <Col
-            className={`text-center pt-3 pb-3 ${getActiveMenuClass("pong")}`}
-          >
+          <Col className={`text-center pt-3 pb-3 ${getActiveMenuClass("pong")}`}>
             <Link to="/pongs">
-              <img
-                src="https://onerrorlog.s3.amazonaws.com/images/heartbeat.png"
-                alt="pings"
-                className="icon-30"
-              />
+              <img src="https://onerrorlog.s3.amazonaws.com/images/heartbeat.png" alt="pings" className="icon-30" />
             </Link>
           </Col>
-          <Col
-            className={`text-center pt-3 pb-3 ${getActiveMenuClass("team")}`}
-          >
+          <Col className={`text-center pt-3 pb-3 ${getActiveMenuClass("team")}`}>
             <Link to="/team">
-              <img
-                src="https://onerrorlog.s3.amazonaws.com/images/teams.png"
-                alt="pings"
-                className="icon-30"
-              />
+              <img src="https://onerrorlog.s3.amazonaws.com/images/teams.png" alt="pings" className="icon-30" />
             </Link>
           </Col>
-          <Col
-            className={`text-center pt-3 pb-3 ${getActiveMenuClass(
-              "schedule"
-            )}`}
-          >
+          <Col className={`text-center pt-3 pb-3 ${getActiveMenuClass("schedule")}`}>
             <Link to="/schedule">
-              <img
-                src="https://onerrorlog.s3.amazonaws.com/images/schedule.png"
-                alt="pings"
-                className="icon-30"
-              />
+              <img src="https://onerrorlog.s3.amazonaws.com/images/schedule.png" alt="pings" className="icon-30" />
             </Link>
           </Col>
-          <Col
-            className={`text-center pt-3 pb-3 ms-2 ${getActiveMenuClass(
-              "profile"
-            )}`}
-          >
+          <Col className={`text-center pt-3 pb-3 ms-2 ${getActiveMenuClass("profile")}`}>
             <Link to="/profile">
-              <img
-                src="https://onerrorlog.s3.amazonaws.com/images/profile.png"
-                alt="pings"
-                className="icon-30"
-              />
+              <img src="https://onerrorlog.s3.amazonaws.com/images/profile.png" alt="pings" className="icon-30" />
             </Link>
           </Col>
         </Row>

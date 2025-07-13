@@ -1,12 +1,4 @@
-import React from "react";
-const MetricConditionSentence = ({
-  metricRollup,
-  metricName,
-  op,
-  value,
-  spanValue,
-  spanType,
-}) => {
+const MetricConditionSentence = ({ metricRollup, metricName, op, value, spanValue, spanType }) => {
   if (!value) {
     return null;
   }

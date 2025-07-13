@@ -1,4 +1,3 @@
-import React from "react";
 import Body from "../components/Body";
 import { Card, Row, Col, Badge } from "react-bootstrap";
 import { Link } from "react-router-dom";
@@ -16,12 +15,11 @@ const NewMonitor = (props) => {
                 className="mb-3 list-logo"
               />
               <h2 className="pt-3">
-                Let us know what you're looking at monitoring and we'll guide
-                you to the right place!
+                Let us know what you're looking at monitoring and we'll guide you to the right place!
               </h2>
               <Row className="pt-5">
-                <Col xs={12} lg={1}></Col>
-                <Col className="text-center pt-2" xs={12} lg={2}>
+                <Col xs={12} lg={3}></Col>
+                <Col className="text-center pt-2" xs={12} lg={3}>
                   <Link to="/newping">
                     <Badge bg="warning p-3" style={{ minWidth: "150px" }}>
                       <img
@@ -31,59 +29,13 @@ const NewMonitor = (props) => {
                       />
 
                       <div className="pt-3" style={{ fontSize: "15px" }}>
-                        Website
-                      </div>
-                    </Badge>
-                  </Link>
-                </Col>
-                <Col className="text-center pt-2" xs={12} lg={2}>
-                  <Link to="/newping">
-                    <Badge bg="warning p-3" style={{ minWidth: "150px" }}>
-                      <img
-                        src="https://onerrorlog.s3.amazonaws.com/images/api-white.png"
-                        alt="pings"
-                        className="icon-30"
-                      />
-
-                      <div className="pt-3" style={{ fontSize: "15px" }}>
-                        API
+                        Website / API
                       </div>
                     </Badge>
                   </Link>
                 </Col>
 
-                <Col className="text-center pt-2" xs={12} lg={2}>
-                  <Link to="/newpong">
-                    <Badge bg="primary p-3" style={{ minWidth: "150px" }}>
-                      <img
-                        src="https://onerrorlog.s3.amazonaws.com/images/data-pipeline-white.png"
-                        alt="pings"
-                        className="icon-30"
-                      />
-
-                      <div className="pt-3" style={{ fontSize: "15px" }}>
-                        Data Pipeline
-                      </div>
-                    </Badge>
-                  </Link>
-                </Col>
-
-                <Col className="text-center pt-2" xs={12} lg={2}>
-                  <Link to="/newpong">
-                    <Badge bg="primary p-3" style={{ minWidth: "150px" }}>
-                      <img
-                        src="https://onerrorlog.s3.amazonaws.com/images/scheduled-task-white.png"
-                        alt="pings"
-                        className="icon-30"
-                      />
-
-                      <div className="pt-3" style={{ fontSize: "15px" }}>
-                        Scheduled Task
-                      </div>
-                    </Badge>
-                  </Link>
-                </Col>
-                <Col className="text-center pt-2" xs={12} lg={2}>
+                <Col className="text-center pt-2" xs={12} lg={3}>
                   <Link to="/newpong">
                     <Badge bg="primary p-3" style={{ minWidth: "150px" }}>
                       <img
@@ -98,7 +50,7 @@ const NewMonitor = (props) => {
                     </Badge>
                   </Link>
                 </Col>
-                <Col xs={12} lg={1}></Col>
+                <Col xs={12} lg={3}></Col>
               </Row>
             </Col>
           </Row>

@@ -16,9 +16,7 @@ export const DashboardRoute = ({ element, admin = false }) => {
 
   // If not authenticated, redirect to login, preserving intended path
   if (!user) {
-    const redirectTo = `/auth/login?n=${encodeURIComponent(
-      location.pathname + location.search
-    )}`;
+    const redirectTo = `/auth/login?n=${encodeURIComponent(location.pathname + location.search)}`;
     return <Navigate to={redirectTo} replace />;
   }
 

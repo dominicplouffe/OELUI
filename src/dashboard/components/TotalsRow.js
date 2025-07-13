@@ -1,4 +1,3 @@
-import React from "react";
 import { Row, Col, Badge } from "react-bootstrap";
 
 const TotalRow = ({ totals, showNoMonitors = true }) => {

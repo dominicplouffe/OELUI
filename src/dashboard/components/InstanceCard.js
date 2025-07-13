@@ -1,4 +1,3 @@
-import React from "react";
 import { Card, Row, Col, Badge } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
@@ -39,9 +38,7 @@ const InstanceCard = ({ instance, showSummary }) => {
                 <Col className="text-center">CPU</Col>
               </Row>
               <Row className="pt-2">
-                <Col className="text-center">
-                  {(instance.cpu_percent * 100).toFixed(2)}%
-                </Col>
+                <Col className="text-center">{(instance.cpu_percent * 100).toFixed(2)}%</Col>
               </Row>
             </Badge>
           </Col>
@@ -59,9 +56,7 @@ const InstanceCard = ({ instance, showSummary }) => {
                 <Col className="text-center">Mem</Col>
               </Row>
               <Row className="pt-2">
-                <Col className="text-center">
-                  {(instance.mem_percent * 100).toFixed(2)}%
-                </Col>
+                <Col className="text-center">{(instance.mem_percent * 100).toFixed(2)}%</Col>
               </Row>
             </Badge>
           </Col>
@@ -79,9 +74,7 @@ const InstanceCard = ({ instance, showSummary }) => {
                 <Col className="text-center">Disk</Col>
               </Row>
               <Row className="pt-2">
-                <Col className="text-center">
-                  {(instance.disk_percent * 100).toFixed(2)}%
-                </Col>
+                <Col className="text-center">{(instance.disk_percent * 100).toFixed(2)}%</Col>
               </Row>
             </Badge>
           </Col>

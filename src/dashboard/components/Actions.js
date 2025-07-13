@@ -1,4 +1,3 @@
-import React from "react";
 import { Row, Col, Button } from "react-bootstrap";
 import api from "../../utils/api";
 import useAuth from "../../auth/useAuth";

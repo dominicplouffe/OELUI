@@ -1,4 +1,3 @@
-import React from "react";
 import { Row, Col } from "react-bootstrap";
 
 const Java = ({ pongKey, api_url }) => {
@@ -7,9 +6,7 @@ const Java = ({ pongKey, api_url }) => {
       <Row>
         <Col xs={12}>
           <pre className="code p-4" style={{ lineHeight: "20px" }}>
-            <span className="text-success">
-              # Example to send a start and end request to onErrorLog using Bash
-            </span>
+            <span className="text-success"># Example to send a start and end request to onErrorLog using Bash</span>
             <span className="text-success"># Send your start request</span>
             <br />
             curl

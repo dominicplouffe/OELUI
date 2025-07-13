@@ -1,4 +1,3 @@
-import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./styles/nav.css";
@@ -34,6 +33,8 @@ import MetricConditionSummary from "./dashboard/pages/MetricConditionSummary";
 import Dashboard from "./dashboard/pages/Dashboard";
 import NewMonitor from "./dashboard/pages/NewMonitor";
 
+import Metrics from "./dashboard/pages/Metrics";
+
 function App() {
   return (
     <BrowserRouter>
@@ -51,92 +52,39 @@ function AppRoutes() {
       <Route path="auth/*" element={<AuthRoutes />} />
 
       {/* Dashboard & Protected */}
-      <Route
-        path="dashboard"
-        element={<DashboardRoute element={<Dashboard />} />}
-      />
-      <Route
-        path="newmonitor"
-        element={<DashboardRoute element={<NewMonitor />} admin />}
-      />
-      <Route
-        path="profile"
-        element={<DashboardRoute element={<Profile />} />}
-      />
+      <Route path="dashboard" element={<DashboardRoute element={<Dashboard />} />} />
+      <Route path="newmonitor" element={<DashboardRoute element={<NewMonitor />} admin />} />
+      <Route path="profile" element={<DashboardRoute element={<Profile />} />} />
       <Route path="pings" element={<DashboardRoute element={<Ping />} />} />
       <Route path="pongs" element={<DashboardRoute element={<Pong />} />} />
-      <Route
-        path="team"
-        element={<DashboardRoute element={<Team />} admin />}
-      />
-      <Route
-        path="schedule"
-        element={<DashboardRoute element={<Schedule />} admin />}
-      />
+      <Route path="team" element={<DashboardRoute element={<Team />} admin />} />
+      <Route path="schedule" element={<DashboardRoute element={<Schedule />} admin />} />
 
       {/* Pings */}
-      <Route
-        path="ping"
-        element={<DashboardRoute element={<PingScreen />} admin />}
-      />
-      <Route
-        path="ping/:id"
-        element={<DashboardRoute element={<PingScreen />} admin />}
-      />
-      <Route
-        path="newping"
-        element={<DashboardRoute element={<NewPing />} admin />}
-      />
-      <Route
-        path="ping/summary/:id"
-        element={<DashboardRoute element={<PingSummary />} />}
-      />
+      <Route path="ping" element={<DashboardRoute element={<PingScreen />} admin />} />
+      <Route path="ping/:id" element={<DashboardRoute element={<PingScreen />} admin />} />
+      <Route path="newping" element={<DashboardRoute element={<NewPing />} admin />} />
+      <Route path="ping/summary/:id" element={<DashboardRoute element={<PingSummary />} />} />
 
       {/* Pongs */}
-      <Route
-        path="newpong"
-        element={<DashboardRoute element={<NewPong />} admin />}
-      />
-      <Route
-        path="pong"
-        element={<DashboardRoute element={<PongScreen />} admin />}
-      />
-      <Route
-        path="pong/:id"
-        element={<DashboardRoute element={<PongScreen />} admin />}
-      />
-      <Route
-        path="pong/summary/:id"
-        element={<DashboardRoute element={<PongSummary />} />}
-      />
+      <Route path="newpong" element={<DashboardRoute element={<NewPong />} admin />} />
+      <Route path="pong" element={<DashboardRoute element={<PongScreen />} admin />} />
+      <Route path="pong/:id" element={<DashboardRoute element={<PongScreen />} admin />} />
+      <Route path="pong/summary/:id" element={<DashboardRoute element={<PongSummary />} />} />
 
       {/* Vitals & Conditions */}
-      <Route
-        path="vitals"
-        element={<DashboardRoute element={<Vitals />} />}
-      />
-      <Route
-        path="vitals/:id"
-        element={<DashboardRoute element={<VitalSummary />} />}
-      />
-      <Route
-        path="vital/:instanceId/condition/:id"
-        element={
-          <DashboardRoute element={<MetricConditionScreen />} />
-        }
-      />
+      <Route path="vitals" element={<DashboardRoute element={<Vitals />} />} />
+      <Route path="vitals/:id" element={<DashboardRoute element={<VitalSummary />} />} />
+      <Route path="vital/:instanceId/condition/:id" element={<DashboardRoute element={<MetricConditionScreen />} />} />
       <Route
         path="vital/:instanceId/condition/summary/:id"
-        element={
-          <DashboardRoute element={<MetricConditionSummary />} />
-        }
+        element={<DashboardRoute element={<MetricConditionSummary />} />}
       />
 
-      {/* Failure */}
-      <Route
-        path="failure/:id/:otype/:oid"
-        element={<DashboardRoute element={<Failure />} />}
-      />
+      {/* Metrics */}
+      <Route path="metrics" element={<DashboardRoute element={<Metrics />} />} />
+
+      <Route path="failure/:id/:otype/:oid" element={<DashboardRoute element={<Failure />} />} />
 
       {/* Redirect root */}
       <Route path="/" element={<Navigate to="/dashboard" replace />} />

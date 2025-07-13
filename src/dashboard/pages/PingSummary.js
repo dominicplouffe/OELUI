@@ -9,7 +9,7 @@ import { REASONS } from "../../utils/globals";
 import { Link } from "react-router-dom";
 import FailureStatus from "../components/FailureStatus";
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
-import { useParams } from 'react-router-dom';
+import { useParams } from "react-router-dom";
 
 const PingSummary = ({ currentUser }) => {
   const [summary, setSummary] = useState(null);
@@ -19,9 +19,7 @@ const PingSummary = ({ currentUser }) => {
   const [failures, setFailures] = useState([]);
   const [otherPings, setOtherPings] = useState([]);
   const [loading, setLoading] = useState(true);
-
   const { id } = useParams();
-
   const { refresh } = useAuth();
 
   const useFetchInterval = (delay) => {
@@ -106,7 +104,6 @@ const PingSummary = ({ currentUser }) => {
   };
 
   const fetchAll = async () => {
-
     fetchSummary(id);
     getOtherPings();
 
@@ -124,7 +121,6 @@ const PingSummary = ({ currentUser }) => {
 
   useEffect(() => {
     if (!loading) {
-
       fetchSummary(id);
     }
 
@@ -147,7 +143,15 @@ const PingSummary = ({ currentUser }) => {
   return (
     <Body title="Uptime Monitor Summary" selectedMenu="ping" currentUser={currentUser} loading={loading}>
       {summary && (
-        <AlertCard m={summary} showEdit={true && currentUser.role.role === "admin"} showSummary={false} showOther={true} otherPath="ping" otherObjects={otherPings} showResponseView={true} />
+        <AlertCard
+          m={summary}
+          showEdit={true && currentUser.role.role === "admin"}
+          showSummary={false}
+          showOther={true}
+          otherPath="ping"
+          otherObjects={otherPings}
+          showResponseView={true}
+        />
       )}
       <Card>
         <Card.Body>
@@ -160,27 +164,57 @@ const PingSummary = ({ currentUser }) => {
                 {summary && `${(summary.avg_resp * 1000).toFixed(0)}ms`}
               </Col>
               <Col className="text-center text-xl-end text-xxl-end" xs={12} xl={4}>
-                <Button variant="link" className="p-0 m-0" onClick={() => setHours(24)} style={{ color: hours === 24 ? "red" : "" }}>
+                <Button
+                  variant="link"
+                  className="p-0 m-0"
+                  onClick={() => setHours(24)}
+                  style={{ color: hours === 24 ? "red" : "" }}
+                >
                   <small>24h</small>
                 </Button>
                 <small> | </small>
-                <Button variant="link" className="p-0 m-0" onClick={() => setHours(48)} style={{ color: hours === 48 ? "red" : "" }}>
+                <Button
+                  variant="link"
+                  className="p-0 m-0"
+                  onClick={() => setHours(48)}
+                  style={{ color: hours === 48 ? "red" : "" }}
+                >
                   <small>48h</small>
                 </Button>
                 <small> | </small>
-                <Button variant="link" className="p-0 m-0" onClick={() => setHours(72)} style={{ color: hours === 72 ? "red" : "" }}>
+                <Button
+                  variant="link"
+                  className="p-0 m-0"
+                  onClick={() => setHours(72)}
+                  style={{ color: hours === 72 ? "red" : "" }}
+                >
                   <small>72h</small>
                 </Button>
                 <small> | </small>
-                <Button variant="link" className="p-0 m-0" onClick={() => setHours(168)} style={{ color: hours === 168 ? "red" : "" }}>
+                <Button
+                  variant="link"
+                  className="p-0 m-0"
+                  onClick={() => setHours(168)}
+                  style={{ color: hours === 168 ? "red" : "" }}
+                >
                   <small>7d</small>
                 </Button>
                 <small> | </small>
-                <Button variant="link" className="p-0 m-0" onClick={() => setHours(336)} style={{ color: hours === 336 ? "red" : "" }}>
+                <Button
+                  variant="link"
+                  className="p-0 m-0"
+                  onClick={() => setHours(336)}
+                  style={{ color: hours === 336 ? "red" : "" }}
+                >
                   <small>14d</small>
                 </Button>
                 <small> | </small>
-                <Button variant="link" className="p-0 m-0" onClick={() => setHours(720)} style={{ color: hours === 720 ? "red" : "" }}>
+                <Button
+                  variant="link"
+                  className="p-0 m-0"
+                  onClick={() => setHours(720)}
+                  style={{ color: hours === 720 ? "red" : "" }}
+                >
                   <small>30d</small>
                 </Button>
               </Col>
@@ -269,7 +303,11 @@ const PingSummary = ({ currentUser }) => {
                           </td>
                           <td className="text-righ" width="1%" nowrap="nowrap">
                             <Link to={`/failure/${f.id}/pong/${id}`}>
-                              <img src="https://onerrorlog.s3.amazonaws.com/images/details.png" alt={`Failure Details for ${f.id}`} className="icon" />
+                              <img
+                                src="https://onerrorlog.s3.amazonaws.com/images/details.png"
+                                alt={`Failure Details for ${f.id}`}
+                                className="icon"
+                              />
                             </Link>
                           </td>
                         </tr>

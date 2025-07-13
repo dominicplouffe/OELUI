@@ -1,4 +1,3 @@
-import React from "react";
 import { Badge, Modal, Table } from "react-bootstrap";
 
 const ResultModal = ({ result, setShowModal, showModal, title }) => {
@@ -13,11 +12,7 @@ const ResultModal = ({ result, setShowModal, showModal, title }) => {
             <tr>
               <td style={{ width: `200px` }}>Status</td>
               <td>
-                {result.check_status ? (
-                  <Badge bg="success">No Issues Found</Badge>
-                ) : (
-                  <Badge bg="danger">Failure</Badge>
-                )}
+                {result.check_status ? <Badge bg="success">No Issues Found</Badge> : <Badge bg="danger">Failure</Badge>}
               </td>
             </tr>
             <tr>

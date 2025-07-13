@@ -9,6 +9,8 @@ import { Link } from "react-router-dom";
 import FailureStatus from "../components/FailureStatus";
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 import { REASONS } from "../../utils/globals";
+import { useParams } from 'react-router-dom';
+
 
 const trigger_desc = {
   complete_not_triggered_in: "Complete endpoint has not been requested in",
@@ -18,7 +20,7 @@ const trigger_desc = {
   heartbeat_triggered: "Your heartbeat fail was triggered",
 };
 
-const PongSummary = (props) => {
+const PongSummary = ({ currentUser }) => {
   const [summary, setSummary] = useState(null);
   const [pong, setPong] = useState(null);
   const [hours, setHours] = useState(24);
@@ -27,7 +29,8 @@ const PongSummary = (props) => {
   const [failures, setFailures] = useState([]);
   const [otherPongs, setOtherPongs] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { currentUser } = props;
+
+  const { id } = useParams();
 
   const { refresh } = useAuth();
 
@@ -118,7 +121,6 @@ const PongSummary = (props) => {
   useFetchInterval(1000 * 60 * 1);
 
   const fetchAll = async () => {
-    const id = props.match.params.id;
 
     fetchPong(id);
     fetchSummary(id);
@@ -135,7 +137,6 @@ const PongSummary = (props) => {
 
   useEffect(() => {
     if (!loading) {
-      const id = props.match.params.id;
       fetchSummary(id);
     }
 
@@ -167,7 +168,7 @@ const PongSummary = (props) => {
   };
 
   return (
-    <Body title="Pong Summary" selectedMenu="pong" {...props} loading={loading}>
+    <Body title="Pong Summary" selectedMenu="pong" currentUser={currentUser} loading={loading}>
       {summary && <AlertCard m={summary} showEdit={true && currentUser.role.role === "admin"} showSummary={false} otherObjects={otherPongs} otherPath="pong" />}
 
       <Card>
@@ -366,7 +367,7 @@ const PongSummary = (props) => {
                             <FailureStatus failure={f} />
                           </td>
                           <td className="text-righ" width="1%" nowrap="nowrap">
-                            <Link to={`/failure/${f.id}/pong/${props.match.params.id}`}>
+                            <Link to={`/failure/${f.id}/pong/${id}`}>
                               <img src="https://onerrorlog.s3.amazonaws.com/images/details.png" alt={`Failure Details for ${f.id}`} className="icon" />
                             </Link>
                           </td>

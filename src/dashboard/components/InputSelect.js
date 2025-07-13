@@ -1,4 +1,3 @@
-import React from "react";
 import { Form } from "react-bootstrap";
 
 const InputSelect = ({
@@ -37,9 +36,7 @@ const InputSelect = ({
       ))}
     </Form.Control>
     {isInvalid && invalidText ? (
-      <Form.Control.Feedback type="invalid">
-        {invalidText}
-      </Form.Control.Feedback>
+      <Form.Control.Feedback type="invalid">{invalidText}</Form.Control.Feedback>
     ) : (
       <Form.Text className="text-muted ps-2">{helperText}</Form.Text>
     )}
